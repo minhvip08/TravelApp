@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    tools:context=".ui.fragments.HomeFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/text_view_session"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Good Morning"
+        android:textAppearance="@style/text_medium" />
+
+    <TextView
+        android:id="@+id/text_view_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_view_session"
+        android:textAppearance="@style/text_large_title"
+        android:text="User"/>
+
+    <SearchView
+        android:layout_below="@+id/text_view_user"
+        android:id="@+id/search_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:queryHint="Search location now!"
+        android:background="@drawable/search_view_background"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/search_box"
+        android:id="@+id/popular_location_title"
+        android:text="Popular Location"
+        android:textAppearance="@style/text_large_title"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:id="@+id/popular_location_recyclerview"
+        android:layout_below="@+id/popular_location_title"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/popular_location_recyclerview"
+        android:id="@+id/top_blogs_title"
+        android:text="Top Blogs"
+        android:textAppearance="@style/text_large_title"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:id="@+id/top_blogs_recyclerview"
+        android:layout_below="@+id/top_blogs_title"
+        android:layout_marginBottom="16dp"/>
+
+</RelativeLayout>

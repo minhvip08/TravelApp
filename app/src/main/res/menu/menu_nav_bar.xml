@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="Home"
+        android:id="@+id/home"
+        
+        android:icon="@drawable/ic_home" />
+    <item android:title="Schedule"
+        android:id="@+id/schedule"
+        android:icon="@drawable/ic_schedule" />
+    <item android:title="Guide"
+        android:id="@+id/guide"
+        android:icon="@drawable/ic_guide" />
+    <item android:title="Blogs"
+        android:id="@+id/blogs"
+        android:icon="@drawable/ic_blogs" />
+</menu>
