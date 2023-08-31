@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.SignInActivity"
+    android:paddingHorizontal="24dp"
+    android:paddingTop="130dp"
+    android:paddingBottom="37dp">
+
+    <TextView
+        android:id="@+id/sign_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/sign_in"
+        android:textAppearance="@style/header_login" />
+
+    <TextView
+        android:id="@+id/sign_in_attribute_header_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/sign_in"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/auth_attribute_header_email"
+        android:textAppearance="@style/sign_in_attribute_header"
+        android:layout_marginTop="20dp"/>
+
+    <LinearLayout
+        android:id="@+id/sign_in_attribute_layout_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/sign_in_attribute_header_email"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:background="@drawable/field_user">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_email_22"
+            android:layout_marginVertical="14dp"
+            android:layout_marginStart="19dp"
+            android:layout_marginEnd="11dp"/>
+
+        <EditText
+            android:id="@+id/sign_in_attribute_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/auth_attribute_email"
+            android:inputType="textEmailAddress"
+            android:background="@null"
+            android:layout_marginVertical="14dp"
+            android:layout_marginEnd="19dp"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/sign_in_attribute_header_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/sign_in_attribute_layout_email"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/auth_attribute_header_password"
+        android:textAppearance="@style/sign_in_attribute_header"
+        android:layout_marginTop="27dp"/>
+
+    <LinearLayout
+        android:id="@+id/sign_in_attribute_layout_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/sign_in_attribute_header_password"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:background="@drawable/field_user">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_email_22"
+            android:layout_marginVertical="14dp"
+            android:layout_marginStart="19dp"
+            android:layout_marginEnd="11dp"/>
+
+        <EditText
+            android:id="@+id/sign_in_attribute_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/auth_attribute_password"
+            android:inputType="textPassword"
+            android:background="@null"
+            android:layout_marginVertical="14dp"
+            android:layout_marginEnd="19dp"/>
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/sign_in_button_sign_in"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/sign_in_attribute_layout_password"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/continue_string"
+        android:textAppearance="@style/sign_in_button_text_appearance"
+        android:layout_marginTop="27dp"
+        android:background="@drawable/button_primary"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/sign_in_no_account"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/sign_in_no_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_in_no_account"
+            android:textSize="14sp"
+            android:textColor="#000000"/>
+
+        <TextView
+            android:id="@+id/sign_in_go_to_sign_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_up"
+            android:textSize="14sp"
+            android:textColor="#0373F3" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
