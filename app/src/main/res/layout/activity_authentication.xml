@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.AuthenticationActivity"
+    android:paddingHorizontal="24dp"
+    android:paddingTop="74dp"
+    android:paddingBottom="37dp">
+
+    <TextView
+        android:id="@+id/auth_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/sign_in"
+        android:textAppearance="@style/header_login" />
+
+    <TextView
+        android:id="@+id/auth_attribute_header_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/auth_header"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/auth_attribute_header_name"
+        android:textAppearance="@style/auth_attribute_header"
+        android:layout_marginTop="27dp"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/auth_attribute_layout_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/auth_attribute_header_name"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:background="@drawable/field_user"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_person_22"
+            android:layout_marginVertical="14dp"
+            android:layout_marginStart="19dp"
+            android:layout_marginEnd="11dp"/>
+
+        <EditText
+            android:id="@+id/auth_attribute_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/auth_attribute_name"
+            android:inputType="textPersonName"
+            android:background="@null"
+            android:layout_marginVertical="14dp"
+            android:layout_marginEnd="19dp"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/auth_attribute_header_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/auth_attribute_layout_name"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/auth_attribute_header_email"
+        android:textAppearance="@style/auth_attribute_header"
+        android:layout_marginTop="27dp"/>
+
+    <LinearLayout
+        android:id="@+id/auth_attribute_layout_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/auth_attribute_header_email"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:background="@drawable/field_user">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_email_22"
+            android:layout_marginVertical="14dp"
+            android:layout_marginStart="19dp"
+            android:layout_marginEnd="11dp"/>
+
+        <EditText
+            android:id="@+id/auth_attribute_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/auth_attribute_email"
+            android:inputType="textEmailAddress"
+            android:background="@null"
+            android:layout_marginVertical="14dp"
+            android:layout_marginEnd="19dp"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/auth_attribute_header_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/auth_attribute_layout_email"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/auth_attribute_header_password"
+        android:textAppearance="@style/auth_attribute_header"
+        android:layout_marginTop="27dp"/>
+
+    <LinearLayout
+        android:id="@+id/auth_attribute_layout_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/auth_attribute_header_password"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:background="@drawable/field_user">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_lock_22"
+            android:layout_marginVertical="14dp"
+            android:layout_marginStart="19dp"
+            android:layout_marginEnd="11dp"/>
+
+        <EditText
+            android:id="@+id/auth_attribute_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/auth_attribute_password"
+            android:inputType="textPassword"
+            android:background="@null"
+            android:layout_marginVertical="14dp"
+            android:layout_marginEnd="19dp"/>
+
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/auth_show_password"
+        android:text="@string/show_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/auth_attribute_layout_password" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/auth_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/auth_show_password"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="18dp"
+        android:text="@string/continue_string"
+        android:textAppearance="@style/button_text_appearance"
+        android:background="@drawable/button_primary"/>
+
+    <TextView
+        android:id="@+id/auth_forgot_your_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/auth_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/auth_forgot_your_password"
+        android:textSize="14sp"
+        android:textColor="@color/auth_forgot_your_password_selector"
+        android:layout_marginTop="18dp"
+        android:clickable="true"/>
+
+    <RadioGroup
+        android:checkedButton="@+id/radio_button_sign_in"
+        android:id="@+id/toggle_authentication_mode"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/toggle_auth_mode_outline"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:layout_marginTop="1dp"
+            android:layout_marginVertical="1dp"
+            android:id="@+id/radio_button_sign_in"
+            android:background="@drawable/toggle_auth_mode_selector_left"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/sign_in"
+            android:textColor="@color/toggle_auth_mode_text_selector"
+            android:textSize="16sp"/>
+
+        <RadioButton
+            android:layout_marginEnd="1dp"
+            android:layout_marginVertical="1dp"
+            android:id="@+id/radio_button_sign_up"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/toggle_auth_mode_selector_right"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/sign_up"
+            android:textColor="@color/toggle_auth_mode_text_selector"
+            android:textSize="16sp"/>
+    </RadioGroup>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,5 @@
 package com.example.travelapp.ui
 
-import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -19,12 +18,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Uncomment the following line to check if the user is signed in
+        checkCurrentUser()
         binding= ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         replaceFragment(HomeFragment())
 
         binding.bottomNavigation.setOnItemSelectedListener {
-            when(it.itemId){
+            when (it.itemId) {
                 R.id.home -> replaceFragment(HomeFragment())
                 R.id.blogs -> replaceFragment(BlogsFragment())
                 R.id.schedule -> replaceFragment(ScheduleFragment())
@@ -32,8 +33,6 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
-        // Uncomment the following line to check if the user is signed in
-        // checkCurrentUser()
     }
 
     private fun replaceFragment(fragment: Fragment){
@@ -44,15 +43,22 @@ class MainActivity : AppCompatActivity() {
         transaction.commit()
     }
 
+
+
     private fun checkCurrentUser() {
         val user = Firebase.auth.currentUser
+        // Warning: This is a temporary development-only solution to sign out the user
+        // Should be replaced with a proper sign out button in the UI
+        // Uncomment the following line to sign out the user
+        // Firebase.auth.signOut()
         if (user != null) {
-            // User is signed in
+
         } else {
-            // Go to sign in activity
-            val intent = Intent(this, SignInActivity::class.java)
+            // Go to authentication activity
+            val intent = Intent(this, AuthenticationActivity::class.java)
             startActivity(intent)
             finish()
         }
     }
+
 }
