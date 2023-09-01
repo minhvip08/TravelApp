@@ -11,7 +11,6 @@ import android.widget.LinearLayout
 import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.example.travelapp.R
 import com.google.firebase.auth.ktx.auth
@@ -65,11 +64,7 @@ class AuthenticationActivity : AppCompatActivity() {
                             authAttributeEmail.text.toString(),
                             authAttributePassword.text.toString(),
                         )
-                        if (Firebase.auth.currentUser != null) {
-                            val intent = Intent(this, MainActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                        }
+                        // Ui change here
                     }
                 }
                 R.id.radio_button_sign_in -> {
@@ -109,6 +104,15 @@ class AuthenticationActivity : AppCompatActivity() {
                             Log.d(TAG, "updateProfile:failure")
                         }
                     }
+                    user.sendEmailVerification()
+                        .addOnCompleteListener(this) {
+                            if (it.isSuccessful) {
+                                Log.d(TAG, "sendEmailVerification:success")
+                            }
+                            else {
+                                Log.d(TAG, "sendEmailVerification:failure")
+                            }
+                        }
                 } else {
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
                     Toast.makeText(
