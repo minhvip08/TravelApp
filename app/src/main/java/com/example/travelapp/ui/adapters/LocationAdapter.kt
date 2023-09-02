@@ -29,9 +29,9 @@ class LocationAdapter () :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
-        val currentItem =locationList[position]
+        val currentItem = locationList[position]
 
-        holder.imgLocation.setImageResource(currentItem.image)
+        holder.imgLocation.setImageResource(R.drawable.switzerland)
         holder.locationText.text = currentItem.title
 
     }

@@ -11,7 +11,7 @@ import com.google.firebase.storage.StorageReference
 import java.lang.ref.Reference
 
 class LocationRepositoryImp(
-    val locationDatabase: FirebaseDatabase,
+    val locationDatabase: FirebaseFirestore,
     val storageReference: StorageReference
 
 ) : LocationRepository{
@@ -19,11 +19,11 @@ class LocationRepositoryImp(
         location: LocationItem,
         result: (UiState<Pair<LocationItem, String>>) -> Unit
     ) {
-        val reference = locationDatabase.reference.child(FireStoreCollection.LOCATION).push()
-        val uniqueKey = reference.key ?: "invalid"
-        location.id = uniqueKey
-        reference
-            .setValue(location)
+
+        val document = locationDatabase.collection(FireStoreCollection.LOCATION).document()
+        location.id = document.id
+        document
+            .set(location)
             .addOnSuccessListener {
                 result.invoke(
                     UiState.Success(Pair(location,"Location has been created successfully"))
@@ -36,15 +36,17 @@ class LocationRepositoryImp(
                     )
                 )
             }
+
+
     }
 
     override fun updateLocation(location: LocationItem, result: (UiState<String>) -> Unit) {
-        val reference = locationDatabase.reference.child(FireStoreCollection.LOCATION).child(location.id)
-        reference
-            .setValue(location)
+        val document = locationDatabase.collection(FireStoreCollection.LOCATION).document(location.id)
+        document
+            .set(location)
             .addOnSuccessListener {
                 result.invoke(
-                    UiState.Success("Location has been updated successfully")
+                    UiState.Success("Note has been update successfully")
                 )
             }
             .addOnFailureListener {
@@ -57,12 +59,11 @@ class LocationRepositoryImp(
     }
 
     override fun deleteLocation(location: LocationItem, result: (UiState<String>) -> Unit) {
-        val reference = locationDatabase.reference.child(FireStoreCollection.LOCATION).child(location.id)
-        reference
-            .removeValue()
+        locationDatabase.collection(FireStoreCollection.LOCATION).document(location.id)
+            .delete()
             .addOnSuccessListener {
                 result.invoke(
-                    UiState.Success("Location has been deleted successfully")
+                    UiState.Success("Note has been deleted successfully")
                 )
             }
             .addOnFailureListener {
@@ -75,15 +76,17 @@ class LocationRepositoryImp(
     }
 
     override fun getLocations(result: (UiState<List<LocationItem>>) -> Unit) {
-        val reference = locationDatabase.reference.child(FireStoreCollection.LOCATION)
-        reference.get()
-            .addOnSuccessListener {
-                val locations = arrayListOf<LocationItem?>()
-                for (item in it.children){
-                    val location = item.getValue(LocationItem::class.java)
+        locationDatabase.collection(FireStoreCollection.LOCATION)
+            .get()
+            .addOnSuccessListener { documents ->
+                val locations = mutableListOf<LocationItem>()
+                for (document in documents) {
+                    val location = document.toObject(LocationItem::class.java)
                     locations.add(location)
                 }
-                result.invoke(UiState.Success(locations.filterNotNull()))
+                result.invoke(
+                    UiState.Success(locations)
+                )
             }
             .addOnFailureListener {
                 result.invoke(

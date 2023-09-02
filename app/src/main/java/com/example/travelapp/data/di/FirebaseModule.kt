@@ -12,24 +12,20 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-@InstallIn(SingletonComponent::class)
-@Module
+
 object FirebaseModule {
-    @Provides
-    @Singleton
+
     fun provideLocationRepositoryImp(): FirebaseDatabase{
         return FirebaseDatabase.getInstance()
     }
 
-    @Provides
-    @Singleton
+
     fun provideFireStoreInstance(): FirebaseFirestore {
         return FirebaseFirestore.getInstance()
     }
 
 
-    @Singleton
-    @Provides
+
     fun provideFirebaseStorageInstance(): StorageReference {
         return FirebaseStorage.getInstance().getReference(FirebaseStorageConstants.ROOT_DIRECTORY)
     }

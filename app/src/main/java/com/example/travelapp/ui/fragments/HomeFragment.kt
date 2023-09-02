@@ -1,24 +1,27 @@
 package com.example.travelapp.ui.fragments
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.example.travelapp.R
 import com.example.travelapp.data.LocationViewModel
-import com.example.travelapp.data.models.Attraction
 import com.example.travelapp.data.models.LocationItem
 import com.example.travelapp.data.repository.LocationRepositoryImp
 import com.example.travelapp.databinding.FragmentHomeBinding
 import com.example.travelapp.ui.adapters.LocationAdapter
+import com.example.travelapp.ui.util.FirebaseStorageConstants
 import com.example.travelapp.ui.util.UiState
-import dagger.hilt.android.AndroidEntryPoint
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -30,16 +33,16 @@ private const val ARG_PARAM2 = "param2"
  * Use the [HomeFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-@AndroidEntryPoint
+
 class HomeFragment : Fragment() {
     lateinit var binding: FragmentHomeBinding
     lateinit var locationAdapter: LocationAdapter
     lateinit var locationRecyclerView: RecyclerView
-    val viewModel: LocationViewModel by viewModels()
-    val adapter by lazy {
-        LocationAdapter()
+    val viewModel: LocationViewModel = LocationViewModel(LocationRepositoryImp(
+        FirebaseFirestore.getInstance(),
+        FirebaseStorage.getInstance().getReference(FirebaseStorageConstants.ROOT_DIRECTORY)
+    ))
 
-    }
 
 
 
@@ -56,57 +59,67 @@ class HomeFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
 
+        binding = FragmentHomeBinding.inflate(layoutInflater)
 
 
     }
 
     override fun onStart() {
         super.onStart()
+        locationAdapter = LocationAdapter()
+
+
+        var recyclerView = activity?.findViewById<RecyclerView>(R.id.popular_location_recyclerview)
+
+
+        recyclerView?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView?.setHasFixedSize(true)
+        recyclerView?.adapter = locationAdapter
+
+
+        FirebaseFirestore.setLoggingEnabled(true);
+        val db = Firebase.firestore
 
 
 
+        // Create a new user with a first and last name
+        val user = hashMapOf(
+            "first" to "Ada",
+            "last" to "Lovelace",
+            "born" to 1815
+        )
 
-        binding.popularLocationRecyclerview.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        binding.popularLocationRecyclerview.setHasFixedSize(true)
-        binding.popularLocationRecyclerview.adapter = adapter
+    // Add a new document with a generated ID
+        db.collection("users")
+            .add(user)
+            .addOnSuccessListener { documentReference ->
+                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "Error adding document", e)
+            }
 
-
-
+        viewModel.locationItem.observe(viewLifecycleOwner) { state ->
+            when(state){
+                is UiState.Loading -> {
+                    Log.d("TAG", "Loading")
+                }
+                is UiState.Success -> {
+                    Log.d("TAG", "Success")
+                    locationAdapter.updateList(state.data.toMutableList())
+                }
+                is UiState.Failure -> {
+                    Log.d("TAG", "Failure")
+                }
+            }
+        }
     }
 
 
 
-    //Test app without Firebase
-    private fun getLocationData(){
-        // Firebase
-//        dbref = FirebaseDatabase.getInstance().getReference("Users")
-//        dbref.addValueEventListener(object : ValueEventListener{
-//            override fun onDataChange(snapshot: DataSnapshot) {
-//                if (snapshot.exists()){
-//                    for (userSnapshot in snapshot.children){
-//                        val user = userSnapshot.getValue(User::class.java)
-//                        userArrayList.add(user!!)
-//                    }
-//                    userRecyclerview.adapter = MyAdapter(userArrayList)
-//                }
-//            }
-//            override fun onCancelled(error: DatabaseError) {
-//                TODO("Not yet implemented")
-//            }
-//        })
-        var listAttraction: List<Attraction> = arrayListOf<Attraction>()
-
-
-        var listLocation = arrayListOf<LocationItem>()
-        val locationItem1 = LocationItem("1","Switzerland" ,R.drawable.switzerland);
-        listLocation.add(locationItem1)
-        var locationAdapter = LocationAdapter()
-        locationRecyclerView.adapter = locationAdapter
 
 
 
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

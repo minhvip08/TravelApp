@@ -14,13 +14,11 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-@InstallIn(SingletonComponent::class)
-@Module
+
 object RepositoryModule {
-    @Provides
-    @Singleton
+
     fun provideLocationRepository(
-        database: FirebaseDatabase,
+        database: FirebaseFirestore,
         storageReference: StorageReference
     ): LocationRepository {
         return LocationRepositoryImp(database,storageReference)

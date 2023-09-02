@@ -10,11 +10,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
-@HiltViewModel
-class LocationViewModel @Inject constructor(
+
+class LocationViewModel (
     val repository: LocationRepository
 ): ViewModel() {
-    private val _locations = MutableLiveData<UiState<List<LocationItem>>>(UiState.Loading)
+    private val _locations = MutableLiveData<UiState<List<LocationItem>>>()
     val locationItem: LiveData<UiState<List<LocationItem>>>
         get() = _locations
 
