@@ -6,5 +6,4 @@ import kotlinx.coroutines.flow.Flow
 
 interface IRepository<T> {
     fun get() : Flow<UiState<List<LocationItem>>>
-
 }

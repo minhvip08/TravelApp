@@ -21,9 +21,10 @@
         <item name="android:textColor">#ffffff</item>
     </style>
 
-    <style name="header_login">
+    <style name="header_auth">
         <item name="android:textSize">30sp</item>
         <item name="android:textColor">#1F1F1F</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="auth_attribute_header">
