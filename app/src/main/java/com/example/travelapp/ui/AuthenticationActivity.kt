@@ -30,7 +30,7 @@ class AuthenticationActivity : AppCompatActivity() {
         val authAttributeHeaderName = findViewById<TextView>(R.id.auth_attribute_header_name)
         val authAttributeLayoutName = findViewById<LinearLayout>(R.id.auth_attribute_layout_name)
         val authButton = findViewById<Button>(R.id.auth_button)
-        val authPasswordReset = findViewById<TextView>(R.id.auth_forgot_your_password)
+        val authForgotYourPassword = findViewById<TextView>(R.id.auth_forgot_your_password)
         val authAttributeEmail = findViewById<EditText>(R.id.auth_attribute_email)
         val authAttributePassword = findViewById<EditText>(R.id.auth_attribute_password)
         val authAttributeName = findViewById<EditText>(R.id.auth_attribute_name)
@@ -48,30 +48,40 @@ class AuthenticationActivity : AppCompatActivity() {
             authAttributePassword.setSelection(start, end)
         }
 
+        // Set "Forgot your password?" listener
+        authForgotYourPassword.setOnClickListener {
+            val intent = Intent(this, ResetPasswordActivity::class.java)
+            startActivity(intent)
+        }
+
         // Get RadioGroup object
         val toggleAuthMode = findViewById<RadioGroup>(R.id.toggle_authentication_mode)
-        toggleAuthMode.setOnCheckedChangeListener { group, checkedId ->
+        toggleAuthMode.setOnCheckedChangeListener { _, checkedId ->
             // Check which radio button was clicked
             when (checkedId) {
                 R.id.radio_button_sign_up -> {
                     authHeader.text = getString(R.string.sign_up)
                     authAttributeHeaderName.visibility = TextView.VISIBLE
                     authAttributeLayoutName.visibility = LinearLayout.VISIBLE
-                    authPasswordReset.visibility = TextView.GONE
+                    authForgotYourPassword.visibility = TextView.GONE
                     authButton.setOnClickListener {
                         createAccount(
                             authAttributeName.text.toString(),
                             authAttributeEmail.text.toString(),
                             authAttributePassword.text.toString(),
                         )
-                        // Ui change here
+                        val intent = Intent(this, EmailConfirmationActivity::class.java)
+                        intent.putExtra("emailConfirmationType", 0)
+                        startActivity(intent)
+                        authAttributeName.text.clear()
+                        toggleAuthMode.check(R.id.radio_button_sign_in)
                     }
                 }
                 R.id.radio_button_sign_in -> {
                     authHeader.text = getString(R.string.sign_in)
                     authAttributeHeaderName.visibility = TextView.GONE
                     authAttributeLayoutName.visibility = LinearLayout.GONE
-                    authPasswordReset.visibility = TextView.VISIBLE
+                    authForgotYourPassword.visibility = TextView.VISIBLE
                     authButton.setOnClickListener {
                         signIn(
                             authAttributeEmail.text.toString(),
@@ -90,7 +100,7 @@ class AuthenticationActivity : AppCompatActivity() {
 
     private fun createAccount(name: String, email: String, password: String) {
         Firebase.auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
+            .addOnCompleteListener(this) {task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "createUserWithEmail:success")
                     val user = Firebase.auth.currentUser
@@ -101,7 +111,7 @@ class AuthenticationActivity : AppCompatActivity() {
                             Log.d(TAG, "updateProfile:success")
                         }
                         else {
-                            Log.d(TAG, "updateProfile:failure")
+                            Log.w(TAG, "updateProfile:failure", it.exception)
                         }
                     }
                     user.sendEmailVerification()
@@ -110,7 +120,12 @@ class AuthenticationActivity : AppCompatActivity() {
                                 Log.d(TAG, "sendEmailVerification:success")
                             }
                             else {
-                                Log.d(TAG, "sendEmailVerification:failure")
+                                Log.w(TAG, "sendEmailVerification:failure", it.exception)
+                                Toast.makeText(
+                                    baseContext,
+                                    "Unable to send verification email.",
+                                    Toast.LENGTH_SHORT,
+                                ).show()
                             }
                         }
                 } else {

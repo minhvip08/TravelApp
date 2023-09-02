@@ -20,6 +20,12 @@
             android:name=".ui.MapActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.ResetPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.EmailConfirmationActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.AuthenticationActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />

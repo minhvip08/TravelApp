@@ -1,7 +1,7 @@
 package com.example.travelapp.ui.util
 
 sealed interface UiState<out T> {
-    object Loading: UiState<Nothing>
+    data object Loading: UiState<Nothing>
     data class Success<out T>(val data: T): UiState<T>
     data class Failure(val error: String?): UiState<Nothing>
 }

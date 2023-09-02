@@ -1,6 +1,6 @@
 package com.example.travelapp.ui.util
 
-object FireStoreCollection{
+object FirestoreCollection{
     val LOCATION = "location"
 
 }
