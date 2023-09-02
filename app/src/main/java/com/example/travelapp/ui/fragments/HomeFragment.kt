@@ -78,41 +78,25 @@ class HomeFragment : Fragment() {
 
 
         FirebaseFirestore.setLoggingEnabled(true);
-        val db = Firebase.firestore
 
 
 
-        // Create a new user with a first and last name
-        val user = hashMapOf(
-            "first" to "Ada",
-            "last" to "Lovelace",
-            "born" to 1815
-        )
 
-    // Add a new document with a generated ID
-        db.collection("users")
-            .add(user)
-            .addOnSuccessListener { documentReference ->
-                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-            }
-            .addOnFailureListener { e ->
-                Log.w(TAG, "Error adding document", e)
-            }
-
-        viewModel.locationItem.observe(viewLifecycleOwner) { state ->
+        viewModel.addLocation.observe(viewLifecycleOwner) { state ->
             when(state){
                 is UiState.Loading -> {
                     Log.d("TAG", "Loading")
                 }
                 is UiState.Success -> {
                     Log.d("TAG", "Success")
-                    locationAdapter.updateList(state.data.toMutableList())
+
                 }
                 is UiState.Failure -> {
                     Log.d("TAG", "Failure")
                 }
             }
         }
+        viewModel.getLocations()
     }
 
 

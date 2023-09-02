@@ -1,9 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_attraction"
+    android:padding="16dp"
     tools:context=".ui.AttractionDetailActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:id="@+id/bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/enter_plan_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1"
+            android:background="@drawable/rectangle_blur"
+            android:backgroundTint="#FFFFFF"
+            android:gravity="center"
+            android:text="Enter Plan"
+            android:textAppearance="@style/text_medium"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/add_to_plan_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1"
+            android:background="@drawable/rectangle_white"
+            android:backgroundTint="#FFFFFF"
+            android:gravity="center"
+            android:text="Add to Plan"
+            android:textAppearance="@style/text_medium"
+
+            android:textColor="@color/black" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/rating_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/bottom_layout"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rating: 9.0"
+            android:textAppearance="@style/text_medium"
+            android:textColor="@color/white" />
+
+        <RatingBar
+            android:id="@+id/rating_bar"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:progressTint="#E88405"
+            android:rating="4.5"
+            android:stepSize="0.1" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/attraction_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/rating_layout"
+        android:layout_marginBottom="16dp"
+        android:text="Blue Lagoon Drive from Reykjavík, the capital of Iceland, to the southeast for about an hour, you can reach Blue Lagoon, the famous"
+        android:textAppearance="@style/text_medium"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/attraction_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/attraction_description"
+        android:layout_marginBottom="16dp"
+        android:text="Blue Lagoon"
+        android:textAppearance="@style/text_large"
+        android:textColor="@color/white" />
+</RelativeLayout>

@@ -13,4 +13,5 @@
     <string name="auth_attribute_header_name">Name</string>
     <string name="auth_attribute_name">Enter your display name</string>
     <string name="auth_forgot_your_password">Forgot your password?</string>
+    <string name="google_map_api">AIzaSyD7AublB0IxOiUcWtsFpiX-R_SiQ-_Wws4</string>
 </resources>

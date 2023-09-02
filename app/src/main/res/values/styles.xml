@@ -16,6 +16,11 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="text_large">
+        <item name="android:textSize">42sp</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
     <style name="header_login">
         <item name="android:textSize">30sp</item>
         <item name="android:textColor">#1F1F1F</item>

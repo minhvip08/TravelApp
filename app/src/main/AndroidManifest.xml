@@ -12,12 +12,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TravelApp"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_map_api" />
+        <activity
+            android:name=".ui.MapActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.AuthenticationActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.MainActivity"
+            android:exported="false">
+
+        </activity>
+        <activity
+            android:name=".ui.AttractionDetailActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
