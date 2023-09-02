@@ -6,10 +6,6 @@ import androidx.lifecycle.ViewModel
 import com.example.travelapp.data.models.LocationItem
 import com.example.travelapp.data.repository.LocationRepository
 import com.example.travelapp.ui.util.UiState
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import javax.inject.Inject
-
 
 class LocationViewModel (
     val repository: LocationRepository

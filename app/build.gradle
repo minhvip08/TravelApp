@@ -3,8 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
     id 'kotlin-parcelize'
-    id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
+
 
 }
 
@@ -65,19 +64,10 @@ dependencies {
 
     // Feature module Support
 
-    implementation 'com.google.dagger:hilt-android:2.48'
-    kapt 'com.google.dagger:hilt-compiler:2.48'
-
     implementation 'androidx.activity:activity-ktx:1.7.2'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
 
-    // For instrumentation tests
-    androidTestImplementation  'com.google.dagger:hilt-android-testing:2.48'
-    kaptAndroidTest 'com.google.dagger:hilt-compiler:2.48'
 
-    // For local unit tests
-    testImplementation 'com.google.dagger:hilt-android-testing:2.48'
-    kaptTest 'com.google.dagger:hilt-compiler:2.48'
 
     //Gson
     implementation 'com.google.code.gson:gson:2.8.9'
@@ -93,6 +83,3 @@ dependencies {
 
 }
 
-kapt {
-    correctErrorTypes true
-}
