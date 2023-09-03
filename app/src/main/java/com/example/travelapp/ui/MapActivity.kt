@@ -13,29 +13,15 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.clustering.ClusterManager
 
 
 class MapActivity : AppCompatActivity() , OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
-    private lateinit var locationItem: LocationItem
+    private var locationItem: LocationItem? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
-
-        // Get the location item from the intent
-        // Because the location item is a custom object, we need to use the getParcelableExtra method
-        // to get the location item from the intent
-        // getParcelableExtra is deprecated in API 30, so we need to use the if statement to check
-        // the API version
-        val locationItem = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra("location", LocationItem::class.java)
-        } else {
-            intent.getParcelableExtra<LocationItem>("location")
-        }
-
-        Log.d(TAG, "onCreate: ${locationItem!!.attraction[0].latitude}")
 
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map_fragment) as SupportMapFragment
@@ -45,19 +31,25 @@ class MapActivity : AppCompatActivity() , OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        setUpClusterer()
+        setUpCluster()
     }
-
 
     // Declare a variable for the cluster manager.
     private lateinit var clusterManager: ClusterManager<MyItem>
 
 
-    private fun setUpClusterer() {
+    private fun setUpCluster() {
 
-        val latLng = LatLng(10.0, 10.0)
-//        Log.d(TAG, "setUpClusterer location item: $locationItem")
+        locationItem = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra("location", LocationItem::class.java)
+        } else {
+            intent.getParcelableExtra<LocationItem>("location")
+        }
 
+        val latLng = LatLng(
+            locationItem!!.attraction[0].latitude,
+            locationItem!!.attraction[0].longitude
+        )
         // Position the map.
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f))
 
