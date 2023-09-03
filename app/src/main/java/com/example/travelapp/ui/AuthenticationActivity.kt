@@ -144,25 +144,34 @@ class AuthenticationActivity : AppCompatActivity() {
                             ).show()
                         }
                         else {
-                            if (Firebase.auth.fetchSignInMethodsForEmail(authAttributeEmail.text.toString()).result?.signInMethods?.size != 0) {
-                                Toast.makeText(
-                                    baseContext,
-                                    "Email address already in use.",
-                                    Toast.LENGTH_SHORT,
-                                ).show()
-                            }
-                            else {
-                                createAccount(
-                                    authAttributeName.text.toString(),
-                                    authAttributeEmail.text.toString(),
-                                    authAttributePassword.text.toString()
-                                )
-                                val intent = Intent(this, EmailConfirmationActivity::class.java)
-                                intent.putExtra("emailConfirmationType", 0)
-                                startActivity(intent)
-                                authAttributeName.text.clear()
-                                toggleAuthMode.check(R.id.radio_button_sign_in)
-                            }
+                            Firebase.auth
+                                .fetchSignInMethodsForEmail(authAttributeEmail.text.toString())
+                                .addOnCompleteListener {
+                                    if (it.isSuccessful) {
+                                        if (it.result?.signInMethods?.isNotEmpty() == true) {
+                                            Toast.makeText(
+                                                baseContext,
+                                                "Email address is already registered.",
+                                                Toast.LENGTH_SHORT,
+                                            ).show()
+                                        }
+                                        else {
+                                            createAccount(
+                                                authAttributeName.text.toString(),
+                                                authAttributeEmail.text.toString(),
+                                                authAttributePassword.text.toString()
+                                            )
+                                            val intent = Intent(this, EmailConfirmationActivity::class.java)
+                                            intent.putExtra("emailConfirmationType", 0)
+                                            startActivity(intent)
+                                            authAttributeName.text.clear()
+                                            toggleAuthMode.check(R.id.radio_button_sign_in)
+                                        }
+                                    }
+                                    else {
+                                        Log.w("AuthenticationActivity", "fetchSignInMethodsForEmail:failure", it.exception)
+                                    }
+                                }
 
                         }
                     }
