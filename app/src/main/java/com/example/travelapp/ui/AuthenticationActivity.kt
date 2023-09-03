@@ -12,6 +12,7 @@ import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doAfterTextChanged
 import com.example.travelapp.R
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
@@ -48,10 +49,80 @@ class AuthenticationActivity : AppCompatActivity() {
             authAttributePassword.setSelection(start, end)
         }
 
+        // After text changes
+        authAttributeName.doAfterTextChanged {
+            if (it.isNullOrEmpty()) {
+                authAttributeName.error = "Name is required"
+            }
+            else if (it.isBlank()) {
+                authAttributeName.error = "Name must not be blank"
+            }
+            else if (it.length < 2) {
+                authAttributeName.error = "Name must be at least 2 characters long"
+            }
+            else if (it.length > 50) {
+                authAttributeName.error = "Name must not exceed 50 characters"
+            }
+        }
+        authAttributeEmail.doAfterTextChanged {
+            if (it.isNullOrEmpty()) {
+                authAttributeEmail.error = "Email address is required"
+            }
+            else if (it.isBlank()) {
+                authAttributeEmail.error = "Email address must not be blank"
+            }
+            else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(it).matches()) {
+                authAttributeEmail.error = "Invalid email address"
+            }
+        }
+        authAttributePassword.doAfterTextChanged {
+            if (it.isNullOrEmpty()) {
+                authAttributePassword.error = "Password is required"
+            }
+            else if (it.isBlank()) {
+                authAttributePassword.error = "Password must not be blank"
+            }
+            else if (it.length < 6) {
+                authAttributePassword.error = "Password must be at least 6 characters long"
+            }
+            else if (it.length > 30) {
+                authAttributePassword.error = "Password must not exceed 30 characters"
+            }
+        }
         // Set "Forgot your password?" listener
         authForgotYourPassword.setOnClickListener {
-            val intent = Intent(this, ResetPasswordActivity::class.java)
-            startActivity(intent)
+            if (authAttributeEmail.error != null) {
+                Toast.makeText(
+                    baseContext,
+                    "Email must be valid.",
+                    Toast.LENGTH_SHORT,
+                ).show()
+            }
+            else {
+                val email = authAttributeEmail.text.toString()
+                Firebase.auth
+                    .fetchSignInMethodsForEmail(email)
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            if (it.result?.signInMethods?.isNotEmpty() == true) {
+                                Toast.makeText(
+                                    baseContext,
+                                    "Email address is already registered.",
+                                    Toast.LENGTH_SHORT,
+                                ).show()
+                            }
+                            else {
+                                val intent = Intent(this, ResetPasswordActivity::class.java)
+                                intent.putExtra("email", authAttributeEmail.text.toString())
+                                startActivity(intent)
+                            }
+                        }
+                        else {
+                            Log.w("AuthenticationActivity", "fetchSignInMethodsForEmail:failure", it.exception)
+                        }
+                    }
+
+            }
         }
 
         // Get RadioGroup object
@@ -65,16 +136,35 @@ class AuthenticationActivity : AppCompatActivity() {
                     authAttributeLayoutName.visibility = LinearLayout.VISIBLE
                     authForgotYourPassword.visibility = TextView.GONE
                     authButton.setOnClickListener {
-                        createAccount(
-                            authAttributeName.text.toString(),
-                            authAttributeEmail.text.toString(),
-                            authAttributePassword.text.toString(),
-                        )
-                        val intent = Intent(this, EmailConfirmationActivity::class.java)
-                        intent.putExtra("emailConfirmationType", 0)
-                        startActivity(intent)
-                        authAttributeName.text.clear()
-                        toggleAuthMode.check(R.id.radio_button_sign_in)
+                        if (authAttributeName.error != null || authAttributeEmail.error != null || authAttributePassword.error != null) {
+                            Toast.makeText(
+                                baseContext,
+                                "Please fix the errors above.",
+                                Toast.LENGTH_SHORT,
+                            ).show()
+                        }
+                        else {
+                            if (Firebase.auth.fetchSignInMethodsForEmail(authAttributeEmail.text.toString()).result?.signInMethods?.size != 0) {
+                                Toast.makeText(
+                                    baseContext,
+                                    "Email address already in use.",
+                                    Toast.LENGTH_SHORT,
+                                ).show()
+                            }
+                            else {
+                                createAccount(
+                                    authAttributeName.text.toString(),
+                                    authAttributeEmail.text.toString(),
+                                    authAttributePassword.text.toString()
+                                )
+                                val intent = Intent(this, EmailConfirmationActivity::class.java)
+                                intent.putExtra("emailConfirmationType", 0)
+                                startActivity(intent)
+                                authAttributeName.text.clear()
+                                toggleAuthMode.check(R.id.radio_button_sign_in)
+                            }
+
+                        }
                     }
                 }
                 R.id.radio_button_sign_in -> {
@@ -83,14 +173,23 @@ class AuthenticationActivity : AppCompatActivity() {
                     authAttributeLayoutName.visibility = LinearLayout.GONE
                     authForgotYourPassword.visibility = TextView.VISIBLE
                     authButton.setOnClickListener {
-                        signIn(
-                            authAttributeEmail.text.toString(),
-                            authAttributePassword.text.toString(),
-                        )
-                        if (Firebase.auth.currentUser != null) {
-                            val intent = Intent(this, MainActivity::class.java)
-                            startActivity(intent)
-                            finish()
+                        if (authAttributeEmail.error != null || authAttributePassword.error != null) {
+                            Toast.makeText(
+                                baseContext,
+                                "Please fix the errors above.",
+                                Toast.LENGTH_SHORT,
+                            ).show()
+                        }
+                        else {
+                            signIn(
+                                authAttributeEmail.text.toString(),
+                                authAttributePassword.text.toString()
+                            )
+                            if (Firebase.auth.currentUser != null) {
+                                val intent = Intent(this, MainActivity::class.java)
+                                startActivity(intent)
+                                finish()
+                            }
                         }
                     }
                 }

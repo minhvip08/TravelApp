@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:text="@string/sign_in"
-        android:textAppearance="@style/header_login" />
+        android:textAppearance="@style/header_auth" />
 
     <TextView
         android:id="@+id/auth_attribute_header_name"

@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
+import androidx.core.widget.doAfterTextChanged
 import com.example.travelapp.R
 import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.auth.ktx.auth
@@ -23,18 +25,52 @@ class ResetPasswordActivity : AppCompatActivity() {
         // Set email address text
         val emailEditText = findViewById<EditText>(R.id.reset_password_attribute_email)
         emailEditText.setText(email)
-        // Set Reset password button listener
-        findViewById<Button>(R.id.reset_password_button).setOnClickListener {
-            email = emailEditText.text.toString()
-            if (email.isNullOrEmpty()) {
+        // After text change check if email address is valid
+        emailEditText.doAfterTextChanged {
+            if (it.isNullOrEmpty()) {
                 emailEditText.error = "Email address is required"
             }
+            else if (it.isBlank()) {
+                emailEditText.error = "Email address must not be blank"
+            }
+            else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(it).matches()) {
+                emailEditText.error = "Invalid email address"
+            }
+        }
+        // Set Reset password button listener
+        findViewById<Button>(R.id.reset_password_button).setOnClickListener {
+            if (emailEditText.error != null) {
+                Toast.makeText(
+                    baseContext,
+                    "Email must be valid.",
+                    Toast.LENGTH_SHORT,
+                ).show()
+            }
             else {
-                resetPassword(email!!)
-                val intent = Intent(this, AuthenticationActivity::class.java)
-                intent.putExtra("emailConfirmationType", 1)
-                startActivity(intent)
-                finish()
+                email = emailEditText.text.toString()
+                Firebase.auth
+                    .fetchSignInMethodsForEmail(email!!)
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            if (it.result?.signInMethods?.isEmpty() == true) {
+                                Toast.makeText(
+                                    baseContext,
+                                    "Email address not found.",
+                                    Toast.LENGTH_SHORT,
+                                ).show()
+                            }
+                            else {
+                                resetPassword(email!!)
+                                val intent = Intent(this, EmailConfirmationActivity::class.java)
+                                intent.putExtra("emailConfirmationType", 1)
+                                startActivity(intent)
+                                finish()
+                            }
+                        }
+                        else {
+                            Log.w("ResetPasswordActivity", "fetchSignInMethodsForEmail:failure", it.exception)
+                        }
+                    }
             }
         }
     }
