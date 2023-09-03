@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
 import android.util.Log
+import android.view.View.OnClickListener
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
@@ -22,6 +23,8 @@ class AuthenticationActivity : AppCompatActivity() {
 
     private val TAG = "AuthenticationActivity"
 
+
+
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_authentication)
@@ -32,10 +35,10 @@ class AuthenticationActivity : AppCompatActivity() {
         val authAttributeLayoutName = findViewById<LinearLayout>(R.id.auth_attribute_layout_name)
         val authButton = findViewById<Button>(R.id.auth_button)
         val authForgotYourPassword = findViewById<TextView>(R.id.auth_forgot_your_password)
+        val authShowPassword = findViewById<CheckBox>(R.id.auth_show_password)
+        val authAttributeName = findViewById<EditText>(R.id.auth_attribute_name)
         val authAttributeEmail = findViewById<EditText>(R.id.auth_attribute_email)
         val authAttributePassword = findViewById<EditText>(R.id.auth_attribute_password)
-        val authAttributeName = findViewById<EditText>(R.id.auth_attribute_name)
-        val authShowPassword = findViewById<CheckBox>(R.id.auth_show_password)
 
         // Set show password checkbox listener
         authShowPassword.setOnCheckedChangeListener { _, isChecked ->
@@ -99,32 +102,11 @@ class AuthenticationActivity : AppCompatActivity() {
                 ).show()
             }
             else {
-                val email = authAttributeEmail.text.toString()
-                Firebase.auth
-                    .fetchSignInMethodsForEmail(email)
-                    .addOnCompleteListener {
-                        if (it.isSuccessful) {
-                            if (it.result?.signInMethods?.isNotEmpty() == true) {
-                                Toast.makeText(
-                                    baseContext,
-                                    "Email address is already registered.",
-                                    Toast.LENGTH_SHORT,
-                                ).show()
-                            }
-                            else {
-                                val intent = Intent(this, ResetPasswordActivity::class.java)
-                                intent.putExtra("email", authAttributeEmail.text.toString())
-                                startActivity(intent)
-                            }
-                        }
-                        else {
-                            Log.w("AuthenticationActivity", "fetchSignInMethodsForEmail:failure", it.exception)
-                        }
-                    }
-
+                val intent = Intent(this, ResetPasswordActivity::class.java)
+                intent.putExtra("email", authAttributeEmail.text.toString())
+                startActivity(intent)
             }
         }
-
         // Get RadioGroup object
         val toggleAuthMode = findViewById<RadioGroup>(R.id.toggle_authentication_mode)
         toggleAuthMode.setOnCheckedChangeListener { _, checkedId ->
@@ -135,62 +117,84 @@ class AuthenticationActivity : AppCompatActivity() {
                     authAttributeHeaderName.visibility = TextView.VISIBLE
                     authAttributeLayoutName.visibility = LinearLayout.VISIBLE
                     authForgotYourPassword.visibility = TextView.GONE
-                    authButton.setOnClickListener {
-                        if (authAttributeName.error != null || authAttributeEmail.error != null || authAttributePassword.error != null) {
-                            Toast.makeText(
-                                baseContext,
-                                "Please fix the errors above.",
-                                Toast.LENGTH_SHORT,
-                            ).show()
-                        }
-                        else {
-                            if (Firebase.auth.fetchSignInMethodsForEmail(authAttributeEmail.text.toString()).result?.signInMethods?.size != 0) {
-                                Toast.makeText(
-                                    baseContext,
-                                    "Email address already in use.",
-                                    Toast.LENGTH_SHORT,
-                                ).show()
-                            }
-                            else {
-                                createAccount(
-                                    authAttributeName.text.toString(),
-                                    authAttributeEmail.text.toString(),
-                                    authAttributePassword.text.toString()
-                                )
-                                val intent = Intent(this, EmailConfirmationActivity::class.java)
-                                intent.putExtra("emailConfirmationType", 0)
-                                startActivity(intent)
-                                authAttributeName.text.clear()
-                                toggleAuthMode.check(R.id.radio_button_sign_in)
-                            }
-
-                        }
-                    }
                 }
                 R.id.radio_button_sign_in -> {
                     authHeader.text = getString(R.string.sign_in)
                     authAttributeHeaderName.visibility = TextView.GONE
                     authAttributeLayoutName.visibility = LinearLayout.GONE
                     authForgotYourPassword.visibility = TextView.VISIBLE
-                    authButton.setOnClickListener {
-                        if (authAttributeEmail.error != null || authAttributePassword.error != null) {
-                            Toast.makeText(
-                                baseContext,
-                                "Please fix the errors above.",
-                                Toast.LENGTH_SHORT,
-                            ).show()
-                        }
-                        else {
-                            signIn(
-                                authAttributeEmail.text.toString(),
-                                authAttributePassword.text.toString()
-                            )
-                            if (Firebase.auth.currentUser != null) {
-                                val intent = Intent(this, MainActivity::class.java)
-                                startActivity(intent)
-                                finish()
+                }
+            }
+        }
+        // Set "Sign up" or "Sign in" listener
+        authButton.setOnClickListener {
+            val email = authAttributeEmail.text.toString()
+            val password = authAttributePassword.text.toString()
+            if (toggleAuthMode.checkedRadioButtonId == R.id.radio_button_sign_up) {
+                val name = authAttributeName.text.toString()
+                if (authAttributeName.error != null || authAttributeEmail.error != null || authAttributePassword.error != null) {
+                    Toast.makeText(
+                        baseContext,
+                        "Please fix the errors above.",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                }
+                else if (name.isBlank() || email.isBlank() || password.isBlank()) {
+                    Toast.makeText(
+                        baseContext,
+                        "Please fill in all the fields.",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                }
+                else {
+                    Firebase.auth
+                        .fetchSignInMethodsForEmail(authAttributeEmail.text.toString())
+                        .addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                if (it.result?.signInMethods?.isNotEmpty() == true) {
+                                    Toast.makeText(
+                                        baseContext,
+                                        "Email address is already registered.",
+                                        Toast.LENGTH_SHORT,
+                                    ).show()
+                                }
+                                else {
+                                    createAccount(name, email, password)
+                                    val intent = Intent(this, EmailConfirmationActivity::class.java)
+                                    intent.putExtra("emailConfirmationType", 0)
+                                    startActivity(intent)
+                                    authAttributeName.text.clear()
+                                    toggleAuthMode.check(R.id.radio_button_sign_in)
+                                }
+                            }
+                            else {
+                                Log.w("AuthenticationActivity", "fetchSignInMethodsForEmail:failure", it.exception)
                             }
                         }
+
+                }
+            }
+            else {
+                if (authAttributeEmail.error != null || authAttributePassword.error != null) {
+                    Toast.makeText(
+                        baseContext,
+                        "Please fix the errors above.",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                }
+                else if (email.isBlank() || password.isBlank()) {
+                    Toast.makeText(
+                        baseContext,
+                        "Please fill in all the fields.",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                }
+                else {
+                    signIn(email, password)
+                    if (Firebase.auth.currentUser != null) {
+                        val intent = Intent(this, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
                     }
                 }
             }
