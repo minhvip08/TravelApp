@@ -2,6 +2,7 @@ package com.example.travelapp.ui.util
 
 object FirestoreCollection{
     val LOCATION = "location"
+    val ATTRACTION = "attraction"
 
 }
 
@@ -21,7 +22,7 @@ object SharedPrefConstants {
 
 object FirebaseStorageConstants {
     val ROOT_DIRECTORY = "app"
-    val NOTE_IMAGES = "note"
+
 }
 
 enum class HomeTabs(val index: Int, val key: String) {

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_attraction"
     android:padding="16dp"
-    tools:context=".ui.AttractionDetailActivity">
+    tools:context=".ui.LocationDetailActivity">
 
     <LinearLayout
         android:id="@+id/bottom_layout"

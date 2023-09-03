@@ -14,6 +14,15 @@ class LocationViewModel (
         repository.get().collect {
             emit(it)
         }
+
     }
+
+    fun getAttrractionLocations(item: LocationItem)  {
+        repository.getAttractionLocations(item)
+
+    }
+
+
+
 
 }

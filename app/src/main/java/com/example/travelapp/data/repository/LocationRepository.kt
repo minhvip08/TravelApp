@@ -1,5 +1,7 @@
 package com.example.travelapp.data.repository
 
+import androidx.lifecycle.LiveData
+import com.example.travelapp.data.models.Attraction
 import com.example.travelapp.data.models.LocationItem
 import com.example.travelapp.ui.util.FirestoreCollection
 import com.example.travelapp.ui.util.UiState
@@ -33,4 +35,25 @@ class LocationRepository (
         emit(UiState.Failure(it.message))
     }
 
+
+    override fun getAttractionLocations(item: LocationItem) {
+        //get list of attractions
+        var x = locationDatabase.collection(FirestoreCollection.LOCATION)
+            .document(item.id)
+            .collection(FirestoreCollection.ATTRACTION)
+            .get()
+            .addOnSuccessListener {
+                item.attraction = it.documents.mapNotNull {
+                    it.toObject(Attraction::class.java)
+
+
+                }
+
+            }
+            .addOnFailureListener {
+                print(it.message)
+            }
+
+
+    }
 }
