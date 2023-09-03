@@ -1,5 +1,7 @@
 package com.example.travelapp.data.repository
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.travelapp.data.models.Attraction
 import com.example.travelapp.data.models.LocationItem
@@ -45,9 +47,9 @@ class LocationRepository (
             .addOnSuccessListener {
                 item.attraction = it.documents.mapNotNull {
                     it.toObject(Attraction::class.java)
-
-
                 }
+
+                Log.d(TAG, "getAttractionLocations: ${item.attraction}")
 
             }
             .addOnFailureListener {

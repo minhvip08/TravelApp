@@ -84,12 +84,17 @@ class HomeFragment : Fragment() {
                     val x = it.data
                     for (item in x) {
                         viewModel.getAttrractionLocations(item)
+                        Log.w("TAG", "ADD ITEM LOCATION")
+
                     }
                     locationAdapter.submitList(it.data)
                 }
                 is UiState.Failure -> {
                     Log.d("TAG", it.error!!)
                 }
+
+                else -> {
+                    Log.d("TAG", "Else")}
             }
         }
     }

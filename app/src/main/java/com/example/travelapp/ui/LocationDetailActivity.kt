@@ -35,6 +35,7 @@ class LocationDetailActivity : AppCompatActivity() {
         attractionName.setText(item?.title)
         enterPlanbtn.setOnClickListener(){
             var intent: Intent = Intent(this, MapActivity::class.java)
+            intent.putExtra("location", item)
             startActivity(intent)
         }
 

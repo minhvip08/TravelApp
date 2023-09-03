@@ -1,8 +1,12 @@
 package com.example.travelapp.ui
 
+import android.content.ContentValues.TAG
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.example.travelapp.R
+import com.example.travelapp.data.models.LocationItem
 import com.example.travelapp.map.MyItem
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -15,9 +19,23 @@ import com.google.maps.android.clustering.ClusterManager
 
 class MapActivity : AppCompatActivity() , OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
+    private lateinit var locationItem: LocationItem
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
+
+        // Get the location item from the intent
+        // Because the location item is a custom object, we need to use the getParcelableExtra method
+        // to get the location item from the intent
+        // getParcelableExtra is deprecated in API 30, so we need to use the if statement to check
+        // the API version
+        val locationItem = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra("location", LocationItem::class.java)
+        } else {
+            intent.getParcelableExtra<LocationItem>("location")
+        }
+
+        Log.d(TAG, "onCreate: ${locationItem!!.attraction[0].latitude}")
 
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map_fragment) as SupportMapFragment
@@ -34,9 +52,14 @@ class MapActivity : AppCompatActivity() , OnMapReadyCallback {
     // Declare a variable for the cluster manager.
     private lateinit var clusterManager: ClusterManager<MyItem>
 
+
     private fun setUpClusterer() {
+
+        val latLng = LatLng(10.0, 10.0)
+//        Log.d(TAG, "setUpClusterer location item: $locationItem")
+
         // Position the map.
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(51.503186, -0.126446), 10f))
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f))
 
         // Initialize the manager with the context and the map.
         // (Activity extends context, so we can pass 'this' in the constructor.)

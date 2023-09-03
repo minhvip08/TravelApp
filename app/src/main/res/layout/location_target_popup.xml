@@ -1,6 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="310dp"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:background="@drawable/popup_rectangle_white">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Switzerland"
+        android:id="@+id/popular_location_name"
+        android:textAppearance="@style/text_large_title"
+        android:textColor="@color/black"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/popular_location_description"
+        android:id="@+id/rating_layout">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rating"/>
+        <RatingBar
+            android:id="@+id/rating_bar"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:progressTint="#E88405"
+            android:rating="4.0"
+            android:stepSize="0.1" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Retrieving a list of collections
+        is not possible with the mobile/web client libraries.
+        You should only look up collection names as part
+        of administrative tasks in trusted server environments"
+        android:id="@+id/popular_location_description"
+        android:layout_below="@id/popular_location_name"
+        android:textAppearance="@style/text_small"/>
+
+
+</RelativeLayout>

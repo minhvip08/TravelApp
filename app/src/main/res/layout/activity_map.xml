@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".ui.MapActivity">
     <androidx.fragment.app.FragmentContainerView
         android:layout_width="match_parent"
@@ -11,6 +12,19 @@
         android:id="@+id/map_fragment"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         />
+
+    <include
+        android:id="@+id/popup_location"
+        layout="@layout/location_target_popup"
+        android:layout_width="310dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        />
+
+
+
 
 
 
