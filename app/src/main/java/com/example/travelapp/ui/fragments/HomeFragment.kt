@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +20,8 @@ import com.example.travelapp.databinding.FragmentHomeBinding
 import com.example.travelapp.ui.adapters.LocationAdapter
 import com.example.travelapp.ui.util.FirebaseStorageConstants
 import com.example.travelapp.ui.util.UiState
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -63,6 +66,9 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        view.findViewById<TextView>(R.id.text_view_user).text =
+            Firebase.auth.currentUser?.displayName ?: getString(R.string.guest)
+
         locationAdapter = LocationAdapter()
 
         var recyclerView = activity?.findViewById<RecyclerView>(R.id.popular_location_recyclerview)
@@ -97,6 +103,8 @@ class HomeFragment : Fragment() {
                     Log.d("TAG", "Else")}
             }
         }
+
+
     }
 
     override fun onStart() {

@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_view_session"
         android:textAppearance="@style/text_large_title"
-        android:text="User"/>
+        android:text="@string/guest"/>
 
     <SearchView
         android:layout_below="@+id/text_view_user"

@@ -5,12 +5,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.example.travelapp.R
+import com.example.travelapp.data.UserViewModel
+import com.example.travelapp.data.repository.UserRepository
 import com.example.travelapp.databinding.ActivityMainBinding
 import com.example.travelapp.ui.fragments.BlogsFragment
 import com.example.travelapp.ui.fragments.GuideFragment
 import com.example.travelapp.ui.fragments.HomeFragment
 import com.example.travelapp.ui.fragments.ScheduleFragment
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
@@ -19,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Uncomment the following line to check if the user is signed in
-//        checkCurrentUser()
+        checkCurrentUser()
         binding= ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         replaceFragment(HomeFragment())

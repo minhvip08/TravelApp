@@ -15,15 +15,22 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import com.example.travelapp.R
+import com.example.travelapp.data.UserViewModel
+import com.example.travelapp.data.repository.UserRepository
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
 class AuthenticationActivity : AppCompatActivity() {
 
     private val TAG = "AuthenticationActivity"
 
-
+    private val viewModel = UserViewModel(
+        UserRepository(
+            FirebaseFirestore.getInstance()
+        )
+    )
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -207,6 +214,7 @@ class AuthenticationActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     Log.d(TAG, "createUserWithEmail:success")
                     val user = Firebase.auth.currentUser
+                    viewModel.addUserDocument(user!!.uid, "")
                     user!!.updateProfile(userProfileChangeRequest {
                         displayName = name
                     }).addOnCompleteListener(this) {
