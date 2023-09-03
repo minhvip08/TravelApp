@@ -13,7 +13,7 @@
     <string name="auth_attribute_header_name">Name</string>
     <string name="auth_attribute_name">Enter your display name</string>
     <string name="auth_forgot_your_password">Forgot your password?</string>
-    <string name="google_map_api">AIzaSyD7AublB0IxOiUcWtsFpiX-R_SiQ-_Wws4</string>
+    <string name="google_map_api">AIzaSyC-qOfi7mBYFiltDQV3JGFJcW7hKBt_Scw</string>
     <string name="email_confirmation_verify">A verification email has been sent. Please check your inbox.</string>
     <string name="button_return">Return</string>
     <string name="reset_password">Reset password</string>
