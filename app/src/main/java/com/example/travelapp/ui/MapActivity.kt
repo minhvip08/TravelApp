@@ -1,10 +1,11 @@
 package com.example.travelapp.ui
 
-import android.content.ContentValues.TAG
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
+import android.widget.Toast
 import com.example.travelapp.R
 import com.example.travelapp.data.models.LocationItem
 import com.example.travelapp.map.MyItem
@@ -13,12 +14,15 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.ClusterManager
 
 
 class MapActivity : AppCompatActivity() , OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private var locationItem: LocationItem? = null
+    private lateinit var titleTextView: TextView
+    private lateinit var descriptionTextView: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
@@ -57,19 +61,26 @@ class MapActivity : AppCompatActivity() , OnMapReadyCallback {
         // (Activity extends context, so we can pass 'this' in the constructor.)
         clusterManager = ClusterManager(this, mMap)
 
+        clusterManager.setOnClusterClickListener { cluster ->
+            // Show a toast with some info when the cluster is clicked.
+            val firstName = cluster.items.iterator().next().title
+            Toast.makeText(
+                this,
+                cluster.size.toString() + " (including " + firstName + ")",
+                Toast.LENGTH_SHORT
+            ).show()
+
+//            setMarkerClickPopUp(cluster)
+
+            true
+        }
+
 
 
         // Point the map's listeners at the listeners implemented by the cluster
         // manager.
         mMap.setOnCameraIdleListener(clusterManager)
-        mMap.setOnMarkerClickListener { marker -> // Check if a click count was set, then display the click count.
-            if (marker.isInfoWindowShown) {
-                marker.hideInfoWindow()
-            } else {
-                marker.showInfoWindow()
-            }
-            true
-        }
+        mMap.setOnMarkerClickListener(clusterManager)
 
         // Add cluster items (markers) to the cluster manager.
         addItems()
@@ -77,31 +88,24 @@ class MapActivity : AppCompatActivity() , OnMapReadyCallback {
 
     private fun addItems() {
 
-        // Set some lat/lng coordinates to start with.
-        var lat = 51.5145160
-        var lng = -0.1270060
 
         // Add ten cluster items in close proximity, for purposes of this example.
-        for (i in 0..9) {
-            val offset = i / 60.0
-            lat += offset
-            lng += offset
+        for (item in locationItem!!.attraction) {
             val offsetItem =
-                MyItem(lat, lng, "Title $i", "Snippet $i")
+                MyItem(item.latitude, item.longitude, item.title, item.description, item.rating)
             clusterManager.addItem(offsetItem)
         }
 
 
 
-// Set the title and snippet strings.
-        val title = "This is the title"
-        val snippet = "and this is the snippet."
+    }
 
-// Create a cluster item for the marker and set the title and snippet using the constructor.
-        val infoWindowItem = MyItem(lat, lng, title, snippet)
+    private fun setMarkerClickPopUp(cluster: Cluster<MyItem>){
+        titleTextView = findViewById(R.id.popular_location_name)
+        descriptionTextView = findViewById(R.id.popular_location_description)
+        titleTextView.setText(cluster.items.iterator().next().title)
+        descriptionTextView.setText(cluster.items.iterator().next().snippet)
 
-// Add the cluster item (marker) to the cluster manager.
-        clusterManager.addItem(infoWindowItem)
     }
 
 
