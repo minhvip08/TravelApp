@@ -1,11 +1,22 @@
 package com.example.travelapp.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.commit
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.travelapp.R
+import com.example.travelapp.data.ScheduleViewModel
+import com.example.travelapp.data.repository.ScheduleRepository
+import com.example.travelapp.ui.adapters.ScheduleAdapter
+import com.example.travelapp.ui.util.UiState
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,12 +32,40 @@ class ScheduleFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private val viewModel = ScheduleViewModel(
+        ScheduleRepository(
+            FirebaseFirestore.getInstance()
+        )
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val scheduleAdapter = ScheduleAdapter()
+        val scheduleRecyclerView = view.findViewById<RecyclerView>(R.id.schedule_list)
+        scheduleRecyclerView.adapter = scheduleAdapter
+        scheduleRecyclerView.setHasFixedSize(true)
+        scheduleRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        viewModel.getSchedules(Firebase.auth.currentUser!!.uid).observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Loading -> {
+                    Log.d("ScheduleFragment", "Loading")
+                }
+                is UiState.Success -> {
+                    Log.d("ScheduleFragment", "Success")
+                    scheduleAdapter.submitList(it.data)
+                }
+                is UiState.Failure -> {
+                    Log.w("ScheduleFragment", it.error!!)
+                }
+            }
         }
     }
 

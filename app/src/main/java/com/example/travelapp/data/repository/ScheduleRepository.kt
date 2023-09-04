@@ -10,8 +10,8 @@ import kotlinx.coroutines.tasks.await
 
 class ScheduleRepository(
     private val scheduleDatabase: FirebaseFirestore
-) {
-    fun get(uid: String) = flow {
+) : IScheduleRepository {
+    override fun get(uid: String) = flow {
         emit(UiState.Loading)
         emit(
             UiState.Success(
