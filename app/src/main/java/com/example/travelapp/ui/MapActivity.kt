@@ -1,5 +1,6 @@
 package com.example.travelapp.ui
 
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -17,6 +18,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.ClusterManager
 
@@ -28,6 +30,7 @@ class MapActivity : AppCompatActivity() , OnMapReadyCallback {
     private lateinit var descriptionTextView: TextView
     private lateinit var ratingBar: RatingBar
     private lateinit var LocationTitleTextView: TextView
+    private lateinit var floatingNextBtn: FloatingActionButton
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
@@ -36,7 +39,12 @@ class MapActivity : AppCompatActivity() , OnMapReadyCallback {
             .findFragmentById(R.id.map_fragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+        floatingNextBtn = findViewById(R.id.floating_next_button)
+        floatingNextBtn.setOnClickListener {
+            var intent: Intent = Intent(this, NewPlanActivity::class.java)
+            startActivity(intent)
 
+        }
 
 
 

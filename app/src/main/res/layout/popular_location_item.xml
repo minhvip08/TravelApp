@@ -9,7 +9,7 @@
         android:background="@drawable/nav_bar_semirectangle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/switzerland"
+        android:src="@drawable/switzerland_banner"
         android:id="@+id/image_location"
         android:scaleType="centerCrop"/>
 

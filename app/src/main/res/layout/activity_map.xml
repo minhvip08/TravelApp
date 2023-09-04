@@ -36,6 +36,20 @@
         android:gravity="center"
         android:textAppearance="@style/text_large_title"/>
     
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:src="@drawable/ic_arrow_east"
+        android:id="@+id/floating_next_button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="50dp"
+        android:layout_marginRight="50dp"/>
+
+
+
+
 
 
 

@@ -12,10 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TravelApp"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.NewPlanActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_map_api" />
+
         <activity
             android:name=".ui.MapActivity"
             android:exported="false" />
@@ -37,13 +41,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".ui.LocationDetailActivity"
-            android:exported="false">
-
-        </activity>
+            android:exported="false"></activity>
     </application>
 
 </manifest>
