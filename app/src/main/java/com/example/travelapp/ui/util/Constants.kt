@@ -1,8 +1,10 @@
 package com.example.travelapp.ui.util
 
 object FirestoreCollection{
-    val LOCATION = "location"
-    val ATTRACTION = "attraction"
+    const val USERS = "users"
+    const val LOCATION = "location"
+    const val ATTRACTION = "attraction"
+    const val SCHEDULES = "schedules"
 
 }
 

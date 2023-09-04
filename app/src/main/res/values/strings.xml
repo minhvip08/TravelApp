@@ -20,4 +20,5 @@
     <string name="email_confirmation_reset">A password reset email has been sent. Please check your inbox.</string>
     <string name="guest">Guest</string>
     <string name="schedule">Schedule</string>
+    <string name="schedule_name">Schedule name</string>
 </resources>

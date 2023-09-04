@@ -40,13 +40,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun replaceFragment(fragment: Fragment){
 
-        var fragmentManager = supportFragmentManager
-        var transaction = fragmentManager.beginTransaction()
+        val fragmentManager = supportFragmentManager
+        val transaction = fragmentManager.beginTransaction()
         transaction.replace(R.id.frame_layout_main_activity,fragment)
         transaction.commit()
     }
-
-
 
     private fun checkCurrentUser() {
         val user = Firebase.auth.currentUser
@@ -54,9 +52,7 @@ class MainActivity : AppCompatActivity() {
         // Should be replaced with a proper sign out button in the UI
         // Uncomment the following line to sign out the user
         // Firebase.auth.signOut()
-        if (user != null) {
-
-        } else {
+        if (user == null) {
             // Go to authentication activity
             val intent = Intent(this, AuthenticationActivity::class.java)
             startActivity(intent)
