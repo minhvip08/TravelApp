@@ -11,7 +11,7 @@ import com.example.travelapp.data.models.LocationItem
 class LocationDetailActivity : AppCompatActivity() {
     lateinit var enterPlanbtn: TextView
     lateinit var attractionName: TextView
-
+    lateinit var addToPlanBtn: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +27,12 @@ class LocationDetailActivity : AppCompatActivity() {
             intent.getParcelableExtra("location", LocationItem::class.java)
         } else {
             intent.getParcelableExtra<LocationItem>("location")
+        }
+
+        addToPlanBtn = findViewById(R.id.add_to_plan_button)
+        addToPlanBtn.setOnClickListener(){
+            var intent: Intent = Intent(this, NewPlanActivity::class.java)
+            startActivity(intent)
         }
 
         // Set up action bar

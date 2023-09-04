@@ -46,7 +46,7 @@ class LocationAdapter :
 
         val currentItem = getItem(position)
 
-        holder.imgLocation.setImageResource(R.drawable.switzerland)
+        holder.imgLocation.setImageResource(R.drawable.switzerland_banner)
         holder.locationText.text = currentItem.title
         holder.locationAttraction.text = currentItem.attraction.size.toString() + " attractions"
 

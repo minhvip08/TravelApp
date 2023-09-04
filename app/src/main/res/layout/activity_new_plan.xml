@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp"
+    tools:context=".ui.NewPlanActivity">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="92dp"
+        android:id="@+id/welcome_laypout"
+        android:layout_centerHorizontal="true">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/switzerland_banner"
+            android:scaleType="fitXY"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Switzerland"
+            android:textColor="@color/white"
+            android:id="@+id/title_location"
+            android:textAppearance="@style/text_large_title"
+            android:layout_marginLeft="20dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Welcome to"
+            android:textColor="@color/white"
+            android:textAppearance="@style/text_small"
+            android:layout_marginLeft="20dp"
+            android:layout_above="@+id/title_location"/>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/plan_date"
+        android:text="Select Dates: "
+        android:textAppearance="@style/text_large_title"
+        android:layout_below="@id/welcome_laypout"
+        android:layout_marginTop="20dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/plan_date"
+        android:layout_marginTop="20dp"
+        android:id="@+id/date_start_layout">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start Date: "
+            android:textAppearance="@style/text_medium"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DD/MM/YYYY"
+            android:layout_gravity="center_horizontal"
+            android:textAppearance="@style/text_large_title"
+            android:id="@+id/date_start"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/date_start_layout"
+        android:layout_marginTop="20dp"
+        android:id="@+id/date_end_layout">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="End Date: "
+            android:textAppearance="@style/text_medium"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DD/MM/YYYY"
+            android:layout_gravity="center_horizontal"
+            android:textAppearance="@style/text_large_title"
+            android:id="@+id/date_end"/>
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Next step"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/button_primary"
+        android:textColor="@color/white"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/next_button"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/next_button"
+        android:layout_marginBottom="24dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Turn on notification: "
+            android:textAppearance="@style/text_medium"/>
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/notification_switch"
+            android:layout_marginLeft="10dp"
+            android:layout_alignParentRight="true"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

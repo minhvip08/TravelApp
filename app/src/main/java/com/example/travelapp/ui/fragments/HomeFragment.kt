@@ -26,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import java.util.Calendar
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -42,6 +43,7 @@ class HomeFragment : Fragment() {
     lateinit var binding: FragmentHomeBinding
     lateinit var locationAdapter: LocationAdapter
     lateinit var locationRecyclerView: RecyclerView
+    lateinit var sessionTextView: TextView
     val viewModel: LocationViewModel = LocationViewModel(LocationRepository(
         FirebaseFirestore.getInstance(),
         FirebaseStorage.getInstance().getReference(FirebaseStorageConstants.ROOT_DIRECTORY)
@@ -59,6 +61,7 @@ class HomeFragment : Fragment() {
         }
 
         binding = FragmentHomeBinding.inflate(layoutInflater)
+
 
 
     }
@@ -109,28 +112,20 @@ class HomeFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-
-
         val db = Firebase.firestore
+        val c = Calendar.getInstance()
+        val hour = c.get(Calendar.HOUR_OF_DAY)
 
-
-
-        // Create a new user with a first and last name
-//        val user = hashMapOf(
-//            "first" to "Ada",
-//            "last" to "Lovelace",
-//            "born" to 1815
-//        )
-
-        // Add a new document with a generated ID
-//        db.collection("users")
-//            .add(user)
-//            .addOnSuccessListener { documentReference ->
-//                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-//            }
-//            .addOnFailureListener { e ->
-//                Log.w(TAG, "Error adding document", e)
-//            }
+        sessionTextView = activity?.findViewById(R.id.text_view_session)!!
+        if (hour in 0..11) {
+            sessionTextView.text = "Good Morning"
+        } else if (hour in 12..15) {
+            sessionTextView.text = "Good Afternoon"
+        } else if (hour in 16..20) {
+            sessionTextView.text = "Good Evening"
+        } else if (hour in 21..24) {
+            sessionTextView.text = "Good Night"
+        }
 
 
     }
