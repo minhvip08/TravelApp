@@ -7,7 +7,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Switzerland"
+        android:text="Attraction"
         android:id="@+id/popular_location_name"
         android:textAppearance="@style/text_large_title"
         android:textColor="@color/black"/>
@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:text="Rating"/>
         <RatingBar
-            android:id="@+id/rating_bar"
+            android:id="@+id/rating_bar_popup"
             style="?android:attr/ratingBarStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,17 +30,14 @@
             android:isIndicator="true"
             android:numStars="5"
             android:progressTint="#E88405"
-            android:rating="4.0"
+            android:rating="5.0"
             android:stepSize="0.1" />
 
     </LinearLayout>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Retrieving a list of collections
-        is not possible with the mobile/web client libraries.
-        You should only look up collection names as part
-        of administrative tasks in trusted server environments"
+        android:text="CLick any marker to see the details"
         android:id="@+id/popular_location_description"
         android:layout_below="@id/popular_location_name"
         android:textAppearance="@style/text_small"/>

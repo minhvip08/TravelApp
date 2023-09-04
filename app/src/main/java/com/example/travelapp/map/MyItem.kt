@@ -10,14 +10,15 @@ class MyItem(
     lng: Double,
     title: String,
     snippet: String,
-    star: Double
+    rating: Float
+
+
 ) : ClusterItem {
 
     private val position: LatLng
     private val title: String
     private val snippet: String
-
-    private val star: Double
+    private val rating: Float
 
     override fun getPosition(): LatLng {
         return position
@@ -35,15 +36,17 @@ class MyItem(
     fun getZIndex(): Float {
         return 0f
     }
-    fun getStar():Double {
-        return star
+
+    fun getRating(): Float{
+        return rating
     }
 
     init {
         position = LatLng(lat, lng)
         this.title = title
         this.snippet = snippet
-        this.star = star
+        this.rating = rating
+
     }
 }
 

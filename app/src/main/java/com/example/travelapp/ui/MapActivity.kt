@@ -4,6 +4,9 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.ArrayAdapter
+import android.widget.RatingBar
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import com.example.travelapp.R
@@ -23,6 +26,8 @@ class MapActivity : AppCompatActivity() , OnMapReadyCallback {
     private var locationItem: LocationItem? = null
     private lateinit var titleTextView: TextView
     private lateinit var descriptionTextView: TextView
+    private lateinit var ratingBar: RatingBar
+    private lateinit var LocationTitleTextView: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
@@ -30,6 +35,11 @@ class MapActivity : AppCompatActivity() , OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map_fragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+
+
+
+
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -50,6 +60,9 @@ class MapActivity : AppCompatActivity() , OnMapReadyCallback {
             intent.getParcelableExtra<LocationItem>("location")
         }
 
+        LocationTitleTextView = findViewById(R.id.title_location)
+        LocationTitleTextView.setText("Location in " + locationItem!!.title)
+
         val latLng = LatLng(
             locationItem!!.attraction[0].latitude,
             locationItem!!.attraction[0].longitude
@@ -69,12 +82,18 @@ class MapActivity : AppCompatActivity() , OnMapReadyCallback {
                 cluster.size.toString() + " (including " + firstName + ")",
                 Toast.LENGTH_SHORT
             ).show()
-
-//            setMarkerClickPopUp(cluster)
-
             true
         }
 
+        clusterManager.setOnClusterItemClickListener { item ->
+            // Do something with the clicked item
+            Toast.makeText(
+                this,
+                item.title,
+                Toast.LENGTH_SHORT
+            ).show()
+            setMarkerClickPopUp(item)
+            true }
 
 
         // Point the map's listeners at the listeners implemented by the cluster
@@ -84,6 +103,9 @@ class MapActivity : AppCompatActivity() , OnMapReadyCallback {
 
         // Add cluster items (markers) to the cluster manager.
         addItems()
+
+
+
     }
 
     private fun addItems() {
@@ -92,7 +114,7 @@ class MapActivity : AppCompatActivity() , OnMapReadyCallback {
         // Add ten cluster items in close proximity, for purposes of this example.
         for (item in locationItem!!.attraction) {
             val offsetItem =
-                MyItem(item.latitude, item.longitude, item.title, item.description, item.rating)
+                MyItem(item.latitude, item.longitude, item.title, item.description, item.rating.toFloat())
             clusterManager.addItem(offsetItem)
         }
 
@@ -100,11 +122,13 @@ class MapActivity : AppCompatActivity() , OnMapReadyCallback {
 
     }
 
-    private fun setMarkerClickPopUp(cluster: Cluster<MyItem>){
+    private fun setMarkerClickPopUp(item: MyItem){
         titleTextView = findViewById(R.id.popular_location_name)
         descriptionTextView = findViewById(R.id.popular_location_description)
-        titleTextView.setText(cluster.items.iterator().next().title)
-        descriptionTextView.setText(cluster.items.iterator().next().snippet)
+        ratingBar = findViewById(R.id.rating_bar_popup)
+        titleTextView.setText(item.title)
+        descriptionTextView.setText(item.snippet)
+        ratingBar.setRating(item.getRating().toFloat())
 
     }
 
