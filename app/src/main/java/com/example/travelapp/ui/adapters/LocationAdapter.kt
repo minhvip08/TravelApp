@@ -1,5 +1,6 @@
 package com.example.travelapp.ui.adapters
 
+import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +12,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.travelapp.R
 import com.example.travelapp.data.models.LocationItem
+import com.example.travelapp.databinding.FragmentHomeBinding
 import com.example.travelapp.ui.LocationDetailActivity
 
 class LocationAdapter :
         ListAdapter<LocationItem, LocationAdapter.MyViewHolder>(LocationItemDiff()){
+    lateinit var context: Context
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val imgLocation: ImageView = itemView.findViewById(R.id.image_location)
         val locationText: TextView = itemView.findViewById(R.id.popular_location_name)
@@ -39,14 +42,20 @@ class LocationAdapter :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        context = parent.context
         return MyViewHolder.create(parent)
+
+
+
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-
         val currentItem = getItem(position)
 
-        holder.imgLocation.setImageResource(R.drawable.switzerland_banner)
+        // get image from drawable
+        var idImage = context.resources.getIdentifier(currentItem.image,
+            "drawable", context.packageName)
+        holder.imgLocation.setImageResource(idImage)
         holder.locationText.text = currentItem.title
         holder.locationAttraction.text = currentItem.attraction.size.toString() + " attractions"
 

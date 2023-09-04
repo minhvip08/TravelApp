@@ -13,6 +13,9 @@
         android:theme="@style/Theme.TravelApp"
         tools:targetApi="31">
         <activity
+            android:name=".ui.ItinararyArrangementActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.NewPlanActivity"
             android:exported="false" />
 
@@ -44,7 +47,7 @@
         </activity>
         <activity
             android:name=".ui.LocationDetailActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
     </application>
 
 </manifest>
