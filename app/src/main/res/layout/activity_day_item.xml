@@ -14,7 +14,6 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background=""
             android:src="@drawable/ic_clock"/>
 
         <TextView
@@ -25,8 +24,7 @@
             android:textSize="20sp"
             android:layout_marginStart="5dp"
             android:id="@+id/text_view_timer"/>
-
-
+        
     </LinearLayout>
 
 
@@ -36,7 +34,7 @@
         android:gravity="center_vertical"
         android:layout_marginStart="30dp"
         android:paddingHorizontal="20dp"
-        android:layout_toRightOf="@id/linear_layout_timer"
+        android:layout_toEndOf="@id/linear_layout_timer"
         android:textAppearance="@style/text_medium"
         android:textStyle="bold"
         android:background="@drawable/day_item_description_outline"
