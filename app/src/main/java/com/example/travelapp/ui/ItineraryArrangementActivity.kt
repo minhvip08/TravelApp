@@ -1,29 +1,25 @@
 package com.example.travelapp.ui
 
-import android.content.ContentValues.TAG
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.travelapp.R
 import com.example.travelapp.data.models.LocationItem
 import com.example.travelapp.data.models.ScheduleItem
 import com.example.travelapp.ui.adapters.ViewPagerItinararyArrangementAdapter
-import com.example.travelapp.ui.fragments.ItinararyActivityFragment
+import com.example.travelapp.ui.fragments.DayFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.google.firebase.Timestamp
 import java.util.Date
 
-class ItinararyArrangementActivity : AppCompatActivity() {
+class ItineraryArrangementActivity : AppCompatActivity() {
     var scheduleItem: ScheduleItem? = null
     var locationItem: LocationItem? = null
     var numDay: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_itinarary_arrangement)
+        setContentView(R.layout.activity_itinerary_arrangement)
         getItemFromPreviousActivity()
 
         val tabLayout: TabLayout = findViewById(R.id.tab_layout)
@@ -36,7 +32,7 @@ class ItinararyArrangementActivity : AppCompatActivity() {
         val adapter = ViewPagerItinararyArrangementAdapter(supportFragmentManager, lifecycle)
 
         for (i in 1..numDay){
-            val fragment = ItinararyActivityFragment()
+            val fragment = DayFragment()
             val bundle = Bundle()
             bundle.putParcelable("location", locationItem)
             bundle.putParcelable("schedule", scheduleItem)

@@ -8,7 +8,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.TextView
@@ -65,7 +64,7 @@ class NewPlanActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
 
         nextButton = findViewById(R.id.next_button)
         nextButton?.setOnClickListener {
-            val intent = Intent(this, ItinararyArrangementActivity::class.java)
+            val intent = Intent(this, ItineraryArrangementActivity::class.java)
             intent.putExtra("schedule", scheduleItem)
             intent.putExtra("location", locationItem)
             startActivity(intent)
