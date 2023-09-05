@@ -18,93 +18,17 @@
         android:text="@string/sign_in"
         android:textAppearance="@style/header_auth" />
 
-    <TextView
-        android:id="@+id/auth_attribute_header_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/auth_header"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="@string/auth_attribute_header_name"
-        android:textAppearance="@style/auth_attribute_header"
-        android:layout_marginTop="27dp"
-        android:visibility="gone"/>
-
-    <LinearLayout
-        android:id="@+id/auth_attribute_layout_name"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/auth_attribute_header_name"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal"
-        android:background="@drawable/field_user"
-        android:visibility="gone">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/baseline_person_22"
-            android:layout_marginVertical="14dp"
-            android:layout_marginStart="19dp"
-            android:layout_marginEnd="11dp"/>
-
-        <EditText
-            android:id="@+id/auth_attribute_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/auth_attribute_name"
-            android:inputType="textPersonName"
-            android:background="@null"
-            android:layout_marginVertical="14dp"
-            android:layout_marginEnd="19dp"/>
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/auth_attribute_header_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/auth_attribute_layout_name"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="@string/auth_attribute_header_email"
-        android:textAppearance="@style/auth_attribute_header"
-        android:layout_marginTop="27dp"/>
-
-    <LinearLayout
-        android:id="@+id/auth_attribute_layout_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/auth_attribute_header_email"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal"
-        android:background="@drawable/field_user">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/baseline_email_22"
-            android:layout_marginVertical="14dp"
-            android:layout_marginStart="19dp"
-            android:layout_marginEnd="11dp"/>
-
-        <EditText
-            android:id="@+id/auth_attribute_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/auth_attribute_email"
-            android:inputType="textEmailAddress"
-            android:background="@null"
-            android:layout_marginVertical="14dp"
-            android:layout_marginEnd="19dp"/>
-
-    </LinearLayout>
+        android:id="@+id/auth_user_info"
+        app:layout_constraintTop_toBottomOf="@id/auth_header"/>
 
     <TextView
         android:id="@+id/auth_attribute_header_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/auth_attribute_layout_email"
+        app:layout_constraintTop_toBottomOf="@id/auth_user_info"
         app:layout_constraintStart_toStartOf="parent"
         android:text="@string/auth_attribute_header_password"
         android:textAppearance="@style/auth_attribute_header"

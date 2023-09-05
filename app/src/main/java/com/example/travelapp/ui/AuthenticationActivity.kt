@@ -4,19 +4,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
 import android.util.Log
-import android.view.View.OnClickListener
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
-import android.widget.LinearLayout
 import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.commit
 import com.example.travelapp.R
 import com.example.travelapp.data.UserViewModel
 import com.example.travelapp.data.repository.UserRepository
+import com.example.travelapp.ui.fragments.UserInfoFragment
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
@@ -32,19 +32,23 @@ class AuthenticationActivity : AppCompatActivity() {
         )
     )
 
+    private lateinit var userInfoFragment: UserInfoFragment
+    private lateinit var toggleAuthMode: RadioGroup
+
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_authentication)
+        userInfoFragment = UserInfoFragment.newInstance(false)
+        supportFragmentManager.commit {
+            setReorderingAllowed(true)
+            add(R.id.auth_user_info, userInfoFragment)
+        }
 
         // Get required views
         val authHeader = findViewById<TextView>(R.id.auth_header)
-        val authAttributeHeaderName = findViewById<TextView>(R.id.auth_attribute_header_name)
-        val authAttributeLayoutName = findViewById<LinearLayout>(R.id.auth_attribute_layout_name)
         val authButton = findViewById<Button>(R.id.auth_button)
         val authForgotYourPassword = findViewById<TextView>(R.id.auth_forgot_your_password)
         val authShowPassword = findViewById<CheckBox>(R.id.auth_show_password)
-        val authAttributeName = findViewById<EditText>(R.id.auth_attribute_name)
-        val authAttributeEmail = findViewById<EditText>(R.id.auth_attribute_email)
         val authAttributePassword = findViewById<EditText>(R.id.auth_attribute_password)
 
         // Set show password checkbox listener
@@ -57,33 +61,6 @@ class AuthenticationActivity : AppCompatActivity() {
                 authAttributePassword.transformationMethod = PasswordTransformationMethod()
             }
             authAttributePassword.setSelection(start, end)
-        }
-
-        // After text changes
-        authAttributeName.doAfterTextChanged {
-            if (it.isNullOrEmpty()) {
-                authAttributeName.error = "Name is required"
-            }
-            else if (it.isBlank()) {
-                authAttributeName.error = "Name must not be blank"
-            }
-            else if (it.length < 2) {
-                authAttributeName.error = "Name must be at least 2 characters long"
-            }
-            else if (it.length > 50) {
-                authAttributeName.error = "Name must not exceed 50 characters"
-            }
-        }
-        authAttributeEmail.doAfterTextChanged {
-            if (it.isNullOrEmpty()) {
-                authAttributeEmail.error = "Email address is required"
-            }
-            else if (it.isBlank()) {
-                authAttributeEmail.error = "Email address must not be blank"
-            }
-            else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(it).matches()) {
-                authAttributeEmail.error = "Invalid email address"
-            }
         }
         authAttributePassword.doAfterTextChanged {
             if (it.isNullOrEmpty()) {
@@ -101,7 +78,7 @@ class AuthenticationActivity : AppCompatActivity() {
         }
         // Set "Forgot your password?" listener
         authForgotYourPassword.setOnClickListener {
-            if (authAttributeEmail.error != null) {
+            if (userInfoFragment.isEmailInvalid()) {
                 Toast.makeText(
                     baseContext,
                     "Email must be valid.",
@@ -110,36 +87,34 @@ class AuthenticationActivity : AppCompatActivity() {
             }
             else {
                 val intent = Intent(this, ResetPasswordActivity::class.java)
-                intent.putExtra("email", authAttributeEmail.text.toString())
+                intent.putExtra("email", userInfoFragment.getEmail())
                 startActivity(intent)
             }
         }
         // Get RadioGroup object
-        val toggleAuthMode = findViewById<RadioGroup>(R.id.toggle_authentication_mode)
+        toggleAuthMode = findViewById<RadioGroup>(R.id.toggle_authentication_mode)
         toggleAuthMode.setOnCheckedChangeListener { _, checkedId ->
             // Check which radio button was clicked
             when (checkedId) {
                 R.id.radio_button_sign_up -> {
                     authHeader.text = getString(R.string.sign_up)
-                    authAttributeHeaderName.visibility = TextView.VISIBLE
-                    authAttributeLayoutName.visibility = LinearLayout.VISIBLE
+                    userInfoFragment.showName()
                     authForgotYourPassword.visibility = TextView.GONE
                 }
                 R.id.radio_button_sign_in -> {
                     authHeader.text = getString(R.string.sign_in)
-                    authAttributeHeaderName.visibility = TextView.GONE
-                    authAttributeLayoutName.visibility = LinearLayout.GONE
+                    userInfoFragment.hideName()
                     authForgotYourPassword.visibility = TextView.VISIBLE
                 }
             }
         }
         // Set "Sign up" or "Sign in" listener
         authButton.setOnClickListener {
-            val email = authAttributeEmail.text.toString()
+            val email = userInfoFragment.getEmail()
             val password = authAttributePassword.text.toString()
             if (toggleAuthMode.checkedRadioButtonId == R.id.radio_button_sign_up) {
-                val name = authAttributeName.text.toString()
-                if (authAttributeName.error != null || authAttributeEmail.error != null || authAttributePassword.error != null) {
+                val name = userInfoFragment.getName()
+                if (userInfoFragment.isNameInvalid() || userInfoFragment.isEmailInvalid() || authAttributePassword.error != null) {
                     Toast.makeText(
                         baseContext,
                         "Please fix the errors above.",
@@ -155,7 +130,7 @@ class AuthenticationActivity : AppCompatActivity() {
                 }
                 else {
                     Firebase.auth
-                        .fetchSignInMethodsForEmail(authAttributeEmail.text.toString())
+                        .fetchSignInMethodsForEmail(userInfoFragment.getEmail())
                         .addOnCompleteListener {
                             if (it.isSuccessful) {
                                 if (it.result?.signInMethods?.isNotEmpty() == true) {
@@ -167,11 +142,6 @@ class AuthenticationActivity : AppCompatActivity() {
                                 }
                                 else {
                                     createAccount(name, email, password)
-                                    val intent = Intent(this, EmailConfirmationActivity::class.java)
-                                    intent.putExtra("emailConfirmationType", 0)
-                                    startActivity(intent)
-                                    authAttributeName.text.clear()
-                                    toggleAuthMode.check(R.id.radio_button_sign_in)
                                 }
                             }
                             else {
@@ -182,7 +152,7 @@ class AuthenticationActivity : AppCompatActivity() {
                 }
             }
             else {
-                if (authAttributeEmail.error != null || authAttributePassword.error != null) {
+                if (userInfoFragment.isEmailInvalid() || authAttributePassword.error != null) {
                     Toast.makeText(
                         baseContext,
                         "Please fix the errors above.",
@@ -198,11 +168,6 @@ class AuthenticationActivity : AppCompatActivity() {
                 }
                 else {
                     signIn(email, password)
-                    if (Firebase.auth.currentUser != null) {
-                        val intent = Intent(this, MainActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    }
                 }
             }
         }
@@ -215,7 +180,7 @@ class AuthenticationActivity : AppCompatActivity() {
                     Log.d(TAG, "createUserWithEmail:success")
                     val user = Firebase.auth.currentUser
                     viewModel.addUserDocument(user!!.uid, "")
-                    user!!.updateProfile(userProfileChangeRequest {
+                    user.updateProfile(userProfileChangeRequest {
                         displayName = name
                     }).addOnCompleteListener(this) {
                         if (it.isSuccessful) {
@@ -239,6 +204,11 @@ class AuthenticationActivity : AppCompatActivity() {
                                 ).show()
                             }
                         }
+                    val intent = Intent(this, EmailConfirmationActivity::class.java)
+                    intent.putExtra("emailConfirmationType", 0)
+                    startActivity(intent)
+                    userInfoFragment.clearName()
+                    toggleAuthMode.check(R.id.radio_button_sign_in)
                 } else {
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
                     Toast.makeText(
@@ -255,6 +225,9 @@ class AuthenticationActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "signInWithEmail:success")
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithEmail:failure", task.exception)
