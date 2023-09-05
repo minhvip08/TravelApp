@@ -35,7 +35,7 @@ class ScheduleAdapter(private val supportFragmentManager: FragmentManager) :
         }
 
         override fun areContentsTheSame(oldItem: ScheduleItem, newItem: ScheduleItem): Boolean {
-            return oldItem.name == newItem.name && oldItem.startDate == newItem.startDate
+            return oldItem.id == newItem.id
         }
     }
 

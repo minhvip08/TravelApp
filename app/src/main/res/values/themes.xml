@@ -5,5 +5,11 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.TravelApp" parent="Base.Theme.TravelApp" />
+    <style name="Theme.TravelApp" parent="Base.Theme.TravelApp">
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorControlNormal">@color/blue</item>
+    </style>
 </resources>

@@ -18,6 +18,7 @@ class ItineraryViewPagerAdapter(
     private val supportFragmentManager: FragmentManager,
     private val lifecycle: Lifecycle,
     private val context: Context,
+    private val scheduleId: String,
     private val itineraryList: List<ItineraryItem>
 ) : FragmentStateAdapter(supportFragmentManager, lifecycle) {
     override fun getItemCount(): Int {
@@ -25,7 +26,7 @@ class ItineraryViewPagerAdapter(
     }
 
     override fun createFragment(position: Int): Fragment {
-        return DayReadOnlyFragment.newInstance(itineraryList[position].id)
+        return DayReadOnlyFragment.newInstance(scheduleId, itineraryList[position].id)
     }
 
     fun getTabView(i: Int) : LinearLayout {

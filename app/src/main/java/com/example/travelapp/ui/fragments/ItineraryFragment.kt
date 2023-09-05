@@ -75,25 +75,11 @@ class ItineraryFragment : Fragment() {
     }
 
     private fun updateUi(itineraries: List<ItineraryItem>) {
-        adapter = ItineraryViewPagerAdapter(childFragmentManager, lifecycle, requireContext(), itineraries)
+        adapter = ItineraryViewPagerAdapter(childFragmentManager, lifecycle, requireContext(), scheduleId, itineraries)
         viewPager.adapter = adapter
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.customView = adapter.getTabView(position)
         }.attach()
-        tabLayout.addOnTabSelectedListener(object: OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-                TODO("Not yet implemented")
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-                TODO("Not yet implemented")
-            }
-
-        })
     }
 
     companion object {

@@ -37,7 +37,7 @@ class LocationAdapter :
         }
 
         override fun areContentsTheSame(oldItem: LocationItem, newItem: LocationItem): Boolean {
-            return oldItem.title == newItem.title
+            return oldItem.id == newItem.id
         }
     }
 
