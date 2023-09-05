@@ -7,7 +7,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.travelapp.R
 import com.example.travelapp.data.models.LocationItem
 import com.example.travelapp.data.models.ScheduleItem
-import com.example.travelapp.ui.adapters.ViewPagerItinararyArrangementAdapter
+import com.example.travelapp.ui.adapters.ViewPagerItineraryArrangementAdapter
 import com.example.travelapp.ui.fragments.DayFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -29,7 +29,7 @@ class ItineraryArrangementActivity : AppCompatActivity() {
         val millionSeconds = scheduleItem!!.endDate.toDate().time - scheduleItem!!.startDate.toDate().time
         numDay = (millionSeconds / (1000 * 60 * 60 * 24)).toInt() + 1
 
-        val adapter = ViewPagerItinararyArrangementAdapter(supportFragmentManager, lifecycle)
+        val adapter = ViewPagerItineraryArrangementAdapter(supportFragmentManager, lifecycle)
 
         for (i in 1..numDay){
             val fragment = DayFragment()
