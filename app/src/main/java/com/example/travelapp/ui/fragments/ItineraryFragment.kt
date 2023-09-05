@@ -7,12 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
+import androidx.viewpager2.widget.ViewPager2
 import com.example.travelapp.R
 import com.example.travelapp.data.ItineraryViewModel
-import com.example.travelapp.data.models.ScheduleItem
+import com.example.travelapp.data.models.ItineraryItem
 import com.example.travelapp.data.repository.ItineraryRepository
 import com.example.travelapp.ui.adapters.ItineraryViewPagerAdapter
 import com.example.travelapp.ui.util.UiState
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
@@ -26,6 +30,9 @@ class ItineraryFragment : Fragment() {
     )
 
     private lateinit var scheduleId: String
+    private lateinit var adapter: ItineraryViewPagerAdapter
+    private lateinit var tabLayout: TabLayout
+    private lateinit var viewPager: ViewPager2
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -46,6 +53,8 @@ class ItineraryFragment : Fragment() {
         toolbar.setNavigationOnClickListener {
             requireActivity().onBackPressed()
         }
+        tabLayout = view.findViewById(R.id.tab_layout_itinerary)
+        viewPager = view.findViewById(R.id.view_pager_itinerary)
         viewModel.getItineraries(
             Firebase.auth.currentUser!!.uid,
             scheduleId
@@ -56,13 +65,35 @@ class ItineraryFragment : Fragment() {
                 }
                 is UiState.Success -> {
                     Log.d("ItineraryFragment", "Success")
-                    val adapter = ItineraryViewPagerAdapter(childFragmentManager, lifecycle, it.data)
+                    updateUi(it.data)
                 }
                 is UiState.Failure -> {
                     Log.w("ItineraryFragment", it.error!!)
                 }
             }
         }
+    }
+
+    private fun updateUi(itineraries: List<ItineraryItem>) {
+        adapter = ItineraryViewPagerAdapter(childFragmentManager, lifecycle, requireContext(), itineraries)
+        viewPager.adapter = adapter
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.customView = adapter.getTabView(position)
+        }.attach()
+        tabLayout.addOnTabSelectedListener(object: OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                TODO("Not yet implemented")
+            }
+
+        })
     }
 
     companion object {

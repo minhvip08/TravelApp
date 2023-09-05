@@ -24,7 +24,7 @@
             android:textSize="20sp"
             android:layout_marginStart="5dp"
             android:id="@+id/text_view_timer"/>
-        
+
     </LinearLayout>
 
 
@@ -39,6 +39,5 @@
         android:textStyle="bold"
         android:background="@drawable/day_item_description_outline"
         android:text="Breakfast"/>
-
 
 </RelativeLayout>

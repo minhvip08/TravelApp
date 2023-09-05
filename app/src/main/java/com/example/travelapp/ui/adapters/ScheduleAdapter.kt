@@ -52,7 +52,7 @@ class ScheduleAdapter(private val supportFragmentManager: FragmentManager) :
             supportFragmentManager.commit {
                 replace(
                     R.id.frame_layout_main_activity,
-                    ItineraryFragment.newInstance(currentItem)
+                    ItineraryFragment.newInstance(currentItem.id)
                 )
                 addToBackStack(null)
             }

@@ -22,4 +22,7 @@
     <string name="schedule">Schedule</string>
     <string name="schedule_name">Schedule name</string>
     <string name="itinerary">Itinerary</string>
+    <string name="tab_item_title_placeholder">Day 1</string>
+    <string name="tab_item_date_placeholder">July 14</string>
+    <string name="day_tab_item_title">Day %1$d</string>
 </resources>
