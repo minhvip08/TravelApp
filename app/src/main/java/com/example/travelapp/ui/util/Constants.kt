@@ -1,6 +1,10 @@
 package com.example.travelapp.ui.util
 
+import android.app.Activity
+
 object FirestoreCollection{
+    const val ITINERARIES = "itineraries"
+    const val ACTIVITIES = "activities"
     const val USERS = "users"
     const val LOCATION = "location"
     const val ATTRACTION = "attraction"

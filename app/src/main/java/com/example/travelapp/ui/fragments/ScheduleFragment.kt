@@ -48,10 +48,8 @@ class ScheduleFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val scheduleAdapter = ScheduleAdapter {
-
-        }
         val scheduleRecyclerView = view.findViewById<RecyclerView>(R.id.schedule_list)
+        val scheduleAdapter = ScheduleAdapter(requireActivity().supportFragmentManager)
         scheduleRecyclerView.adapter = scheduleAdapter
         scheduleRecyclerView.setHasFixedSize(true)
         scheduleRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

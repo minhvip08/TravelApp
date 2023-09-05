@@ -2,17 +2,19 @@ package com.example.travelapp.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.commit
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.travelapp.R
 import com.example.travelapp.data.models.ScheduleItem
+import com.example.travelapp.ui.fragments.ItineraryFragment
 
-class ScheduleAdapter(private val onClickListener: OnClickListener) :
+class ScheduleAdapter(private val supportFragmentManager: FragmentManager) :
     ListAdapter<ScheduleItem, ScheduleAdapter.ViewHolder>(ScheduleItemDiff()) {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -40,12 +42,21 @@ class ScheduleAdapter(private val onClickListener: OnClickListener) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val holder = ViewHolder.create(parent)
         holder.image.clipToOutline = true
-        holder.itemView.setOnClickListener(onClickListener)
         return holder
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = getItem(position)
         holder.name.text = currentItem.name
+        holder.itemView.setOnClickListener {
+            supportFragmentManager.commit {
+                replace(
+                    R.id.frame_layout_main_activity,
+                    ItineraryFragment.newInstance(currentItem)
+                )
+                addToBackStack(null)
+            }
+        }
+
     }
 }

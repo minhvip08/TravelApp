@@ -6,9 +6,9 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ActivityItem(
-    var detail: String,
-    var name: String,
-    var time: Timestamp
+    val id: String,
+    val name: String,
+    val time: Timestamp
 ) : Parcelable {
-    constructor() : this("", "", Timestamp(0, 0))
+    constructor() : this("","", Timestamp(0, 0))
 }
