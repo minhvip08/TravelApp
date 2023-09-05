@@ -74,7 +74,7 @@ class HomeFragment : Fragment() {
 
         locationAdapter = LocationAdapter()
 
-        var recyclerView = activity?.findViewById<RecyclerView>(R.id.popular_location_recyclerview)
+        val recyclerView = activity?.findViewById<RecyclerView>(R.id.popular_location_recyclerview)
 
 
         recyclerView?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)

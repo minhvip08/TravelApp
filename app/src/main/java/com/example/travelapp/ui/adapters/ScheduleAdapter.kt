@@ -2,6 +2,7 @@ package com.example.travelapp.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -11,9 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.travelapp.R
 import com.example.travelapp.data.models.ScheduleItem
 
-class ScheduleAdapter :
+class ScheduleAdapter(private val onClickListener: OnClickListener) :
     ListAdapter<ScheduleItem, ScheduleAdapter.ViewHolder>(ScheduleItemDiff()) {
-    
+
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name: TextView = itemView.findViewById(R.id.schedule_name)
         val image: ImageView = itemView.findViewById(R.id.schedule_image)
@@ -39,6 +40,7 @@ class ScheduleAdapter :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val holder = ViewHolder.create(parent)
         holder.image.clipToOutline = true
+        holder.itemView.setOnClickListener(onClickListener)
         return holder
     }
 
