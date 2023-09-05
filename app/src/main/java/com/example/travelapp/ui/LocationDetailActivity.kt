@@ -32,6 +32,7 @@ class LocationDetailActivity : AppCompatActivity() {
         addToPlanBtn = findViewById(R.id.add_to_plan_button)
         addToPlanBtn.setOnClickListener(){
             var intent: Intent = Intent(this, NewPlanActivity::class.java)
+            intent.putExtra("location", item)
             startActivity(intent)
         }
 

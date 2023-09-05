@@ -45,6 +45,7 @@ class MapActivity : AppCompatActivity() , OnMapReadyCallback {
         floatingNextBtn = findViewById(R.id.floating_next_button)
         floatingNextBtn.setOnClickListener {
             var intent: Intent = Intent(this, NewPlanActivity::class.java)
+            intent.putExtra("location", locationItem)
             startActivity(intent)
         }
     }

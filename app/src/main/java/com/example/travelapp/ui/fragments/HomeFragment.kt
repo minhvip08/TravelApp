@@ -44,6 +44,7 @@ class HomeFragment : Fragment() {
     lateinit var locationAdapter: LocationAdapter
     lateinit var locationRecyclerView: RecyclerView
     lateinit var sessionTextView: TextView
+    lateinit var userTextView: TextView
     val viewModel: LocationViewModel = LocationViewModel(LocationRepository(
         FirebaseFirestore.getInstance(),
         FirebaseStorage.getInstance().getReference(FirebaseStorageConstants.ROOT_DIRECTORY)
@@ -128,6 +129,9 @@ class HomeFragment : Fragment() {
         }
 
 
+
+        userTextView = activity?.findViewById(R.id.text_view_user)!!
+        userTextView.text = Firebase.auth.currentUser?.displayName ?: getString(R.string.guest)
 
 
     }

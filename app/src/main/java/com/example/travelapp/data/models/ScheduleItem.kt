@@ -8,7 +8,8 @@ import kotlinx.parcelize.Parcelize
 data class ScheduleItem(
     var name: String,
     var startDate: Timestamp,
+    var endDate: Timestamp,
     var itineraries: MutableList<ItineraryItem>
 ) : Parcelable {
-    constructor() : this("", Timestamp(0, 0), mutableListOf())
+    constructor() : this("", Timestamp(0, 0), Timestamp(0, 0), mutableListOf())
 }

@@ -54,7 +54,7 @@ class LocationAdapter :
 
         // get image from drawable
         var idImage = context.resources.getIdentifier(currentItem.image,
-            "drawable", context.packageName)
+            "drawable", context.packageName) // R.drawable.image_name
         holder.imgLocation.setImageResource(idImage)
         holder.locationText.text = currentItem.title
         holder.locationAttraction.text = currentItem.attraction.size.toString() + " attractions"
