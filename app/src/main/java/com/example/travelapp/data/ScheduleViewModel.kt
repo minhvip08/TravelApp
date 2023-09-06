@@ -17,4 +17,8 @@ class ScheduleViewModel(
     fun setSchedule(uid: String, scheduleItem: ScheduleItem) {
         repository.set(uid, scheduleItem)
     }
+
+    fun delete(uid: String, scheduleId: String) {
+        repository.delete(uid, scheduleId)
+    }
 }

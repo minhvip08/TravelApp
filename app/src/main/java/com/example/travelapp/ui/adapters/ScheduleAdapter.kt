@@ -20,6 +20,7 @@ class ScheduleAdapter(private val supportFragmentManager: FragmentManager) :
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name: TextView = itemView.findViewById(R.id.schedule_name)
         val image: ImageView = itemView.findViewById(R.id.schedule_image)
+        var id: String = ""
         companion object {
             fun create(parent: ViewGroup): ViewHolder {
                 val view: View = LayoutInflater.from(parent.context)
@@ -48,6 +49,7 @@ class ScheduleAdapter(private val supportFragmentManager: FragmentManager) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = getItem(position)
         holder.name.text = currentItem.name
+        holder.id = currentItem.id
         holder.itemView.setOnClickListener {
             supportFragmentManager.commit {
                 replace(

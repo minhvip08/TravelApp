@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.commit
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.travelapp.R
@@ -67,6 +68,26 @@ class ScheduleFragment : Fragment() {
                 }
             }
         }
+        val itemTouchHelper = ItemTouchHelper(object: ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                viewModel.delete(Firebase.auth.currentUser!!.uid, (viewHolder as ScheduleAdapter.ViewHolder).id)
+                requireActivity().supportFragmentManager.commit {
+                    detach(this@ScheduleFragment)
+                }
+                requireActivity().supportFragmentManager.commit {
+                    attach(this@ScheduleFragment)
+                }
+            }
+        })
+        itemTouchHelper.attachToRecyclerView(scheduleRecyclerView)
     }
 
     override fun onCreateView(

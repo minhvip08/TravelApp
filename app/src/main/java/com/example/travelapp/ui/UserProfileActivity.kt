@@ -19,11 +19,6 @@ import com.google.firebase.ktx.Firebase
 
 class UserProfileActivity : AppCompatActivity() {
     private lateinit var userInfoFragment: UserInfoFragment
-    private val viewModel = UserViewModel(
-        UserRepository(
-            FirebaseFirestore.getInstance()
-        )
-    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +30,9 @@ class UserProfileActivity : AppCompatActivity() {
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
             supportActionBar!!.setDisplayShowHomeEnabled(true)
             supportActionBar!!.setDisplayShowTitleEnabled(false);
+        }
+        toolbar.setNavigationOnClickListener {
+            onBackPressed()
         }
         // Set fragment
         userInfoFragment = UserInfoFragment.newInstance(true)

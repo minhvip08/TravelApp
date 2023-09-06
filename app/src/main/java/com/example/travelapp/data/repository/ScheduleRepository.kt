@@ -37,4 +37,12 @@ class ScheduleRepository(
             .document(scheduleItem.id)
             .set(scheduleItem)
     }
+
+    override fun delete(uid: String, scheduleId: String) {
+        scheduleDatabase
+            .collection(FirestoreCollection.USERS).document(uid)
+            .collection(FirestoreCollection.SCHEDULES)
+            .document(scheduleId)
+            .delete()
+    }
 }
