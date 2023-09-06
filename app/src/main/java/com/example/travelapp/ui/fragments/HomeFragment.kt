@@ -1,12 +1,14 @@
 package com.example.travelapp.ui.fragments
 
 import android.content.ContentValues.TAG
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +19,7 @@ import com.example.travelapp.data.LocationViewModel
 import com.example.travelapp.data.models.LocationItem
 import com.example.travelapp.data.repository.LocationRepository
 import com.example.travelapp.databinding.FragmentHomeBinding
+import com.example.travelapp.ui.UserProfileActivity
 import com.example.travelapp.ui.adapters.LocationAdapter
 import com.example.travelapp.ui.util.FirebaseStorageConstants
 import com.example.travelapp.ui.util.UiState
@@ -108,7 +111,10 @@ class HomeFragment : Fragment() {
             }
         }
 
-
+        view.findViewById<ImageView>(R.id.image_view_user).setOnClickListener {
+            val intent = Intent(requireActivity(), UserProfileActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onStart() {

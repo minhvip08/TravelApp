@@ -9,7 +9,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import com.example.travelapp.R
-import com.google.firebase.auth.ActionCodeSettings
+import androidx.activity.addCallback
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -20,6 +20,8 @@ class ResetPasswordActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reset_password)
+        // get emailConfirmationType from intent
+        val emailConfirmationType = intent.getIntExtra("emailConfirmationType", 1)
         // Get email address from intent
         var email = intent.getStringExtra("email")
         // Set email address text
@@ -62,7 +64,7 @@ class ResetPasswordActivity : AppCompatActivity() {
                             else {
                                 resetPassword(email!!)
                                 val intent = Intent(this, EmailConfirmationActivity::class.java)
-                                intent.putExtra("emailConfirmationType", 1)
+                                intent.putExtra("emailConfirmationType", emailConfirmationType)
                                 startActivity(intent)
                                 finish()
                             }

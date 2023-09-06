@@ -6,7 +6,16 @@
     android:padding="8dp"
     tools:context=".ui.fragments.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <ImageView
+        android:id="@+id/image_view_user"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_above="@id/search_box"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/baseline_person_22"
+        android:layout_marginTop="16dp"/>
+
     <TextView
         android:id="@+id/text_view_session"
         android:layout_width="wrap_content"
@@ -23,7 +32,7 @@
         android:textAppearance="@style/text_large_title"
         android:text="@string/guest"/>
 
-    <SearchView
+    <androidx.appcompat.widget.SearchView
         android:layout_below="@+id/text_view_user"
         android:id="@+id/search_box"
         android:layout_width="match_parent"

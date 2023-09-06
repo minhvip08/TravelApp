@@ -120,6 +120,11 @@ class UserInfoFragment : Fragment() {
         return authAttributeEmail.text.toString()
     }
 
+    fun disableEmail() {
+        authAttributeEmail.isEnabled = false
+        authAttributeEmail.setTextColor(resources.getColor(R.color.edit_text_disabled, null))
+    }
+
     fun setName(name: String) {
         authAttributeName.setText(name)
     }

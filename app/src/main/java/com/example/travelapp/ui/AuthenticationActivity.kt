@@ -43,7 +43,10 @@ class AuthenticationActivity : AppCompatActivity() {
             setReorderingAllowed(true)
             add(R.id.auth_user_info, userInfoFragment)
         }
+    }
 
+    override fun onStart() {
+        super.onStart()
         // Get required views
         val authHeader = findViewById<TextView>(R.id.auth_header)
         val authButton = findViewById<Button>(R.id.auth_button)
@@ -92,7 +95,7 @@ class AuthenticationActivity : AppCompatActivity() {
             }
         }
         // Get RadioGroup object
-        toggleAuthMode = findViewById<RadioGroup>(R.id.toggle_authentication_mode)
+        toggleAuthMode = findViewById(R.id.toggle_authentication_mode)
         toggleAuthMode.setOnCheckedChangeListener { _, checkedId ->
             // Check which radio button was clicked
             when (checkedId) {
