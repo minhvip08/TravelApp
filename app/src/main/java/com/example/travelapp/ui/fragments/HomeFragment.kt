@@ -96,7 +96,7 @@ class HomeFragment : Fragment() {
                     Log.d("TAG", "Success")
                     val x = it.data
                     for (item in x) {
-                        viewModel.getAttrractionLocations(item)
+                        viewModel.getAttractionLocations(item)
                         Log.w("TAG", "ADD ITEM LOCATION")
 
                     }

@@ -4,6 +4,7 @@ import com.example.travelapp.data.models.ScheduleItem
 import com.example.travelapp.ui.util.FirestoreCollection
 import com.example.travelapp.ui.util.UiState
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
@@ -27,5 +28,13 @@ class ScheduleRepository(
                 }))
     }.catch {
         emit(UiState.Failure(it.message))
+    }
+
+    override fun set(uid: String, scheduleItem: ScheduleItem) {
+        scheduleDatabase
+            .collection(FirestoreCollection.USERS).document(uid)
+            .collection(FirestoreCollection.SCHEDULES)
+            .document(scheduleItem.id)
+            .set(scheduleItem)
     }
 }

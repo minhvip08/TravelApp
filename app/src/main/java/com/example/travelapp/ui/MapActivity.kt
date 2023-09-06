@@ -122,6 +122,6 @@ class MapActivity : AppCompatActivity() , OnMapReadyCallback {
         ratingBar = findViewById(R.id.rating_bar_popup)
         titleTextView.setText(item.title)
         descriptionTextView.setText(item.snippet)
-        ratingBar.setRating(item.getRating().toFloat())
+        ratingBar.setRating(item.getRating())
     }
 }

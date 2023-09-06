@@ -16,7 +16,8 @@ class ActivityItemReadOnlyAdapter
     : ListAdapter<ActivityItem, ActivityItemReadOnlyAdapter.ViewHolder>(ActivityItemDiff()) {
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val time: TextView = itemView.findViewById(R.id.text_view_timer)
-        val name: EditText = itemView.findViewById(R.id.edit_text_activity_name)
+        val name: EditText = itemView.findViewById(R.id.edit_text_description)
+        val menu: View = itemView.findViewById(R.id.menu_item_image_view)
         companion object {
             fun create(parent: ViewGroup): ViewHolder {
                 val view: View = LayoutInflater.from(parent.context)
@@ -50,6 +51,7 @@ class ActivityItemReadOnlyAdapter
         holder.time.text =
             SimpleDateFormat("HH:mm").format(currentItem.time.toDate())
         holder.name.setText(currentItem.name)
+        holder.menu.visibility = View.GONE
     }
 
 }

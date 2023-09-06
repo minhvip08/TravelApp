@@ -1,6 +1,8 @@
 package com.example.travelapp.data
 
 import androidx.lifecycle.liveData
+import com.example.travelapp.data.models.ItineraryItem
+import com.example.travelapp.data.models.ScheduleItem
 import com.example.travelapp.data.repository.IItineraryRepository
 import kotlinx.coroutines.Dispatchers
 
@@ -11,5 +13,9 @@ class ItineraryViewModel(
         repository.get(uid, scheduleId).collect {
             emit(it)
         }
+    }
+
+    fun setItinerary(uid: String, scheduleId: String, itineraryItem: ItineraryItem) {
+        repository.set(uid, scheduleId, itineraryItem)
     }
 }

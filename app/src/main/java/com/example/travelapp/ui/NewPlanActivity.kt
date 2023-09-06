@@ -17,6 +17,7 @@ import com.example.travelapp.R
 import com.example.travelapp.data.models.LocationItem
 import com.example.travelapp.data.models.ScheduleItem
 import com.example.travelapp.ui.fragments.DatePickerFragment
+import com.example.travelapp.ui.util.RandomString
 import com.google.firebase.Timestamp
 import java.text.DateFormat
 import java.util.Calendar
@@ -43,6 +44,7 @@ class NewPlanActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
         }
 
         scheduleItem.name = locationItem!!.title
+        scheduleItem.id = RandomString.randomString(20)
 
         var startTextView: TextView = findViewById(R.id.date_start)
         startTextView.setOnClickListener {
@@ -63,6 +65,7 @@ class NewPlanActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
         }
 
         nextButton = findViewById(R.id.next_button)
+        nextButton?.isEnabled = false
         nextButton?.setOnClickListener {
             val intent = Intent(this, ItineraryArrangementActivity::class.java)
             intent.putExtra("schedule", scheduleItem)
@@ -80,11 +83,15 @@ class NewPlanActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
         currentTime = c.time
 
         if (!isEndDate){
-            scheduleItem.startDate = Timestamp(Date(p1,p2,p3))
+            scheduleItem.startDate = Timestamp(Date(p1-1900,p2,p3))
+            Log.d(TAG, "onDateSet: ${scheduleItem.startDate.toDate()}")
 
         }
         else{
-            scheduleItem.endDate = Timestamp(Date(p1, p2, p3))
+            scheduleItem.endDate = Timestamp(Date(p1-1900, p2, p3))
+            nextButton?.isEnabled = scheduleItem.endDate.toDate().time
+                .compareTo(scheduleItem.startDate.toDate().time) >= 0
+            Log.d(TAG, "onDateSet: ${scheduleItem.endDate.toDate()}")
         }
 
 

@@ -6,4 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface IScheduleRepository {
     fun get(uid: String): Flow<UiState<List<ScheduleItem>>>
+    fun set(uid: String, scheduleItem: ScheduleItem)
 }
