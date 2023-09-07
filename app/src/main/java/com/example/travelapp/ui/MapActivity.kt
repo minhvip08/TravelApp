@@ -10,6 +10,7 @@ import android.widget.RatingBar
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
 import com.example.travelapp.R
 import com.example.travelapp.data.models.LocationItem
 import com.example.travelapp.map.MyItem
@@ -29,10 +30,11 @@ class MapActivity : AppCompatActivity() , OnMapReadyCallback {
     private lateinit var titleTextView: TextView
     private lateinit var descriptionTextView: TextView
     private lateinit var ratingBar: RatingBar
-    private lateinit var LocationTitleTextView: TextView
     private lateinit var floatingNextBtn: FloatingActionButton
     // Declare a variable for the cluster manager.
     private lateinit var clusterManager: ClusterManager<MyItem>
+    private lateinit var mActionBarToolbar: Toolbar
+    private lateinit var titleToolBar: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +55,8 @@ class MapActivity : AppCompatActivity() , OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         setUpCluster()
+        setupToolBar()
+
     }
 
 
@@ -62,8 +66,6 @@ class MapActivity : AppCompatActivity() , OnMapReadyCallback {
         } else {
             intent.getParcelableExtra<LocationItem>("location")
         }
-        LocationTitleTextView = findViewById(R.id.title_location)
-        LocationTitleTextView.setText("Location in " + locationItem!!.title)
 
         val latLng = LatLng(
             locationItem!!.attraction[0].latitude,
@@ -123,5 +125,22 @@ class MapActivity : AppCompatActivity() , OnMapReadyCallback {
         titleTextView.setText(item.title)
         descriptionTextView.setText(item.snippet)
         ratingBar.setRating(item.getRating())
+    }
+
+    private fun setupToolBar(){
+        mActionBarToolbar = findViewById(R.id.toolbar_layout)
+        setSupportActionBar(mActionBarToolbar)
+        supportActionBar?.show()
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        titleToolBar = findViewById(R.id.toolbar_title)
+        titleToolBar.text = "Location in " + locationItem!!.title
+
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 }

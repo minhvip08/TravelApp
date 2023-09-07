@@ -4,9 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="8dp"
     tools:context=".ui.ItineraryArrangementActivity">
 
+    <include layout="@layout/app_bar_layout"
+        android:id="@+id/app_bar_layout"/>
+
+
     <com.google.android.material.tabs.TabLayout
+        android:layout_below="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tabMode="scrollable"

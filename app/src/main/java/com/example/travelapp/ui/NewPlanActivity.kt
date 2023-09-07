@@ -10,8 +10,11 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.DatePicker
+import android.widget.RatingBar
 import android.widget.TextView
+
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.DialogFragment
 import com.example.travelapp.R
 import com.example.travelapp.data.models.LocationItem
@@ -33,6 +36,8 @@ class NewPlanActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
     var currentTime: Date? = null
     var isEndDate: Boolean = false
     var nextButton: Button? = null
+    private lateinit var mActionBarToolbar: Toolbar
+    private lateinit var titleToolBar: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_plan)
@@ -42,6 +47,8 @@ class NewPlanActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
         } else {
             intent.getParcelableExtra<LocationItem>("location")
         }
+
+        setupToolBar()
 
         scheduleItem.name = locationItem!!.title
         scheduleItem.id = RandomString.randomString(20)
@@ -73,6 +80,23 @@ class NewPlanActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
             startActivity(intent)
         }
 
+    }
+
+    private fun setupToolBar(){
+        mActionBarToolbar = findViewById(R.id.toolbar_layout)
+        setSupportActionBar(mActionBarToolbar)
+        supportActionBar?.show()
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        titleToolBar = findViewById(R.id.toolbar_title)
+        titleToolBar.text = "New Plan"
+
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
     override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {

@@ -4,14 +4,19 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
 import com.example.travelapp.R
 import com.example.travelapp.data.models.LocationItem
+import com.google.android.material.appbar.AppBarLayout
 
 class LocationDetailActivity : AppCompatActivity() {
     lateinit var enterPlanbtn: TextView
     lateinit var attractionName: TextView
     lateinit var addToPlanBtn: TextView
+    private lateinit var mActionBarToolbar: Toolbar
+    private lateinit var titleToolBar: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,11 +50,22 @@ class LocationDetailActivity : AppCompatActivity() {
             intent.putExtra("location", item)
             startActivity(intent)
         }
+        setupToolBar()
+
+    }
+
+    private fun setupToolBar(){
+        mActionBarToolbar = findViewById(R.id.toolbar_layout_detail_activity)
+        setSupportActionBar(mActionBarToolbar)
+        supportActionBar?.show()
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
     }
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
-        return super.onSupportNavigateUp()
+        return true
     }
 }

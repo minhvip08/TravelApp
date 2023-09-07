@@ -1,11 +1,14 @@
 package com.example.travelapp.ui
 
 import android.content.ContentValues.TAG
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
 import androidx.viewpager2.widget.ViewPager2
 import com.example.travelapp.R
 import com.example.travelapp.data.ActivityItemViewModel
@@ -34,6 +37,9 @@ class ItineraryArrangementActivity : AppCompatActivity() {
     val user = Firebase.auth.currentUser
     val db = Firebase.firestore
     lateinit var btnNext: Button
+    private lateinit var mActionBarToolbar: Toolbar
+    private lateinit var titleToolBar: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_itinerary_arrangement)
@@ -73,8 +79,33 @@ class ItineraryArrangementActivity : AppCompatActivity() {
                 setItineraryToDatabase(i)
                 setActivityToDatabase(i)
             }
+            var intent = Intent(this, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent)
+
+
         }
 
+        setupToolBar()
+
+
+    }
+
+    private fun setupToolBar(){
+        mActionBarToolbar = findViewById(R.id.toolbar_layout)
+        setSupportActionBar(mActionBarToolbar)
+        supportActionBar?.show()
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        titleToolBar = findViewById(R.id.toolbar_title)
+        titleToolBar.text = "Add Itinerary"
+
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
     private fun setScheduleToDatabase(){
