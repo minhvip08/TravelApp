@@ -51,7 +51,6 @@ class ActivityItemReadOnlyAdapter
         holder.time.text =
             SimpleDateFormat("HH:mm").format(currentItem.time.toDate())
         holder.name.setText(currentItem.name)
-        holder.menu.visibility = View.GONE
     }
 
 }

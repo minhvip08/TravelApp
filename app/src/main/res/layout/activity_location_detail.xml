@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_attraction"
-    android:padding="16dp"
+    android:padding="24dp"
     tools:context=".ui.LocationDetailActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -59,40 +59,25 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/rating_layout"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/rating_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/bottom_layout"
-        android:layout_marginBottom="16dp">
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/rectangle_blur"
+        android:layout_marginBottom="16dp"
+        android:drawableStart="@drawable/baseline_thumb_up_24"
+        android:paddingHorizontal="32dp"
+        android:textAppearance="@style/text_medium"
+        android:textColor="@color/white"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Rating: 9.0"
-            android:textAppearance="@style/text_medium"
-            android:textColor="@color/white" />
-
-        <RatingBar
-            android:id="@+id/rating_bar"
-            style="?android:attr/ratingBarStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="8dp"
-            android:isIndicator="true"
-            android:numStars="5"
-            android:progressTint="#E88405"
-            android:rating="4.5"
-            android:stepSize="0.1" />
-
-    </LinearLayout>
 
     <TextView
         android:id="@+id/attraction_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/rating_layout"
+        android:layout_above="@id/rating_button"
         android:layout_marginBottom="16dp"
         android:text="Blue Lagoon Drive from Reykjavík, the capital of Iceland, to the southeast for about an hour, you can reach Blue Lagoon, the famous"
         android:textAppearance="@style/text_medium"

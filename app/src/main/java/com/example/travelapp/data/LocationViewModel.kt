@@ -22,7 +22,20 @@ class LocationViewModel (
 
     }
 
+    fun getLocationRating(item: LocationItem, updateUi: (Long) -> Unit) {
+        repository.getLocationRating(item, updateUi)
+    }
 
+    fun checkIfUserRatingExist(uid: String, locationItem: LocationItem, updateUi: (Boolean) -> Unit) {
+        repository.checkIfUserRatingExist(uid, locationItem, updateUi)
+    }
 
+    fun addUserRating(uid: String, locationItem: LocationItem, updateUi: () -> Unit) {
+        repository.addUserRating(uid, locationItem, updateUi)
+    }
+
+    fun removeUserRating(uid: String, locationItem: LocationItem, updateUi: () -> Unit) {
+        repository.removeUserRating(uid, locationItem, updateUi)
+    }
 
 }

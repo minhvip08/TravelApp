@@ -9,4 +9,12 @@ interface ILocationRepository {
 
     fun getAttractionLocations(item: LocationItem)
 
+    fun addUserRating(uid: String, locationItem: LocationItem, updateUi: () -> Unit)
+    fun removeUserRating(uid: String, locationItem: LocationItem, updateUi: () -> Unit)
+    fun getLocationRating(item: LocationItem, updateUi: (Long) -> Unit)
+    fun checkIfUserRatingExist(
+        uid: String,
+        locationItem: LocationItem,
+        updateUi: (Boolean) -> Unit
+    )
 }

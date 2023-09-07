@@ -9,12 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.commit
 import com.example.travelapp.R
-import com.example.travelapp.data.UserViewModel
-import com.example.travelapp.data.repository.UserRepository
 import com.example.travelapp.ui.fragments.UserInfoFragment
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
 class UserProfileActivity : AppCompatActivity() {

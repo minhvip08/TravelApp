@@ -2,26 +2,42 @@ package com.example.travelapp.ui
 
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.graphics.drawable.DrawableCompat
 import com.example.travelapp.R
+import com.example.travelapp.data.LocationViewModel
 import com.example.travelapp.data.models.LocationItem
-import com.google.android.material.appbar.AppBarLayout
+import com.example.travelapp.data.repository.LocationRepository
+import com.example.travelapp.ui.util.FirebaseStorageConstants
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 
 class LocationDetailActivity : AppCompatActivity() {
     lateinit var enterPlanbtn: TextView
     lateinit var attractionName: TextView
     lateinit var addToPlanBtn: TextView
     private lateinit var mActionBarToolbar: Toolbar
+    private lateinit var ratingBtn: Button
     private lateinit var titleToolBar: TextView
+    private var isRated: Boolean? = null
+    private var rating: Long = 0
+
+    private val viewModel = LocationViewModel(
+        LocationRepository(
+            FirebaseFirestore.getInstance(),
+            FirebaseStorage.getInstance().getReference(FirebaseStorageConstants.ROOT_DIRECTORY)
+        )
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_location_detail)
-
 
         // Get the location item from the intent
         // Because the location item is a custom object, we need to use the getParcelableExtra method
@@ -51,7 +67,57 @@ class LocationDetailActivity : AppCompatActivity() {
             startActivity(intent)
         }
         setupToolBar()
-
+        // Get user id
+        val uid = Firebase.auth.currentUser!!.uid
+        // Rating button
+        ratingBtn = findViewById(R.id.rating_button)
+        // Check if user has rated this location
+        viewModel.checkIfUserRatingExist(uid, item!!) {
+            if (it) {
+                isRated = true
+                DrawableCompat.setTint(
+                    ratingBtn.compoundDrawables[0],
+                    getColor(R.color.blue)
+                )
+            }
+            else {
+                isRated = false
+                DrawableCompat.setTint(
+                    ratingBtn.compoundDrawables[0],
+                    getColor(R.color.white)
+                )
+            }
+        }
+        viewModel.getLocationRating(item) {
+            rating = it - 1
+            ratingBtn.text = rating.toString()
+        }
+        ratingBtn.setOnClickListener {
+            if (isRated != null) {
+                if (isRated as Boolean) {
+                    viewModel.removeUserRating(uid, item) {
+                        isRated = false
+                        --rating
+                        ratingBtn.text = rating.toString()
+                        DrawableCompat.setTint(
+                            ratingBtn.compoundDrawables[0],
+                            getColor(R.color.white)
+                        )
+                    }
+                }
+                else {
+                    viewModel.addUserRating(uid, item) {
+                        isRated = true
+                        ++rating
+                        ratingBtn.text = rating.toString()
+                        DrawableCompat.setTint(
+                            ratingBtn.compoundDrawables[0],
+                            getColor(R.color.blue)
+                        )
+                    }
+                }
+            }
+        }
     }
 
     private fun setupToolBar(){
@@ -68,4 +134,6 @@ class LocationDetailActivity : AppCompatActivity() {
         onBackPressed()
         return true
     }
+
+
 }
