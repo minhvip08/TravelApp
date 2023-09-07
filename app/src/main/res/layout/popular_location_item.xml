@@ -35,31 +35,4 @@
         android:layout_alignParentBottom="true"
         android:id="@+id/popular_location_count"/>
 
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_alignParentBottom="true">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="4.5"
-            android:textAppearance="@style/text_small"
-            android:textColor="@color/white"
-            android:layout_marginLeft="4dp"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:id="@+id/popular_location_rating"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:src="@drawable/ic_star"
-            android:id="@+id/popular_location_star" />
-
-    </LinearLayout>
-
 </RelativeLayout>
