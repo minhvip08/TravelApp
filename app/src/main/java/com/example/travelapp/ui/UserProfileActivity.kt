@@ -10,6 +10,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.commit
 import com.example.travelapp.R
 import com.example.travelapp.ui.fragments.UserInfoFragment
+import com.example.travelapp.ui.util.SharedPrefConstants
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
@@ -89,6 +90,8 @@ class UserProfileActivity : AppCompatActivity() {
         val signOutButton = findViewById<Button>(R.id.button_sign_out_user_profile)
         signOutButton.setOnClickListener {
             signOut()
+            val sharedPref = getSharedPreferences(SharedPrefConstants.FIRST_TIME_ACCESS, MODE_PRIVATE)
+            sharedPref.edit().putBoolean("first_time_access", true).apply()
             finish()
         }
     }

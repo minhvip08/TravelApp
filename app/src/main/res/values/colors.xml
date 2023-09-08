@@ -4,4 +4,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#0373F3</color>
     <color name="gray">#BCBCBC</color>
+
+    //indicator color
+    <color name="indicator_inactive_color">#BCBCBC</color>
+    <color name="indicator_active_color">#0373F3</color>
 </resources>

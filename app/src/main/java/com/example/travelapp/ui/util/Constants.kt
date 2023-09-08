@@ -13,6 +13,7 @@ object FirestoreCollection{
 
 }
 
+
 object RandomString {
     fun randomString(length: Int): String {
         val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
@@ -33,7 +34,7 @@ object FireStoreDocumentField {
 
 object SharedPrefConstants {
     val LOCAL_SHARED_PREF = "local_shared_pref"
-    val USER_SESSION = "user_session"
+    val FIRST_TIME_ACCESS = "first_time_access"
 }
 
 object FirebaseStorageConstants {

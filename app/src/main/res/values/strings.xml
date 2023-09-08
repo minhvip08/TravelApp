@@ -28,4 +28,15 @@
     <string name="user_profile">User profile</string>
     <string name="update_profile">Update profile</string>
     <string name="sign_out">Sign out</string>
+
+    <!--    title page-->
+    <string name="title_page_1">Make your own private \ntravel plan</string>
+    <string name="title_page_2">Customize your \nHigh-end travel</string>
+    <string name="title_page_3">High-end leisure projects \nto choose from</string>
+
+
+    <!--    description page-->
+    <string name="desc_page_1">Formulate your strategy to receive \nwonderful gift packs</string>
+    <string name="desc_page_2">Countless high-end \nentertainment facilities</string>
+    <string name="desc_page_3">The world\'s first-class modern leisure \nand entertainment method</string>
 </resources>

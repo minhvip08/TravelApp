@@ -12,6 +12,7 @@ import com.example.travelapp.ui.fragments.BlogsFragment
 import com.example.travelapp.ui.fragments.GuideFragment
 import com.example.travelapp.ui.fragments.HomeFragment
 import com.example.travelapp.ui.fragments.ScheduleFragment
+import com.example.travelapp.ui.util.SharedPrefConstants
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
@@ -23,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Uncomment the following line to check if the user is signed in
+        checkFirstTimeAccess()
         checkCurrentUser()
         binding= ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -61,6 +63,21 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+    }
+
+    private fun checkFirstTimeAccess(){
+        val sharedPref = getSharedPreferences(SharedPrefConstants.FIRST_TIME_ACCESS, MODE_PRIVATE)
+
+
+        val firstTimeAccess = sharedPref.getBoolean("first_time_access", true)
+
+        if (firstTimeAccess){
+            sharedPref.edit().putBoolean("first_time_access", false).apply()
+            val intent = Intent(this, StartActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
     }
 
 }
