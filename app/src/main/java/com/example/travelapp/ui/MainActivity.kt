@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         val sharedPref = getSharedPreferences(SharedPrefConstants.FIRST_TIME_ACCESS, MODE_PRIVATE)
 
 
-        val firstTimeAccess = sharedPref.getBoolean("first_time_access", true)
+        val firstTimeAccess = sharedPref.getBoolean("first_time_access", false)
 
         if (firstTimeAccess){
             sharedPref.edit().putBoolean("first_time_access", false).apply()
