@@ -167,6 +167,7 @@ class HomeFragment : Fragment() {
 
         }
 
+        images.clear()
         images.add(R.drawable.vietnam)
         images.add(R.drawable.switzerland)
 
