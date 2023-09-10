@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -25,6 +26,8 @@ class LocationDetailActivity : AppCompatActivity() {
     private lateinit var mActionBarToolbar: Toolbar
     private lateinit var ratingBtn: Button
     private lateinit var titleToolBar: TextView
+    private lateinit var descriptionTextView: TextView
+    private lateinit var bannerImg: ImageView
     private var isRated: Boolean? = null
     private var rating: Long = 0
 
@@ -57,6 +60,15 @@ class LocationDetailActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        descriptionTextView = findViewById(R.id.attraction_description)
+        descriptionTextView.setText(item?.description)
+        bannerImg = findViewById(R.id.image_view_detail_activity)
+
+        var idImage = this.resources.getIdentifier(item?.image,
+            "drawable", this.packageName) // R.drawable.image_name
+
+
+        bannerImg.setImageResource(idImage)
         // Set up action bar
         enterPlanbtn = findViewById(R.id.enter_plan_button)
         attractionName = findViewById(R.id.attraction_name)

@@ -122,16 +122,24 @@ class HomeFragment : Fragment() {
         val db = Firebase.firestore
         val c = Calendar.getInstance()
         val hour = c.get(Calendar.HOUR_OF_DAY)
+        var weatherView: ImageView = activity?.findViewById(R.id.image_view_weather)!!
 
         sessionTextView = activity?.findViewById(R.id.text_view_session)!!
         if (hour in 0..11) {
             sessionTextView.text = "Good Morning"
+            weatherView.setImageResource(R.drawable.ic_day)
         } else if (hour in 12..15) {
             sessionTextView.text = "Good Afternoon"
+            weatherView.setImageResource(R.drawable.ic_day)
+
         } else if (hour in 16..20) {
             sessionTextView.text = "Good Evening"
+            weatherView.setImageResource(R.drawable.ic_night)
+
         } else if (hour in 21..24) {
             sessionTextView.text = "Good Night"
+            weatherView.setImageResource(R.drawable.ic_night)
+
         }
 
 

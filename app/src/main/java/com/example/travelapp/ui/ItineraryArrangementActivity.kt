@@ -80,7 +80,7 @@ class ItineraryArrangementActivity : AppCompatActivity() {
                 setActivityToDatabase(i)
             }
             var intent = Intent(this, MainActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
 
 

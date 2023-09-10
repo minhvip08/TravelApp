@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.DatePicker
+import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 
@@ -38,6 +39,8 @@ class NewPlanActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
     var nextButton: Button? = null
     private lateinit var mActionBarToolbar: Toolbar
     private lateinit var titleToolBar: TextView
+    private lateinit var titleLocationTextView: TextView
+    private lateinit var bannerImg: ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_plan)
@@ -52,6 +55,17 @@ class NewPlanActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
 
         scheduleItem.name = locationItem!!.title
         scheduleItem.id = RandomString.randomString(20)
+
+        titleLocationTextView = findViewById(R.id.title_location)
+        titleLocationTextView.text = locationItem!!.title
+
+        bannerImg = findViewById(R.id.banner_image)
+
+        var idImage = this.resources.getIdentifier(locationItem?.image+"_banner",
+            "drawable", this.packageName) // R.drawable.image_name
+
+        bannerImg.setImageResource(idImage)
+
 
         var startTextView: TextView = findViewById(R.id.date_start)
         startTextView.setOnClickListener {

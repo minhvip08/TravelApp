@@ -16,17 +16,29 @@
         android:src="@drawable/baseline_person_22"
         android:layout_marginTop="16dp"/>
 
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/ic_day"
+        android:id="@+id/image_view_weather"/>
+
     <TextView
         android:id="@+id/text_view_session"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
         android:text="Good Morning"
+        android:layout_toRightOf="@id/image_view_weather"
         android:textAppearance="@style/text_medium" />
 
     <TextView
         android:id="@+id/text_view_user"
         android:layout_width="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_toRightOf="@+id/image_view_weather"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_view_session"
         android:textAppearance="@style/text_large_title"

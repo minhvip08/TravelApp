@@ -19,8 +19,9 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/banner_image"
             android:src="@drawable/switzerland_banner"
-            android:scaleType="fitXY"/>
+            android:scaleType="centerCrop"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

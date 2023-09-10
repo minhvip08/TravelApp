@@ -14,12 +14,13 @@ import com.example.travelapp.R
 import com.example.travelapp.data.models.LocationItem
 import com.example.travelapp.databinding.FragmentHomeBinding
 import com.example.travelapp.ui.LocationDetailActivity
+import com.google.android.material.imageview.ShapeableImageView
 
 class LocationAdapter :
         ListAdapter<LocationItem, LocationAdapter.MyViewHolder>(LocationItemDiff()){
     lateinit var context: Context
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val imgLocation: ImageView = itemView.findViewById(R.id.image_location)
+        val imgLocation: ShapeableImageView = itemView.findViewById(R.id.image_location)
         val locationText: TextView = itemView.findViewById(R.id.popular_location_name)
         val locationAttraction: TextView = itemView.findViewById(R.id.popular_location_count)
         companion object {
