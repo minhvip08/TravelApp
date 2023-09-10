@@ -65,16 +65,14 @@ class HomeFragment : Fragment() {
     lateinit var mDotLayout: LinearLayout
     lateinit var mDots: Array<TextView>
     lateinit var mStartAdapter: ViewPagerTopImagesAdapter
-    var handlerThread = Handler()
-    private val runnable = Runnable {
-        if (mSliderViewPager.currentItem == images.size - 1) {
-            mSliderViewPager.currentItem = 0
-            setUpIndicator(0)
-        } else {
-            mSliderViewPager.currentItem = mSliderViewPager.currentItem + 1
-            setUpIndicator(mSliderViewPager.currentItem)
-        }
-    }
+//    var handlerThread = Handler()
+//    private val runnable = Runnable {
+//        if (mSliderViewPager.currentItem == images.size - 1) {
+//            mSliderViewPager.currentItem = 0
+//        } else {
+//            mSliderViewPager.currentItem = mSliderViewPager.currentItem + 1
+//        }
+//    }
 
     var images: ArrayList<Int> = ArrayList()
 
@@ -167,7 +165,6 @@ class HomeFragment : Fragment() {
 
         }
 
-        images.clear()
         images.add(R.drawable.vietnam)
         images.add(R.drawable.switzerland)
 
@@ -184,10 +181,10 @@ class HomeFragment : Fragment() {
         mStartAdapter = ViewPagerTopImagesAdapter(requireContext(), images)
         mSliderViewPager.adapter = mStartAdapter
 
-        setUpIndicator(0)
-
-        handlerThread.postDelayed(runnable, 3000)
-
+//        setUpIndicator(0)
+//
+//        handlerThread.postDelayed(runnable, 3000)
+//
 
         mSliderViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
             override fun onPageScrolled(
@@ -199,9 +196,7 @@ class HomeFragment : Fragment() {
             }
 
             override fun onPageSelected(position: Int) {
-                handlerThread.removeCallbacks(runnable)
-                handlerThread.postDelayed(runnable, 3000)
-
+                setUpIndicator(position)
 
             }
 
