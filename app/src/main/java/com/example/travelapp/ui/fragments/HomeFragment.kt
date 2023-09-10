@@ -14,6 +14,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
@@ -35,6 +36,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeout
 import java.util.Calendar
 
 // TODO: Rename parameter arguments, choose names that match
@@ -65,6 +73,9 @@ class HomeFragment : Fragment() {
     lateinit var mDotLayout: LinearLayout
     lateinit var mDots: Array<TextView>
     lateinit var mStartAdapter: ViewPagerTopImagesAdapter
+
+
+
 //    var handlerThread = Handler()
 //    private val runnable = Runnable {
 //        if (mSliderViewPager.currentItem == images.size - 1) {
@@ -138,11 +149,52 @@ class HomeFragment : Fragment() {
             val intent = Intent(requireActivity(), UserProfileActivity::class.java)
             startActivity(intent)
         }
+
+        images.add(R.drawable.vietnam)
+        images.add(R.drawable.switzerland)
+        userTextView = activity?.findViewById(R.id.text_view_user)!!
+        userTextView.text = Firebase.auth.currentUser?.displayName ?: getString(R.string.guest)
+        mDotLayout = activity?.findViewById(R.id.dots_layout_top_images)!!
+        mSliderViewPager = activity?.findViewById(R.id.top_image_viewpager)!!
+        mStartAdapter = ViewPagerTopImagesAdapter(requireContext(), images)
+        mSliderViewPager.adapter = mStartAdapter
+        mSliderViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+
+            }
+
+            override fun onPageSelected(position: Int) {
+                setUpIndicator(position)
+
+            }
+
+            override fun onPageScrollStateChanged(state: Int) { }
+
+        })
+        // Launch coroutine on a background thread
+        lifecycleScope.launch(Dispatchers.IO) {
+            while (coroutineContext.isActive) {
+                // Update interval
+                delay(5000)
+                // Switch to Main thread
+                withContext(Dispatchers.Main) {
+                    // Update UI
+                    if (mSliderViewPager.currentItem == images.size - 1) {
+                        mSliderViewPager.currentItem = 0
+                    } else {
+                        mSliderViewPager.currentItem = mSliderViewPager.currentItem + 1
+                    }
+                }
+            }
+        }
     }
 
     override fun onStart() {
         super.onStart()
-        val db = Firebase.firestore
         val c = Calendar.getInstance()
         val hour = c.get(Calendar.HOUR_OF_DAY)
         var weatherView: ImageView = activity?.findViewById(R.id.image_view_weather)!!
@@ -165,44 +217,18 @@ class HomeFragment : Fragment() {
 
         }
 
-        images.add(R.drawable.vietnam)
-        images.add(R.drawable.switzerland)
 
 
 
-        userTextView = activity?.findViewById(R.id.text_view_user)!!
-        userTextView.text = Firebase.auth.currentUser?.displayName ?: getString(R.string.guest)
-
-        // Viewpager Top Images
-        mSliderViewPager = activity?.findViewById(R.id.top_image_viewpager)!!
-        mDotLayout = activity?.findViewById(R.id.dots_layout_top_images)!!
 
 
-        mStartAdapter = ViewPagerTopImagesAdapter(requireContext(), images)
-        mSliderViewPager.adapter = mStartAdapter
 
 //        setUpIndicator(0)
 //
 //        handlerThread.postDelayed(runnable, 3000)
 //
 
-        mSliderViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
 
-            }
-
-            override fun onPageSelected(position: Int) {
-                setUpIndicator(position)
-
-            }
-
-            override fun onPageScrollStateChanged(state: Int) { }
-
-        })
 
 
 
