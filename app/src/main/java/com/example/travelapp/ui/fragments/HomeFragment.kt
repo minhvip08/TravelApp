@@ -3,16 +3,20 @@ package com.example.travelapp.ui.fragments
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.text.Html
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.ViewPager
 
 import com.example.travelapp.R
 import com.example.travelapp.data.LocationViewModel
@@ -21,6 +25,8 @@ import com.example.travelapp.data.repository.LocationRepository
 import com.example.travelapp.databinding.FragmentHomeBinding
 import com.example.travelapp.ui.UserProfileActivity
 import com.example.travelapp.ui.adapters.LocationAdapter
+import com.example.travelapp.ui.adapters.ViewPagerStartLayoutAdapter
+import com.example.travelapp.ui.adapters.ViewPagerTopImagesAdapter
 import com.example.travelapp.ui.util.FirebaseStorageConstants
 import com.example.travelapp.ui.util.UiState
 import com.google.firebase.auth.FirebaseAuth
@@ -48,10 +54,29 @@ class HomeFragment : Fragment() {
     lateinit var locationRecyclerView: RecyclerView
     lateinit var sessionTextView: TextView
     lateinit var userTextView: TextView
+
     val viewModel: LocationViewModel = LocationViewModel(LocationRepository(
         FirebaseFirestore.getInstance(),
         FirebaseStorage.getInstance().getReference(FirebaseStorageConstants.ROOT_DIRECTORY)
     ))
+
+    // Viewpager Top Images initializes
+    lateinit var mSliderViewPager: ViewPager
+    lateinit var mDotLayout: LinearLayout
+    lateinit var mDots: Array<TextView>
+    lateinit var mStartAdapter: ViewPagerTopImagesAdapter
+    var handlerThread = Handler()
+    private val runnable = Runnable {
+        if (mSliderViewPager.currentItem == images.size - 1) {
+            mSliderViewPager.currentItem = 0
+            setUpIndicator(0)
+        } else {
+            mSliderViewPager.currentItem = mSliderViewPager.currentItem + 1
+            setUpIndicator(mSliderViewPager.currentItem)
+        }
+    }
+
+    var images: ArrayList<Int> = ArrayList()
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -142,12 +167,68 @@ class HomeFragment : Fragment() {
 
         }
 
+        images.add(R.drawable.vietnam)
+        images.add(R.drawable.switzerland)
+
 
 
         userTextView = activity?.findViewById(R.id.text_view_user)!!
         userTextView.text = Firebase.auth.currentUser?.displayName ?: getString(R.string.guest)
 
+        // Viewpager Top Images
+        mSliderViewPager = activity?.findViewById(R.id.top_image_viewpager)!!
+        mDotLayout = activity?.findViewById(R.id.dots_layout_top_images)!!
 
+
+        mStartAdapter = ViewPagerTopImagesAdapter(requireContext(), images)
+        mSliderViewPager.adapter = mStartAdapter
+
+        setUpIndicator(0)
+
+        handlerThread.postDelayed(runnable, 3000)
+
+
+        mSliderViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+
+            }
+
+            override fun onPageSelected(position: Int) {
+                handlerThread.removeCallbacks(runnable)
+                handlerThread.postDelayed(runnable, 3000)
+
+
+            }
+
+            override fun onPageScrollStateChanged(state: Int) { }
+
+        })
+
+
+
+    }
+
+    private fun getitem(i: Int): Int {
+        return mSliderViewPager.getCurrentItem() + i
+    }
+
+    fun setUpIndicator(position: Int){
+        mDots = Array(images.size){TextView(requireContext())}
+        mDotLayout.removeAllViews()
+        for (i in mDots.indices){
+            mDots[i] = TextView(requireContext())
+            mDots[i].text = Html.fromHtml("&#8226")
+            mDots[i].textSize = 35f
+            mDots[i].setTextColor(resources.getColor(R.color.indicator_inactive_color, activity?.applicationContext?.theme))
+            mDotLayout.addView(mDots[i])
+        }
+        if (mDots.isNotEmpty()){
+            mDots[position].setTextColor(resources.getColor(R.color.indicator_active_color, activity?.applicationContext?.theme))
+        }
     }
 
 
