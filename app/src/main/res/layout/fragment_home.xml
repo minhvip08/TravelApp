@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="8dp"
     tools:context=".ui.fragments.HomeFragment">
 
@@ -46,18 +47,19 @@
 
     <androidx.appcompat.widget.SearchView
         android:layout_below="@+id/text_view_user"
-        android:id="@+id/search_box"
+        android:id="@+id/search_location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:queryHint="Search location now!"
         android:background="@drawable/search_view_background"
         android:layout_marginTop="16dp"
+
         android:layout_marginBottom="16dp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/search_box"
+        android:layout_below="@+id/search_location"
         android:id="@+id/popular_location_title"
         android:text="Popular Location"
         android:textAppearance="@style/text_large_title"

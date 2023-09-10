@@ -14,6 +14,7 @@ import com.example.travelapp.R
 import com.example.travelapp.data.models.LocationItem
 import com.example.travelapp.databinding.FragmentHomeBinding
 import com.example.travelapp.ui.LocationDetailActivity
+import com.example.travelapp.ui.fragments.HomeFragment
 import com.google.android.material.imageview.ShapeableImageView
 
 class LocationAdapter :
@@ -25,6 +26,11 @@ class LocationAdapter :
         val locationAttraction: TextView = itemView.findViewById(R.id.popular_location_count)
         companion object {
             fun create(parent: ViewGroup): MyViewHolder {
+                if(parent.id == R.id.recycler_view_search){
+                    val view: View = LayoutInflater.from(parent.context)
+                        .inflate(R.layout.search_location_item, parent, false)
+                    return MyViewHolder(view)
+                }
                 val view: View = LayoutInflater.from(parent.context)
                     .inflate(R.layout.popular_location_item, parent, false)
                 return MyViewHolder(view)

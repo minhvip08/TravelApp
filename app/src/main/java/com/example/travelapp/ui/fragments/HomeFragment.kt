@@ -1,10 +1,9 @@
 package com.example.travelapp.ui.fragments
 
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.text.Html
+import android.text.InputType
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,7 +12,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.lifecycle.asLiveData
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,28 +20,23 @@ import androidx.viewpager.widget.ViewPager
 
 import com.example.travelapp.R
 import com.example.travelapp.data.LocationViewModel
-import com.example.travelapp.data.models.LocationItem
 import com.example.travelapp.data.repository.LocationRepository
 import com.example.travelapp.databinding.FragmentHomeBinding
+import com.example.travelapp.ui.SearchLocationActivity
 import com.example.travelapp.ui.UserProfileActivity
 import com.example.travelapp.ui.adapters.LocationAdapter
-import com.example.travelapp.ui.adapters.ViewPagerStartLayoutAdapter
 import com.example.travelapp.ui.adapters.ViewPagerTopImagesAdapter
 import com.example.travelapp.ui.util.FirebaseStorageConstants
 import com.example.travelapp.ui.util.UiState
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlinx.coroutines.withTimeout
 import java.util.Calendar
 
 // TODO: Rename parameter arguments, choose names that match
@@ -62,7 +56,7 @@ class HomeFragment : Fragment() {
     lateinit var locationRecyclerView: RecyclerView
     lateinit var sessionTextView: TextView
     lateinit var userTextView: TextView
-
+    lateinit var searchLocation: SearchView
     val viewModel: LocationViewModel = LocationViewModel(LocationRepository(
         FirebaseFirestore.getInstance(),
         FirebaseStorage.getInstance().getReference(FirebaseStorageConstants.ROOT_DIRECTORY)
@@ -118,6 +112,13 @@ class HomeFragment : Fragment() {
         recyclerView?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recyclerView?.setHasFixedSize(true)
         recyclerView?.adapter = locationAdapter
+
+        searchLocation = activity?.findViewById(R.id.search_location)!!
+        searchLocation.inputType = InputType.TYPE_NULL
+        searchLocation.setOnClickListener {
+            val intent = Intent(requireActivity(), SearchLocationActivity::class.java)
+            startActivity(intent)
+        }
 
         FirebaseFirestore.setLoggingEnabled(true)
 
@@ -216,22 +217,6 @@ class HomeFragment : Fragment() {
             weatherView.setImageResource(R.drawable.ic_night)
 
         }
-
-
-
-
-
-
-
-//        setUpIndicator(0)
-//
-//        handlerThread.postDelayed(runnable, 3000)
-//
-
-
-
-
-
     }
 
     private fun getitem(i: Int): Int {

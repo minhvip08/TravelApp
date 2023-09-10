@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_marginTop="16dp"
+    android:layout_marginBottom="16dp"
+    android:layout_height="138dp">
+
+
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/vietnam"
+        android:id="@+id/image_location"
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/circular"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_marginStart="16dp"
+        android:layout_height="wrap_content"
+        android:text="Switzerland"
+        android:layout_above="@id/popular_location_count"
+        android:id="@+id/popular_location_name"
+        android:textColor="@color/white"
+        android:textAppearance="@style/text_medium"
+        android:textSize="24sp"
+        android:layout_marginTop="8dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="16 locations"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:textAppearance="@style/text_small"
+        android:textColor="@color/white"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/popular_location_count"/>
+
+</RelativeLayout>
