@@ -14,8 +14,8 @@ class ScheduleViewModel(
         }
     }
 
-    fun setSchedule(uid: String, scheduleItem: ScheduleItem) {
-        repository.set(uid, scheduleItem)
+    fun setSchedule(uid: String, scheduleItem: ScheduleItem, callback:() -> Unit) {
+        repository.set(uid, scheduleItem, callback)
     }
 
     fun delete(uid: String, scheduleId: String) {

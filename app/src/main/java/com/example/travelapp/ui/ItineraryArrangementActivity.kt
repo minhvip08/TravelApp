@@ -21,7 +21,6 @@ import com.example.travelapp.data.repository.ItineraryRepository
 import com.example.travelapp.data.repository.ScheduleRepository
 import com.example.travelapp.ui.adapters.ViewPagerItineraryArrangementAdapter
 import com.example.travelapp.ui.fragments.DayFragment
-import com.example.travelapp.ui.util.FirestoreCollection
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.ktx.auth
@@ -39,6 +38,10 @@ class ItineraryArrangementActivity : AppCompatActivity() {
     lateinit var btnNext: Button
     private lateinit var mActionBarToolbar: Toolbar
     private lateinit var titleToolBar: TextView
+
+    val scheduleViewModel = ScheduleViewModel(ScheduleRepository(db))
+    val itineraryViewModel = ItineraryViewModel(ItineraryRepository(db))
+    val activityViewModel = ActivityItemViewModel(ActivityItemRepository(db))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,15 +78,9 @@ class ItineraryArrangementActivity : AppCompatActivity() {
         btnNext = findViewById(R.id.next_button)
         btnNext.setOnClickListener {
             setScheduleToDatabase()
-            for (i in 0 until numDay){
-                setItineraryToDatabase(i)
-                setActivityToDatabase(i)
-            }
-            var intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
-
-
         }
 
         setupToolBar()
@@ -110,22 +107,28 @@ class ItineraryArrangementActivity : AppCompatActivity() {
 
     private fun setScheduleToDatabase(){
         //add schedule to firebase
-
-        val scheduleViewModel: ScheduleViewModel = ScheduleViewModel(ScheduleRepository(db))
-        scheduleItem?.let { scheduleViewModel.setSchedule(user!!.uid, scheduleItem!!) }
+        scheduleItem?.let {
+            scheduleViewModel.setSchedule(user!!.uid, scheduleItem!!) {
+                setItineraryToDatabase()
+            }
+        }
     }
 
-    private fun setItineraryToDatabase(position: Int){
-        //add itinerary to firebase
-        val itineraryViewModel: ItineraryViewModel = ItineraryViewModel(ItineraryRepository(db))
-        itineraryViewModel.setItinerary(user!!.uid, scheduleItem!!.id,
-            dayFragmentList[position].itineraryItem
-        )
+    private fun setItineraryToDatabase() {
+        for (i in 0 until numDay) {
+            itineraryViewModel.setItinerary(
+                user!!.uid,
+                scheduleItem!!.id,
+                dayFragmentList[i].itineraryItem,
+            ) {
+                setActivityToDatabase(i)
+            }
+        }
+
     }
 
-    private fun setActivityToDatabase(position: Int){
+    private fun setActivityToDatabase(position: Int) {
         //add activity to firebase
-        val activityViewModel: ActivityItemViewModel = ActivityItemViewModel(ActivityItemRepository(db))
         for (activity in dayFragmentList[position].activityList){
             activityViewModel.setActivity(user!!.uid,
                 scheduleItem!!.id,

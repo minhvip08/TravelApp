@@ -33,7 +33,10 @@ class ItineraryRepository(
     }
 
 
-    override fun set(uid: String, scheduleId: String, itineraryItem: ItineraryItem) {
+    override fun set(uid: String,
+                     scheduleId: String,
+                     itineraryItem: ItineraryItem,
+                     callback: () -> Unit) {
         itineraryDatabase
             .collection(FirestoreCollection.USERS).document(uid)
             .collection(FirestoreCollection.SCHEDULES)
@@ -41,5 +44,8 @@ class ItineraryRepository(
             .collection(FirestoreCollection.ITINERARIES)
             .document(itineraryItem.id)
             .set(itineraryItem)
+            .addOnSuccessListener {
+                callback()
+            }
     }
 }

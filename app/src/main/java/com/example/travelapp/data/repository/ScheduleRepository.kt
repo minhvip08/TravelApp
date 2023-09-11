@@ -1,5 +1,6 @@
 package com.example.travelapp.data.repository
 
+import com.example.travelapp.data.models.ItineraryItem
 import com.example.travelapp.data.models.ScheduleItem
 import com.example.travelapp.ui.util.FirestoreCollection
 import com.example.travelapp.ui.util.UiState
@@ -30,12 +31,15 @@ class ScheduleRepository(
         emit(UiState.Failure(it.message))
     }
 
-    override fun set(uid: String, scheduleItem: ScheduleItem) {
+    override fun set(uid: String, scheduleItem: ScheduleItem, callback: () -> Unit) {
         scheduleDatabase
             .collection(FirestoreCollection.USERS).document(uid)
             .collection(FirestoreCollection.SCHEDULES)
             .document(scheduleItem.id)
             .set(scheduleItem)
+            .addOnSuccessListener {
+                callback()
+            }
     }
 
     override fun delete(uid: String, scheduleId: String) {
