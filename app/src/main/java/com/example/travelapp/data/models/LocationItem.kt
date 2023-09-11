@@ -10,6 +10,7 @@ data class LocationItem (
     val title: String,
     val image: String,
     val description: String,
+    val countryCode: String,
     var attraction: List<Attraction>) : Parcelable{
-    constructor() : this("", "", "", "", arrayListOf<Attraction>())
+    constructor() : this("", "", "", "", "", arrayListOf<Attraction>())
 }

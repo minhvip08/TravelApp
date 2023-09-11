@@ -87,7 +87,7 @@ class SetPeriodActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
         nextButton = findViewById(R.id.next_button)
         nextButton?.isEnabled = false
         nextButton?.setOnClickListener {
-            val intent = Intent(this, ItineraryArrangementActivity::class.java)
+            val intent = Intent(this, TravelArrangementActivity::class.java)
             intent.putExtra("schedule", scheduleItem)
             intent.putExtra("location", locationItem)
             startActivity(intent)

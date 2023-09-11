@@ -99,22 +99,26 @@
             android:layout_height="wrap_content"
             android:background="@drawable/layout_country_info"
             android:paddingVertical="18dp"
-            android:paddingHorizontal="46dp"
+            android:paddingHorizontal="35dp"
             android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:layout_weight="1">
 
             <TextView
                 android:id="@+id/from_country_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/country_wrapper"/>
+                android:background="@drawable/country_wrapper"
+                android:textSize="20sp"
+                android:gravity="center"/>
 
             <TextView
                 android:id="@+id/from_country_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/country_code"
-                android:textAppearance="@style/text_almost_large" />
+                android:textAppearance="@style/text_almost_large"
+                android:layout_marginTop="9dp"/>
 
         </LinearLayout>
 
@@ -122,29 +126,34 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/baseline_arrow_forward_21"
-            android:layout_marginHorizontal="15dp"/>
+            android:layout_marginHorizontal="15dp"
+            android:layout_weight="1"/>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/layout_country_info"
             android:paddingVertical="18dp"
-            android:paddingHorizontal="46dp"
+            android:paddingHorizontal="35dp"
             android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:layout_weight="1">
 
             <TextView
                 android:id="@+id/to_country_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/country_wrapper"/>
+                android:background="@drawable/country_wrapper"
+                android:textSize="20sp"
+                android:gravity="center"/>
 
             <TextView
                 android:id="@+id/to_country_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/country_code"
-                android:textAppearance="@style/text_almost_large" />
+                android:textAppearance="@style/text_almost_large"
+                android:layout_marginTop="9dp"/>
 
         </LinearLayout>
 
