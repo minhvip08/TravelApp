@@ -111,16 +111,24 @@ class ItineraryArrangementActivity : AppCompatActivity() {
     private fun setScheduleToDatabase(){
         //add schedule to firebase
 
-        val scheduleViewModel: ScheduleViewModel = ScheduleViewModel(ScheduleRepository(db))
-        scheduleItem?.let { scheduleViewModel.setSchedule(user!!.uid, scheduleItem!!) }
+        scheduleItem?.let {
+            scheduleViewModel.setSchedule(user!!.uid, scheduleItem!!) {
+                setItineraryToDatabase()
+            }
+        }
     }
 
-    private fun setItineraryToDatabase(position: Int){
-        //add itinerary to firebase
-        val itineraryViewModel: ItineraryViewModel = ItineraryViewModel(ItineraryRepository(db))
-        itineraryViewModel.setItinerary(user!!.uid, scheduleItem!!.id,
-            dayFragmentList[position].itineraryItem
-        )
+    private fun setItineraryToDatabase() {
+        for (i in 0 until numDay) {
+            itineraryViewModel.setItinerary(
+                user!!.uid,
+                scheduleItem!!.id,
+                dayFragmentList[i].itineraryItem,
+            ) {
+                setActivityToDatabase(i)
+            }
+        }
+
     }
 
     private fun setActivityToDatabase(position: Int){
