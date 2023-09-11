@@ -7,6 +7,10 @@ import kotlinx.coroutines.flow.Flow
 
 interface IItineraryRepository {
     fun get(uid: String, itineraryId: String): Flow<UiState<List<ItineraryItem>>>
-
-    fun set(uid: String, scheduleId: String, itineraryItem: ItineraryItem)
+    fun set(
+        uid: String,
+        scheduleId: String,
+        itineraryItem: ItineraryItem,
+        callback: () -> Unit
+    )
 }

@@ -40,6 +40,10 @@ class ItineraryArrangementActivity : AppCompatActivity() {
     private lateinit var mActionBarToolbar: Toolbar
     private lateinit var titleToolBar: TextView
 
+    val scheduleViewModel = ScheduleViewModel(ScheduleRepository(db))
+    val itineraryViewModel = ItineraryViewModel(ItineraryRepository(db))
+    val activityViewModel = ActivityItemViewModel(ActivityItemRepository(db))
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_itinerary_arrangement)
@@ -75,13 +79,8 @@ class ItineraryArrangementActivity : AppCompatActivity() {
         btnNext = findViewById(R.id.next_button)
         btnNext.setOnClickListener {
             setScheduleToDatabase()
-            for (i in 0 until numDay){
-                setItineraryToDatabase(i)
-                setActivityToDatabase(i)
-            }
-            var intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-
             startActivity(intent)
 
 
