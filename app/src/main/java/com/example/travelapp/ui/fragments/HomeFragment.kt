@@ -20,6 +20,7 @@ import androidx.viewpager.widget.ViewPager
 
 import com.example.travelapp.R
 import com.example.travelapp.data.LocationViewModel
+import com.example.travelapp.data.models.LocationItem
 import com.example.travelapp.data.repository.LocationRepository
 import com.example.travelapp.databinding.FragmentHomeBinding
 import com.example.travelapp.ui.SearchLocationActivity
@@ -67,6 +68,8 @@ class HomeFragment : Fragment() {
     lateinit var mDotLayout: LinearLayout
     lateinit var mDots: Array<TextView>
     lateinit var mStartAdapter: ViewPagerTopImagesAdapter
+    lateinit var recyclerView: RecyclerView
+    var locationList = ArrayList<LocationItem>()
 
 
 
@@ -106,12 +109,12 @@ class HomeFragment : Fragment() {
 
         locationAdapter = LocationAdapter()
 
-        val recyclerView = activity?.findViewById<RecyclerView>(R.id.popular_location_recyclerview)
+        recyclerView = activity?.findViewById<RecyclerView>(R.id.popular_location_recyclerview)!!
 
 
-        recyclerView?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        recyclerView?.setHasFixedSize(true)
-        recyclerView?.adapter = locationAdapter
+        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.setHasFixedSize(true)
+        recyclerView.adapter = locationAdapter
 
         searchLocation = activity?.findViewById(R.id.search_location)!!
         searchLocation.inputType = InputType.TYPE_NULL
@@ -136,6 +139,7 @@ class HomeFragment : Fragment() {
 
                     }
                     locationAdapter.submitList(it.data)
+                    locationList = it.data as ArrayList<LocationItem>
                 }
                 is UiState.Failure -> {
                     Log.d("TAG", it.error!!)
@@ -196,6 +200,7 @@ class HomeFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
+        locationAdapter.submitList(locationList)
         val c = Calendar.getInstance()
         val hour = c.get(Calendar.HOUR_OF_DAY)
         var weatherView: ImageView = activity?.findViewById(R.id.image_view_weather)!!

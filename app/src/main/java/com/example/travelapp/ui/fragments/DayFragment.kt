@@ -67,16 +67,14 @@ class DayFragment : Fragment() {
         itineraryItem.id = RandomString.randomString(20)
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         //set find id
-        addBtn = activity?.findViewById<FloatingActionButton>(R.id.add_task_button)!!
-
-        recv = activity?.findViewById<RecyclerView>(R.id.itinerary_recycler_view)!!
+        addBtn = view.findViewById<FloatingActionButton>(R.id.add_task_button)
+        recv = view.findViewById<RecyclerView>(R.id.itinerary_recycler_view)
         //set adapter
         dayAdapter = DayAdapter(requireContext(),  activityList, itineraryItem)
         recv.adapter = dayAdapter
-
         //set layout manager
         recv.setHasFixedSize(true)
         recv.layoutManager = LinearLayoutManager(requireContext())
@@ -84,6 +82,12 @@ class DayFragment : Fragment() {
         addBtn.setOnClickListener {
             addActivity()
         }
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+
     }
 
     fun addActivity(){
