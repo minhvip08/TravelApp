@@ -4,10 +4,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.ArrayAdapter
 import android.widget.RatingBar
-import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
@@ -20,7 +17,6 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.ClusterManager
 
 
@@ -46,7 +42,7 @@ class MapActivity : AppCompatActivity() , OnMapReadyCallback {
 
         floatingNextBtn = findViewById(R.id.floating_next_button)
         floatingNextBtn.setOnClickListener {
-            var intent: Intent = Intent(this, NewPlanActivity::class.java)
+            var intent: Intent = Intent(this, SetPeriodActivity::class.java)
             intent.putExtra("location", locationItem)
             startActivity(intent)
         }

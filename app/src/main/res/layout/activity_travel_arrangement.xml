@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.TravelArrangementActivity"
+    android:paddingHorizontal="24dp"
+    android:paddingBottom="37dp">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_travel_arrangement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:layout_marginTop="40dp"
+        app:layout_constraintTop_toTopOf="parent">
+        <TextView
+            android:id="@+id/title_travel_arrangement"
+            android:text="@string/travel_plan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAppearance="@style/text_large_title"/>
+    </androidx.appcompat.widget.Toolbar>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/title_hotel"
+        android:text="@string/hotel_x_days"
+        android:textAppearance="@style/travel_arrangement_title"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_travel_arrangement"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="15dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/travel_arrangement_layout_hotel_card"
+        app:layout_constraintTop_toBottomOf="@id/title_hotel"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/layout_hotel_outline"
+        android:padding="25dp">
+
+        <TextView
+            android:id="@+id/travel_arrangement_hotel_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hotel_name"
+            android:textAppearance="@style/travel_arrangement_medium"
+            android:layout_alignParentStart="true" />
+
+        <RatingBar
+            android:id="@+id/travel_arrangement_hotel_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/ratingBarStyleSmall"
+            android:numStars="5"
+            android:isIndicator="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/travel_arrangement_hotel_name"
+            android:layout_marginTop="13dp"/>
+
+        <TextView
+            android:id="@+id/travel_arrangement_hotel_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="$150"
+            android:textAppearance="@style/pricing"
+            android:textColor="@color/white"
+            android:layout_alignParentEnd="true"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/title_flight"
+        android:text="@string/flight"
+        android:textAppearance="@style/travel_arrangement_title"
+        app:layout_constraintTop_toBottomOf="@id/travel_arrangement_layout_hotel_card"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="40dp"/>
+
+    <LinearLayout
+        android:id="@+id/travel_arrangement_layout_flight_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/title_flight"
+        android:layout_marginTop="15dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/layout_country_info"
+            android:paddingVertical="18dp"
+            android:paddingHorizontal="46dp"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/from_country_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/country_wrapper"/>
+
+            <TextView
+                android:id="@+id/from_country_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/country_code"
+                android:textAppearance="@style/text_almost_large" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_arrow_forward_21"
+            android:layout_marginHorizontal="15dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/layout_country_info"
+            android:paddingVertical="18dp"
+            android:paddingHorizontal="46dp"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/to_country_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/country_wrapper"/>
+
+            <TextView
+                android:id="@+id/to_country_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/country_code"
+                android:textAppearance="@style/text_almost_large" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/travel_arrangement_airline_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="25dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@id/travel_arrangement_layout_flight_card"
+        android:background="@drawable/layout_country_info"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:text="@string/airline_name">
+        
+        <TextView
+            android:layout_centerVertical="true"
+            android:id="@+id/travel_arrangement_airline_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textAppearance="@style/travel_arrangement_medium"
+            android:text="@string/airline_name"/>
+
+        <TextView
+            android:layout_centerVertical="true"
+            android:id="@+id/travel_arrangement_airline_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textAppearance="@style/pricing"
+            android:text="$100"
+            android:layout_alignParentEnd="true"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/blue"
+        android:textAppearance="@style/pricing"
+        android:text="$250"
+        app:layout_constraintTop_toBottomOf="@id/travel_arrangement_airline_layout"
+        app:layout_constraintBottom_toTopOf="@id/determine_the_plan_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="25dp"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/determine_the_plan_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="18dp"
+        android:text="@string/determine_the_plan"
+        android:textAppearance="@style/button_text_appearance"
+        android:background="@drawable/button_primary"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
