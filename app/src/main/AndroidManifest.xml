@@ -42,7 +42,7 @@
             android:name=".ui.ItineraryArrangementActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.NewPlanActivity"
+            android:name=".ui.SetPeriodActivity"
             android:exported="false" />
 
         <meta-data
@@ -64,7 +64,13 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.MainActivity"
-            android:exported="false"></activity>
+            android:exported="false"/>
+        <activity
+            android:name=".ui.ChooseHotelActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.TravelArrangementActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.LocationDetailActivity"
             android:exported="false" />

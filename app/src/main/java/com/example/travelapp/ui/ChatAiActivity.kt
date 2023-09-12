@@ -79,6 +79,7 @@ class ChatAiActivity : AppCompatActivity() {
 
     fun callAPI(message: String){
 
+
         var jsonBody = JSONObject()
         try {
             jsonBody.put("model", "gpt-3.5-turbo")
@@ -104,7 +105,7 @@ class ChatAiActivity : AppCompatActivity() {
         var body = RequestBody.create("application/json; charset=utf-8".toMediaType(), jsonBody.toString())
         var request = Request.Builder()
             .url("https://api.openai.com/v1/chat/completions")
-            .header("Authorization", "Bearer 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")
+            .header("Authorization", "Bearer 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")
             .post(body)
             .build()
 
