@@ -19,7 +19,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="You AI Assistant"
+                android:text="Your AI Assistant"
 
                 android:textColor="@color/blue"
                 android:textAppearance="@style/text_large_title"/>
@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_margin="20dp"
                 android:layout_height="wrap_content"
-                android:text="Using this software, you can ask you\nquestions and receive articles using\nartificial intelligence assistant"
+                android:text="You can ask your questions and\n receive answers using \nartificial intelligence assistant."
                 android:textAlignment="center"
                 android:textAppearance="@style/text_medium"/>
             <ImageView
@@ -40,6 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/continue_button"
+                android:textAppearance="@style/text_medium"
                 android:text="Continue"/>
 
         </LinearLayout>
