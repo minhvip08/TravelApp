@@ -1,6 +1,7 @@
 package com.example.travelapp.ui.util
 
 import android.app.Activity
+import com.google.common.net.MediaType
 
 object FirestoreCollection{
     const val RATING = "rating"
@@ -13,6 +14,10 @@ object FirestoreCollection{
 
 }
 
+object SendBy{
+    const val SEND_BY_USER = "user"
+    const val SEND_BY_BOT = "bot"
+}
 
 object RandomString {
     fun randomString(length: Int): String {
@@ -27,6 +32,13 @@ object FireDatabase{
     val TASK = "task"
 }
 
+object OkHttpJSON{
+    val JSON : MediaType? = MediaType.parse("application/json; charset=utf-8")
+}
+
+object API_KEY{
+    val CHATGPT_API_KEY = "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"
+}
 object FireStoreDocumentField {
     val DATE = "date"
     val USER_ID = "user_id"

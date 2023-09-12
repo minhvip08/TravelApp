@@ -90,5 +90,8 @@ dependencies {
 
     implementation 'com.google.maps.android:maps-utils-ktx:3.4.0'
 
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+
+
 }
 

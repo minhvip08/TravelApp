@@ -3,6 +3,8 @@ package com.example.travelapp.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.example.travelapp.R
 import com.example.travelapp.data.UserViewModel
@@ -20,6 +22,9 @@ import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var mActionBarToolbar: Toolbar
+    private lateinit var titleToolBar: TextView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +34,7 @@ class MainActivity : AppCompatActivity() {
         binding= ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         replaceFragment(HomeFragment())
+
 
 
 
@@ -79,5 +85,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
+
 
 }

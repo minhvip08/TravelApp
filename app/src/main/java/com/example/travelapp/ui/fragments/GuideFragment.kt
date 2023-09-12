@@ -1,11 +1,16 @@
 package com.example.travelapp.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
 import com.example.travelapp.R
+import com.example.travelapp.ui.ChatAiActivity
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +26,10 @@ class GuideFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    lateinit var nextButton: Button
+    private lateinit var mActionBarToolbar: Toolbar
+    private lateinit var titleToolBar: TextView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +38,29 @@ class GuideFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
     }
+
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        nextButton = view.findViewById<Button>(R.id.continue_button)
+
+
+        nextButton.setOnClickListener{
+            var intent = Intent(view.context, ChatAiActivity::class.java)
+            startActivity(intent)
+        }
+
+        //support action bar
+
+
+
+
+
+    }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
