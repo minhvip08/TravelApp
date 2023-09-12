@@ -11,7 +11,6 @@ import android.util.Log
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.ImageView
-import android.widget.RatingBar
 import android.widget.TextView
 
 import androidx.appcompat.app.AppCompatActivity
@@ -28,7 +27,7 @@ import java.util.Calendar
 import java.util.Date
 
 
-class NewPlanActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
+class SetPeriodActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
     private var textView: TextView? = null
     var currentDayString: String? = null
     var dateTextView: Int = 0
@@ -43,7 +42,7 @@ class NewPlanActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
     private lateinit var bannerImg: ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_new_plan)
+        setContentView(R.layout.activity_set_period)
 
         locationItem = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra("location", LocationItem::class.java)
@@ -88,7 +87,7 @@ class NewPlanActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
         nextButton = findViewById(R.id.next_button)
         nextButton?.isEnabled = false
         nextButton?.setOnClickListener {
-            val intent = Intent(this, ItineraryArrangementActivity::class.java)
+            val intent = Intent(this, TravelArrangementActivity::class.java)
             intent.putExtra("schedule", scheduleItem)
             intent.putExtra("location", locationItem)
             startActivity(intent)

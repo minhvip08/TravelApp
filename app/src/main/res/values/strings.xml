@@ -39,4 +39,11 @@
     <string name="desc_page_1">Formulate your strategy to receive \nwonderful gift packs</string>
     <string name="desc_page_2">Countless high-end \nentertainment facilities</string>
     <string name="desc_page_3">The world\'s first-class modern leisure \nand entertainment method</string>
+    <string name="travel_plan">Travel plan</string>
+    <string name="hotel_x_days">Hotel (%1$d days)</string>
+    <string name="hotel_name">hotel_name</string>
+    <string name="flight">Flight</string>
+    <string name="country_code">XX</string>
+    <string name="airline_name">airline_name</string>
+    <string name="determine_the_plan">Determine the plan</string>
 </resources>

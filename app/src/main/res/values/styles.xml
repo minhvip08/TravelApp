@@ -10,8 +10,6 @@
         <item name="android:textColor">#818181</item>
     </style>
 
-
-
     <style name="text_large_title">
         <item name="android:textSize">26sp</item>
         <item name="android:textColor">#000000</item>
@@ -53,5 +51,26 @@
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">#0373F3</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="travel_arrangement_title">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="travel_arrangement_medium">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="text_almost_large">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+
+    <style name="pricing">
+        <item name="android:textSize">24sp</item>
     </style>
 </resources>
