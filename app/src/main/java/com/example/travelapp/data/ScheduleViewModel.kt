@@ -8,17 +8,15 @@ import kotlinx.coroutines.Dispatchers
 class ScheduleViewModel(
     private val repository: IScheduleRepository
 ) {
-    fun getSchedules(uid: String) = liveData(Dispatchers.IO) {
-        repository.get(uid).collect {
-            emit(it)
-        }
+    fun getSchedules(uid: String, updateUi: (MutableList<ScheduleItem>) -> Unit) {
+        repository.get(uid, updateUi)
     }
 
     fun setSchedule(uid: String, scheduleItem: ScheduleItem, callback:() -> Unit) {
         repository.set(uid, scheduleItem, callback)
     }
 
-    fun delete(uid: String, scheduleId: String) {
-        repository.delete(uid, scheduleId)
+    fun delete(uid: String, scheduleId: String, updateUi: () -> Unit) {
+        repository.delete(uid, scheduleId, updateUi)
     }
 }

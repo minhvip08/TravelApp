@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.travelapp.R
 import com.example.travelapp.data.ScheduleViewModel
+import com.example.travelapp.data.models.ScheduleItem
 import com.example.travelapp.data.repository.ScheduleRepository
 import com.example.travelapp.ui.adapters.ScheduleAdapter
 import com.example.travelapp.ui.util.UiState
@@ -38,6 +39,7 @@ class ScheduleFragment : Fragment() {
             FirebaseFirestore.getInstance()
         )
     )
+    private lateinit var scheduleList: MutableList<ScheduleItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,19 +56,9 @@ class ScheduleFragment : Fragment() {
         scheduleRecyclerView.adapter = scheduleAdapter
         scheduleRecyclerView.setHasFixedSize(true)
         scheduleRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        viewModel.getSchedules(Firebase.auth.currentUser!!.uid).observe(viewLifecycleOwner) {
-            when (it) {
-                is UiState.Loading -> {
-                    Log.d("ScheduleFragment", "Loading")
-                }
-                is UiState.Success -> {
-                    Log.d("ScheduleFragment", "Success")
-                    scheduleAdapter.submitList(it.data)
-                }
-                is UiState.Failure -> {
-                    Log.w("ScheduleFragment", it.error!!)
-                }
-            }
+        viewModel.getSchedules(Firebase.auth.currentUser!!.uid) {
+            scheduleList = it
+            scheduleAdapter.submitList(scheduleList)
         }
         val itemTouchHelper = ItemTouchHelper(object: ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             override fun onMove(
@@ -78,12 +70,10 @@ class ScheduleFragment : Fragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                viewModel.delete(Firebase.auth.currentUser!!.uid, (viewHolder as ScheduleAdapter.ViewHolder).id)
-                requireActivity().supportFragmentManager.commit {
-                    detach(this@ScheduleFragment)
-                }
-                requireActivity().supportFragmentManager.commit {
-                    attach(this@ScheduleFragment)
+                val position = viewHolder.adapterPosition
+                viewModel.delete(Firebase.auth.currentUser!!.uid, (viewHolder as ScheduleAdapter.ViewHolder).id) {
+                    scheduleList.removeAt(position)
+                    scheduleAdapter.notifyItemRemoved(position)
                 }
             }
         })
