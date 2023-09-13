@@ -5,18 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.example.travelapp.R
-import com.example.travelapp.data.UserViewModel
-import com.example.travelapp.data.repository.UserRepository
 import com.example.travelapp.databinding.ActivityMainBinding
-import com.example.travelapp.ui.fragments.BlogsFragment
+import com.example.travelapp.ui.fragments.ArticlesFragment
 import com.example.travelapp.ui.fragments.GuideFragment
 import com.example.travelapp.ui.fragments.HomeFragment
 import com.example.travelapp.ui.fragments.ScheduleFragment
 import com.example.travelapp.ui.util.SharedPrefConstants
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
-import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -35,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigation.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.home -> replaceFragment(HomeFragment())
-                R.id.blogs -> replaceFragment(BlogsFragment())
+                R.id.blogs -> replaceFragment(ArticlesFragment())
                 R.id.schedule -> replaceFragment(ScheduleFragment())
                 R.id.guide -> replaceFragment(GuideFragment())
             }

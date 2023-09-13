@@ -7,7 +7,6 @@ import android.location.Geocoder
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -28,6 +27,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Locale
 
+private const val DEFAULT_COUNTRY_CODE = "VN"
+
 class TravelArrangementActivity : AppCompatActivity() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var geoCoder: Geocoder
@@ -41,9 +42,8 @@ class TravelArrangementActivity : AppCompatActivity() {
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
         if (!permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false)) {
-            // Will be handled later
-            // Potential solution: add manual location input
-            throw Exception("Location permission is not granted")
+            fromCountryCode.text = DEFAULT_COUNTRY_CODE
+            fromCountryIcon.text = getFlagEmoji(DEFAULT_COUNTRY_CODE)
         }
     }
     override fun onCreate(savedInstanceState: Bundle?) {

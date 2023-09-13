@@ -11,6 +11,7 @@ object FirestoreCollection{
     const val LOCATION = "location"
     const val ATTRACTION = "attraction"
     const val SCHEDULES = "schedules"
+    const val ARTICLES = "articles"
 
 }
 
