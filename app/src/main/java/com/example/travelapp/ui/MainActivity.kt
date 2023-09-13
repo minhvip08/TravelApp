@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigation.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.home -> replaceFragment(HomeFragment())
-                R.id.blogs -> replaceFragment(ArticlesFragment())
+                R.id.feed -> replaceFragment(ArticlesFragment())
                 R.id.schedule -> replaceFragment(ScheduleFragment())
                 R.id.guide -> replaceFragment(GuideFragment())
             }

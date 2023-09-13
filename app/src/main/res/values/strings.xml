@@ -46,4 +46,8 @@
     <string name="country_code">XX</string>
     <string name="airline_name">airline_name</string>
     <string name="determine_the_plan">Determine the plan</string>
+    <string name="articles_feed">Articles feed</string>
+    <string name="feed">Feed</string>
+    <string name="guide">Guide</string>
+    <string name="home">Home</string>
 </resources>
