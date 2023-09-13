@@ -1,6 +1,8 @@
 package com.example.travelapp.ui.fragments
 
+import android.content.ContentValues.TAG
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.text.Html
 import android.text.InputType
@@ -19,8 +21,10 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 
 import com.example.travelapp.R
+import com.example.travelapp.data.ImageViewModel
 import com.example.travelapp.data.LocationViewModel
 import com.example.travelapp.data.models.LocationItem
+import com.example.travelapp.data.repository.ImageRepository
 import com.example.travelapp.data.repository.LocationRepository
 import com.example.travelapp.databinding.FragmentHomeBinding
 import com.example.travelapp.ui.SearchLocationActivity
@@ -33,6 +37,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -70,6 +75,7 @@ class HomeFragment : Fragment() {
     lateinit var mStartAdapter: ViewPagerTopImagesAdapter
     lateinit var recyclerView: RecyclerView
     var locationList = ArrayList<LocationItem>()
+    var imageStringList = ArrayList<String>()
 
 
 
@@ -82,7 +88,7 @@ class HomeFragment : Fragment() {
 //        }
 //    }
 
-    var images: ArrayList<Int> = ArrayList()
+    var images: ArrayList<Bitmap> = ArrayList()
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -155,8 +161,26 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
 
-        images.add(R.drawable.vietnam)
-        images.add(R.drawable.switzerland)
+
+
+//        images.add(R.drawable.vietnam)
+//        images.add(R.drawable.switzerland)
+
+        //Test for image storage
+        val storage =  Firebase.storage
+        var ImageViewModel = ImageViewModel(ImageRepository(storage.reference))
+
+        ImageViewModel.getImage("vietnam"){
+            updateUI(it)}
+        ImageViewModel.getImage("switzerland"){
+            updateUI(it)}
+
+
+
+
+
+
+
         userTextView = activity?.findViewById(R.id.text_view_user)!!
         userTextView.text = Firebase.auth.currentUser?.displayName ?: getString(R.string.guest)
         mDotLayout = activity?.findViewById(R.id.dots_layout_top_images)!!
@@ -196,6 +220,11 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+    }
+
+    fun updateUI(bitmap: Bitmap){
+        images.add(bitmap)
+        mStartAdapter.notifyDataSetChanged()
     }
 
     override fun onStart() {
