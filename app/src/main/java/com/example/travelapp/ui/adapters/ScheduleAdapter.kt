@@ -14,8 +14,10 @@ import com.example.travelapp.R
 import com.example.travelapp.data.models.ScheduleItem
 import com.example.travelapp.ui.fragments.ItineraryFragment
 
-class ScheduleAdapter(private val supportFragmentManager: FragmentManager) :
-    ListAdapter<ScheduleItem, ScheduleAdapter.ViewHolder>(ScheduleItemDiff()) {
+class ScheduleAdapter(
+    private val supportFragmentManager: FragmentManager,
+    private val isHistory: Boolean
+) : ListAdapter<ScheduleItem, ScheduleAdapter.ViewHolder>(ScheduleItemDiff()) {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name: TextView = itemView.findViewById(R.id.schedule_name)
@@ -50,13 +52,15 @@ class ScheduleAdapter(private val supportFragmentManager: FragmentManager) :
         val currentItem = getItem(position)
         holder.name.text = currentItem.name
         holder.id = currentItem.id
-        holder.itemView.setOnClickListener {
-            supportFragmentManager.commit {
-                replace(
-                    R.id.frame_layout_main_activity,
-                    ItineraryFragment.newInstance(currentItem.id)
-                )
-                addToBackStack(null)
+        if (!isHistory) {
+            holder.itemView.setOnClickListener {
+                supportFragmentManager.commit {
+                    replace(
+                        R.id.frame_layout_main_activity,
+                        ItineraryFragment.newInstance(currentItem.id)
+                    )
+                    addToBackStack(null)
+                }
             }
         }
 

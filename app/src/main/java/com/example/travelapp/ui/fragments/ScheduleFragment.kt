@@ -1,21 +1,18 @@
 package com.example.travelapp.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.commit
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.fragment.app.Fragment
+import androidx.viewpager2.widget.ViewPager2
 import com.example.travelapp.R
 import com.example.travelapp.data.ScheduleViewModel
 import com.example.travelapp.data.models.ScheduleItem
 import com.example.travelapp.data.repository.ScheduleRepository
-import com.example.travelapp.ui.adapters.ScheduleAdapter
-import com.example.travelapp.ui.util.UiState
+import com.example.travelapp.ui.adapters.ScheduleViewPagerAdapter
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
@@ -34,12 +31,15 @@ class ScheduleFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    private val viewModel = ScheduleViewModel(
+    val viewModel = ScheduleViewModel(
         ScheduleRepository(
             FirebaseFirestore.getInstance()
         )
     )
-    private lateinit var scheduleList: MutableList<ScheduleItem>
+    private lateinit var scheduleList: List<ScheduleItem>
+    private lateinit var adapter: ScheduleViewPagerAdapter
+    private lateinit var tabLayout: TabLayout
+    private lateinit var viewPager: ViewPager2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,32 +51,31 @@ class ScheduleFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val scheduleRecyclerView = view.findViewById<RecyclerView>(R.id.schedule_list)
-        val scheduleAdapter = ScheduleAdapter(requireActivity().supportFragmentManager)
-        scheduleRecyclerView.adapter = scheduleAdapter
-        scheduleRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        tabLayout = view.findViewById(R.id.tab_layout_schedule)
+        viewPager = view.findViewById(R.id.schedule_list)
         viewModel.getSchedules(Firebase.auth.currentUser!!.uid) {
             scheduleList = it
-            scheduleAdapter.submitList(scheduleList)
-        }
-        val itemTouchHelper = ItemTouchHelper(object: ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean {
-                return false
-            }
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val position = viewHolder.adapterPosition
-                viewModel.delete(Firebase.auth.currentUser!!.uid, (viewHolder as ScheduleAdapter.ViewHolder).id) {
-                    scheduleList.removeAt(position)
-                    scheduleAdapter.notifyItemRemoved(position)
+            adapter = ScheduleViewPagerAdapter(this, it)
+            viewPager.adapter = adapter
+            tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+                    viewPager.currentItem = tab!!.position
                 }
-            }
-        })
-        itemTouchHelper.attachToRecyclerView(scheduleRecyclerView)
+
+                override fun onTabUnselected(tab: TabLayout.Tab?) {
+                    // Do nothing
+                }
+
+                override fun onTabReselected(tab: TabLayout.Tab?) {
+                    // Do nothing
+                }
+            })
+            viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    tabLayout.selectTab(tabLayout.getTabAt(position))
+                }
+            })
+        }
     }
 
     override fun onCreateView(

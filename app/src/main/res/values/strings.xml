@@ -50,4 +50,6 @@
     <string name="feed">Feed</string>
     <string name="guide">Guide</string>
     <string name="home">Home</string>
+    <string name="tab_item_ongoing">Ongoing</string>
+    <string name="tab_item_history">History</string>
 </resources>

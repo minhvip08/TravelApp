@@ -8,7 +8,7 @@ import kotlinx.coroutines.Dispatchers
 class ScheduleViewModel(
     private val repository: IScheduleRepository
 ) {
-    fun getSchedules(uid: String, updateUi: (MutableList<ScheduleItem>) -> Unit) {
+    fun getSchedules(uid: String, updateUi: (List<ScheduleItem>) -> Unit) {
         repository.get(uid, updateUi)
     }
 

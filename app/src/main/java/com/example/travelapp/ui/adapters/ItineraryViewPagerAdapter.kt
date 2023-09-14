@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.travelapp.R
 import com.example.travelapp.data.models.ItineraryItem
@@ -15,12 +13,11 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class ItineraryViewPagerAdapter(
-    private val supportFragmentManager: FragmentManager,
-    private val lifecycle: Lifecycle,
+    fragment: Fragment,
     private val context: Context,
     private val scheduleId: String,
     private val itineraryList: List<ItineraryItem>
-) : FragmentStateAdapter(supportFragmentManager, lifecycle) {
+) : FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int {
         return itineraryList.size
     }

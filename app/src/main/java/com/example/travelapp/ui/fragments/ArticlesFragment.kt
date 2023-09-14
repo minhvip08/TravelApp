@@ -29,6 +29,7 @@ class ArticlesFragment : Fragment() {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var recyclerView: RecyclerView
     private var articleList = mutableListOf<ArticleItem>()
+    private var isLoading = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,20 +44,21 @@ class ArticlesFragment : Fragment() {
         articleAdapter = ArticleAdapter()
         linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView = view.findViewById(R.id.articles_recycler_view)
-        recyclerView.adapter = articleAdapter
         recyclerView.layoutManager = linearLayoutManager
         loadArticles()
         val refreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.articles_refresh_layout)
         refreshLayout.setOnRefreshListener {
+            refreshLayout.isRefreshing = false
             articleViewModel.clearArticlesQueue()
             articleList.clear()
+            recyclerView.clearOnScrollListeners()
             loadArticles()
-            refreshLayout.isRefreshing = false
         }
     }
 
     private fun loadArticles() {
         articleViewModel.getArticles { initList ->
+            recyclerView.adapter = articleAdapter
             articleList.addAll(initList)
             articleAdapter.submitList(articleList)
             recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
@@ -68,10 +70,12 @@ class ArticlesFragment : Fragment() {
                                 // Avoid crashing when there is no more article to load
                                 recyclerView.removeOnScrollListener(this)
                             }
-                            val positionStart = articleList.size
-                            articleList.addAll(loadMoreList)
-                            articleAdapter.submitList(articleList)
-                            articleAdapter.notifyItemRangeInserted(positionStart, loadMoreList.size)
+                            else {
+                                val positionStart = articleList.size
+                                articleList.addAll(loadMoreList)
+                                articleAdapter.submitList(articleList)
+                                articleAdapter.notifyItemRangeInserted(positionStart, loadMoreList.size)
+                            }
                         }
                     }
                 }

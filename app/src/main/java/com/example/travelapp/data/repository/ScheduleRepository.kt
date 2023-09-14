@@ -13,7 +13,7 @@ import kotlinx.coroutines.tasks.await
 class ScheduleRepository(
     private val scheduleDatabase: FirebaseFirestore
 ) : IScheduleRepository {
-    override fun get(uid: String, updateUi: (MutableList<ScheduleItem>) -> Unit) {
+    override fun get(uid: String, updateUi: (List<ScheduleItem>) -> Unit) {
         scheduleDatabase
             .collection(FirestoreCollection.USERS).document(uid)
             .collection(FirestoreCollection.SCHEDULES)
