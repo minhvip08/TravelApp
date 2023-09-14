@@ -4,6 +4,6 @@ import com.example.travelapp.data.models.HotelItem
 import kotlinx.coroutines.flow.Flow
 
 interface IHotelRepository {
-    fun get(locationId:String): Flow<List<HotelItem>>
+    fun get(locationId:String, updateUi: (List<HotelItem>) -> Unit)
 
 }

@@ -47,21 +47,17 @@ class ChooseHotelActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = hotelAdapter
 
-        viewModel.getHotels(locationItem!!.id).observe(this) {
+        viewModel.getHotels(locationItem!!.id) { list ->
             hotelList.clear()
-            hotelList.addAll(it)
-            hotelList.forEach() {
-                updateImage(it.imageId) { path ->
-                    it.imagePath = path
-                    hotelAdapter.notifyDataSetChanged()
-
+            hotelList.addAll(list)
+            hotelAdapter.notifyItemRangeInserted(0, list.size)
+            hotelList.forEach { hotel ->
+                updateImage(hotel.imageId) { imagePath ->
+                    hotel.imagePath = imagePath
+                    hotelAdapter.notifyItemChanged(hotelList.indexOf(hotel))
                 }
             }
-
         }
-
-
-
     }
 
     fun updateImage(imageId: String, updateUi: (String) -> Unit) {

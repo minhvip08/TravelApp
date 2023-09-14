@@ -157,7 +157,7 @@ class HomeFragment : Fragment() {
         val storage =   FirebaseStorage.getInstance().reference
         var ImageViewModel = ImageViewModel(ImageRepository( storage))
 
-        ImageViewModel.getImage("vietnam"){
+        ImageViewModel.getImage("vietnam") {
             updateUI(it)}
         ImageViewModel.getImage("switzerland"){
             updateUI(it)}

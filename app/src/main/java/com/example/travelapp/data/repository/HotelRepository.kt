@@ -8,17 +8,12 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
 class HotelRepository (private val hotelDatabase: FirebaseFirestore): IHotelRepository{
-    override fun get(locationId: String): Flow<List<HotelItem>> = flow {
-        emit(
-            hotelDatabase
-                .collection(FirestoreCollection.HOTELS)
-                .whereArrayContains("locationIds", locationId)
-                .get()
-                .await()
-                .documents
-                .mapNotNull {
-                    it.toObject(HotelItem::class.java)
-                }
-        )
+    override fun get(locationId: String, updateUi: (List<HotelItem>) -> Unit) {
+        hotelDatabase.collection(FirestoreCollection.HOTELS)
+            .whereArrayContains("locationIds", locationId)
+            .get()
+            .addOnSuccessListener {
+                updateUi(it.toObjects(HotelItem::class.java))
+            }
     }
 }

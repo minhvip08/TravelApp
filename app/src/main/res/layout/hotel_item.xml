@@ -10,7 +10,7 @@
         android:layout_height="200dp"
         android:id="@+id/image_view_hotel"
         app:shapeAppearanceOverlay="@style/circular"
-        android:src="@drawable/switzerland"
+        android:src="@color/blue"
         android:scaleType="centerCrop"/>
     <TextView
         android:layout_width="wrap_content"
