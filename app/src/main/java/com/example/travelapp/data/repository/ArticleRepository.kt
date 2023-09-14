@@ -7,6 +7,8 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
+private const val POST_PER_REQUEST: Long = 5
+
 class ArticleRepository(
     private val articleDatabase: FirebaseFirestore
 ) : IArticleRepository {
@@ -16,21 +18,30 @@ class ArticleRepository(
             articleDatabase
                 .collection(FirestoreCollection.ARTICLES)
                 .orderBy("time", Query.Direction.DESCENDING)
-                .limit(1)
+                .limit(POST_PER_REQUEST)
                 .get()
         } else {
             articleDatabase
                 .collection(FirestoreCollection.ARTICLES)
                 .orderBy("time", Query.Direction.DESCENDING)
-                .startAfter(lastVisible)
-                .limit(1)
+                .startAfter(lastVisible!!.get("time"))
+                .limit(POST_PER_REQUEST)
                 .get()
         }
         task.addOnSuccessListener {
-            lastVisible = it.documents[it.size() - 1]
-            updateUi(it.toObjects(ArticleItem::class.java))
+            if (it.isEmpty) {
+                updateUi(emptyList())
+            }
+            else {
+                lastVisible = it.documents[it.size() - 1]
+                updateUi(it.toObjects(ArticleItem::class.java))
+            }
         }.addOnFailureListener {
             Log.w("ArticleRepository.get()", "Error getting documents.", it)
         }
+    }
+
+    override fun reset() {
+        lastVisible = null
     }
 }
