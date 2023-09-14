@@ -45,11 +45,7 @@ class DetailHotelActivity : AppCompatActivity(), OnMapReadyCallback {
 
         getItemFromIntent()
 
-        hotelItem = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra("hotel", HotelItem::class.java)
-        } else {
-            intent.getParcelableExtra<HotelItem>("hotel")
-        }
+
 
 
 
@@ -87,6 +83,7 @@ class DetailHotelActivity : AppCompatActivity(), OnMapReadyCallback {
             val intent = Intent(this, TravelArrangementActivity::class.java)
             intent.putExtra("hotel", hotelItem)
             intent.putExtra("location", locationItem)
+            intent.putExtra("schedule", scheduleItem)
             startActivity(intent)
         }
     }
@@ -133,6 +130,12 @@ class DetailHotelActivity : AppCompatActivity(), OnMapReadyCallback {
             intent.getParcelableExtra("schedule", ScheduleItem::class.java)
         } else {
             intent.getParcelableExtra("schedule")
+        }
+
+        hotelItem = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra("hotel", HotelItem::class.java)
+        } else {
+            intent.getParcelableExtra<HotelItem>("hotel")
         }
     }
 }
