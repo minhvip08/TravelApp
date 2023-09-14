@@ -8,8 +8,10 @@ import android.view.ViewGroup
 import android.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.travelapp.R
 import com.example.travelapp.data.ArticleViewModel
+import com.example.travelapp.data.models.ArticleItem
 import com.example.travelapp.data.repository.ArticleRepository
 import com.example.travelapp.ui.adapters.ArticleAdapter
 import com.google.firebase.firestore.FirebaseFirestore
@@ -23,6 +25,11 @@ class ArticlesFragment : Fragment() {
         )
     )
 
+    private lateinit var articleAdapter: ArticleAdapter
+    private lateinit var linearLayoutManager: LinearLayoutManager
+    private lateinit var recyclerView: RecyclerView
+    private var articleList = mutableListOf<ArticleItem>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,12 +40,42 @@ class ArticlesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val articleAdapter = ArticleAdapter()
-        val recyclerView = view.findViewById<RecyclerView>(R.id.articles_recycler_view)
+        articleAdapter = ArticleAdapter()
+        linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerView = view.findViewById(R.id.articles_recycler_view)
         recyclerView.adapter = articleAdapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        articleViewModel.getArticles {
-            articleAdapter.submitList(it)
+        recyclerView.layoutManager = linearLayoutManager
+        loadArticles()
+        val refreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.articles_refresh_layout)
+        refreshLayout.setOnRefreshListener {
+            articleViewModel.clearArticlesQueue()
+            articleList.clear()
+            loadArticles()
+            refreshLayout.isRefreshing = false
+        }
+    }
+
+    private fun loadArticles() {
+        articleViewModel.getArticles { initList ->
+            articleList.addAll(initList)
+            articleAdapter.submitList(articleList)
+            recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if ((linearLayoutManager.findLastCompletelyVisibleItemPosition() == articleAdapter.itemCount - 1)) {
+                        articleViewModel.getArticles { loadMoreList ->
+                            if (loadMoreList.isEmpty()) {
+                                // Avoid crashing when there is no more article to load
+                                recyclerView.removeOnScrollListener(this)
+                            }
+                            val positionStart = articleList.size
+                            articleList.addAll(loadMoreList)
+                            articleAdapter.submitList(articleList)
+                            articleAdapter.notifyItemRangeInserted(positionStart, loadMoreList.size)
+                        }
+                    }
+                }
+            })
         }
     }
 

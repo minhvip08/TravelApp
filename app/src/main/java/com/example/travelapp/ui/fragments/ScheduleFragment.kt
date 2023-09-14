@@ -54,7 +54,6 @@ class ScheduleFragment : Fragment() {
         val scheduleRecyclerView = view.findViewById<RecyclerView>(R.id.schedule_list)
         val scheduleAdapter = ScheduleAdapter(requireActivity().supportFragmentManager)
         scheduleRecyclerView.adapter = scheduleAdapter
-        scheduleRecyclerView.setHasFixedSize(true)
         scheduleRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         viewModel.getSchedules(Firebase.auth.currentUser!!.uid) {
             scheduleList = it

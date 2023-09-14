@@ -9,4 +9,8 @@ class ArticleViewModel(
     fun getArticles(updateUi: (List<ArticleItem>) -> Unit) {
         repository.get(updateUi)
     }
+
+    fun clearArticlesQueue() {
+        repository.reset()
+    }
 }
