@@ -13,22 +13,14 @@ import kotlinx.coroutines.tasks.await
 class ScheduleRepository(
     private val scheduleDatabase: FirebaseFirestore
 ) : IScheduleRepository {
-    override fun get(uid: String) = flow {
-        emit(UiState.Loading)
-        emit(
-            UiState.Success(
-            scheduleDatabase
-                .collection(FirestoreCollection.USERS).document(uid)
-                .collection(FirestoreCollection.SCHEDULES)
-                .orderBy("startDate")
-                .get()
-                .await()
-                .documents
-                .mapNotNull {
-                    it.toObject(ScheduleItem::class.java)
-                }))
-    }.catch {
-        emit(UiState.Failure(it.message))
+    override fun get(uid: String, updateUi: (MutableList<ScheduleItem>) -> Unit) {
+        scheduleDatabase
+            .collection(FirestoreCollection.USERS).document(uid)
+            .collection(FirestoreCollection.SCHEDULES)
+            .get()
+            .addOnSuccessListener {
+                updateUi(it.toObjects(ScheduleItem::class.java))
+            }
     }
 
     override fun set(uid: String, scheduleItem: ScheduleItem, callback: () -> Unit) {
@@ -42,11 +34,14 @@ class ScheduleRepository(
             }
     }
 
-    override fun delete(uid: String, scheduleId: String) {
+    override fun delete(uid: String, scheduleId: String, updateUi: () -> Unit) {
         scheduleDatabase
             .collection(FirestoreCollection.USERS).document(uid)
             .collection(FirestoreCollection.SCHEDULES)
             .document(scheduleId)
             .delete()
+            .addOnSuccessListener {
+                updateUi()
+            }
     }
 }
