@@ -59,7 +59,6 @@ private const val ARG_PARAM2 = "param2"
 class HomeFragment : Fragment() {
     lateinit var binding: FragmentHomeBinding
     lateinit var locationAdapter: LocationAdapter
-    lateinit var locationRecyclerView: RecyclerView
     lateinit var sessionTextView: TextView
     lateinit var userTextView: TextView
     lateinit var searchLocation: SearchView
@@ -75,18 +74,6 @@ class HomeFragment : Fragment() {
     lateinit var mStartAdapter: ViewPagerTopImagesAdapter
     lateinit var recyclerView: RecyclerView
     var locationList = ArrayList<LocationItem>()
-    var imageStringList = ArrayList<String>()
-
-
-
-//    var handlerThread = Handler()
-//    private val runnable = Runnable {
-//        if (mSliderViewPager.currentItem == images.size - 1) {
-//            mSliderViewPager.currentItem = 0
-//        } else {
-//            mSliderViewPager.currentItem = mSliderViewPager.currentItem + 1
-//        }
-//    }
 
     var images: ArrayList<Bitmap> = ArrayList()
 
@@ -167,8 +154,8 @@ class HomeFragment : Fragment() {
 //        images.add(R.drawable.switzerland)
 
         //Test for image storage
-        val storage =  Firebase.storage
-        var ImageViewModel = ImageViewModel(ImageRepository(storage.reference))
+        val storage =   FirebaseStorage.getInstance().reference
+        var ImageViewModel = ImageViewModel(ImageRepository( storage))
 
         ImageViewModel.getImage("vietnam"){
             updateUI(it)}

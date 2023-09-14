@@ -9,4 +9,8 @@ class ImageViewModel(
     fun getImage(imageId: String, updateUi: (Bitmap) -> Unit) {
         repository.getImage(imageId, updateUi)
     }
+
+    fun getImagePath(imageId: String, updateUi: (String) -> Unit) {
+        repository.getImagePath(imageId, updateUi)
+    }
 }

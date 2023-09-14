@@ -87,7 +87,9 @@ class ChatAiActivity : AppCompatActivity() {
             var messages = JSONArray()
             var systemMessage = JSONObject()
             systemMessage.put("role", "system")
-            systemMessage.put("content", "You will be asked for travel recommendations by a tourist. Answer as you were a travel guide and give no more than 3 recommendation options per answer. Just answer with the options and don't give any introduction. ")
+            systemMessage.put("content", "You will be asked for travel recommendations by a tourist. " +
+                    "Answer as you were a travel guide and give no more than 3 recommendation options per answer. " +
+                    "Just answer with the options and don't give any introduction. ")
             var userMessage = JSONObject()
             userMessage.put("role", "user")
             userMessage.put("content", message)
@@ -105,7 +107,7 @@ class ChatAiActivity : AppCompatActivity() {
         var body = RequestBody.create("application/json; charset=utf-8".toMediaType(), jsonBody.toString())
         var request = Request.Builder()
             .url("https://api.openai.com/v1/chat/completions")
-            .header("Authorization", "Bearer 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")
+            .header("Authorization", "Bearer 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")
             .post(body)
             .build()
 

@@ -36,19 +36,7 @@ class DayAdapter(
             activityName = view.findViewById(R.id.edit_text_description)
             mMenus = view.findViewById(R.id.menu_item_image_view)
             mMenus.setOnClickListener { popupMenus(it) }
-//            time.setOnClickListener(View.OnClickListener {
-//                var calendar = Calendar.getInstance()
-//                var hour = calendar.get(Calendar.HOUR_OF_DAY)
-//                var minute = calendar.get(Calendar.MINUTE)
-//                var timePickerDialog = TimePickerDialog(context,
-//                    TimePickerDialog.OnTimeSetListener {
-//                            view, hourOfDay, minute ->
-//                        timestampTemp = Timestamp(Date(itineraryItem.date.toDate().time +
-//                                hourOfDay * 60 * 60 * 1000 + minute * 60 * 1000))
-//                    time.text = SimpleDateFormat("HH:mm").format(timestampTemp.toDate())
-//                }, 12, 0, true)
-//                timePickerDialog.show()
-//            })
+
         }
 
         private fun popupMenus(view: View){

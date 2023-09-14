@@ -15,8 +15,7 @@ class ImageRepository(private val imageStorage: StorageReference): IImageReposit
 
 
     override fun getImage(imageId: String, updateUi: (Bitmap) -> Unit) {
-        val storageRef = FirebaseStorage.getInstance().reference
-        val storageReference = storageRef.child("images/$imageId.jpg")
+        val storageReference = imageStorage.child("images/$imageId.jpg")
         val localFile = File.createTempFile("images", "jpg")
         storageReference.getFile(localFile).addOnSuccessListener {
 //            Toast.makeText(null, "Success + $localFile", Toast.LENGTH_SHORT).show()
@@ -28,4 +27,15 @@ class ImageRepository(private val imageStorage: StorageReference): IImageReposit
 
     }
 
+    override fun getImagePath(imageId: String, updateUi: (String) -> Unit) {
+        val storageReference = imageStorage.child("images/$imageId.jpg")
+        val localFile = File.createTempFile("images", "jpg")
+        storageReference.getFile(localFile).addOnSuccessListener {
+//            Toast.makeText(null, "Success + $localFile", Toast.LENGTH_SHORT).show()
+//            val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
+            updateUi(localFile.absolutePath)
+        }.addOnFailureListener {
+            Toast.makeText(null, "Failed to get image", Toast.LENGTH_SHORT).show()
+        }
+    }
 }

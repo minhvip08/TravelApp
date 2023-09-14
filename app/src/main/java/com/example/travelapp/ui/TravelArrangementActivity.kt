@@ -3,17 +3,22 @@ package com.example.travelapp.ui
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.location.Geocoder
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.RatingBar
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.travelapp.R
+import com.example.travelapp.data.models.HotelItem
 import com.example.travelapp.data.models.LocationItem
 import com.example.travelapp.data.models.ScheduleItem
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -34,10 +39,17 @@ class TravelArrangementActivity : AppCompatActivity() {
     private lateinit var geoCoder: Geocoder
     private var scheduleItem: ScheduleItem?= null
     private var locationItem: LocationItem? = null
+    private var hotelItem: HotelItem? = null
     private lateinit var fromCountryCode: TextView
     private lateinit var toCountryCode: TextView
     private lateinit var fromCountryIcon: TextView
     private lateinit var toCountryIcon: TextView
+    private lateinit var travelLayout: RelativeLayout
+    private lateinit var hotelLayout: RelativeLayout
+    private lateinit var hotelName: TextView
+    private lateinit var hotelRatingBar: RatingBar
+    private lateinit var hotelPrice: TextView
+
     private val locationPermissionRequest = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
@@ -49,6 +61,11 @@ class TravelArrangementActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_travel_arrangement)
+
+        // Set click listener for travel arrangement layout
+        travelLayout = findViewById(R.id.travel_arrangement_layout_hotel_card)
+        travelLayout.isEnabled = true
+
         // Permission check
         if (ActivityCompat.checkSelfPermission(
                 this,
@@ -63,16 +80,7 @@ class TravelArrangementActivity : AppCompatActivity() {
             )
         }
         // Get data from intent
-        locationItem = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra("location", LocationItem::class.java)
-        } else {
-            intent.getParcelableExtra("location")
-        }
-        scheduleItem = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra("schedule", ScheduleItem::class.java)
-        } else {
-            intent.getParcelableExtra("schedule")
-        }
+        getItemFromIntent()
         // Set up geocoder
         geoCoder = Geocoder(this, Locale.getDefault())
         // Get views
@@ -116,6 +124,21 @@ class TravelArrangementActivity : AppCompatActivity() {
         // Set destination country
         toCountryCode.text = locationItem!!.countryCode
         toCountryIcon.text = getFlagEmoji(locationItem!!.countryCode)
+
+        if (hotelItem != null){
+            addHotelToSchedule()
+        }
+
+        travelLayout.setOnClickListener {
+            val intent = Intent(this, ChooseHotelActivity::class.java)
+            intent.putExtra("schedule", scheduleItem)
+            intent.putExtra("location", locationItem)
+            startActivity(intent)
+        }
+
+
+
+
     }
 
     private fun getFlagEmoji(countryCode: String): String {
@@ -146,5 +169,46 @@ class TravelArrangementActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun getItemFromIntent(){
+        locationItem = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra("location", LocationItem::class.java)
+        } else {
+            intent.getParcelableExtra("location")
+        }
+
+        scheduleItem = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra("schedule", ScheduleItem::class.java)
+        } else {
+            intent.getParcelableExtra("schedule")
+        }
+
+        hotelItem = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra("hotel", HotelItem::class.java)
+        } else {
+            intent.getParcelableExtra("hotel")
+        }
+    }
+
+    private fun addHotelToSchedule(){
+        val bitmap = BitmapFactory.decodeFile(hotelItem!!.imagePath)
+        val ob = BitmapDrawable(resources, bitmap)
+        ob.gravity = android.view.Gravity.CENTER
+
+
+        hotelLayout = findViewById(R.id.travel_arrangement_layout_hotel_card)
+
+        hotelLayout.background = ob
+
+        hotelName = findViewById(R.id.travel_arrangement_hotel_name)
+        hotelName.text = hotelItem!!.title
+        hotelRatingBar = findViewById(R.id.travel_arrangement_hotel_rating)
+        hotelRatingBar.rating = hotelItem!!.rating.toFloat()
+
+        hotelPrice = findViewById(R.id.travel_arrangement_hotel_price)
+        hotelPrice.text = "From \$ ${hotelItem!!.price.toString()}"
+        travelLayout.isEnabled = false
+
     }
 }

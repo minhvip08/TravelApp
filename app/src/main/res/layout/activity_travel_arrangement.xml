@@ -36,13 +36,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="110dp"
         android:id="@+id/travel_arrangement_layout_hotel_card"
         app:layout_constraintTop_toBottomOf="@id/title_hotel"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="15dp"
         android:background="@drawable/layout_hotel_outline"
         android:padding="25dp">
+
 
         <TextView
             android:id="@+id/travel_arrangement_hotel_name"
@@ -56,6 +57,7 @@
             android:id="@+id/travel_arrangement_hotel_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:progressTint="#E88405"
             style="?android:attr/ratingBarStyleSmall"
             android:numStars="5"
             android:isIndicator="true"
@@ -68,7 +70,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="$150"
+            android:text="From $0"
+            android:gravity="center"
             android:textAppearance="@style/pricing"
             android:textColor="@color/white"
             android:layout_alignParentEnd="true"/>

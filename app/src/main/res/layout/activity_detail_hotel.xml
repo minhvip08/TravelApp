@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="8dp"
+    tools:context=".ui.DetailHotelActivity">
+    <include layout="@layout/app_bar_layout"
+        android:id="@+id/app_bar_layout"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/app_bar_layout">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:id="@+id/image_view_hotel"
+            android:src="@drawable/switzerland"
+            android:scaleType="centerCrop"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Hanoi Metropolis"
+            android:id="@+id/name_hotel"
+            android:layout_below="@+id/image_view_hotel"
+            android:textAppearance="@style/text_large_title"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/image_view_hotel"
+            android:layout_marginTop="20dp"
+            android:text="4.5"
+            android:layout_alignParentRight="true"
+            android:background="@color/blue"
+            android:textColor="@color/white"
+            android:padding="10dp"
+            android:textAppearance="@style/text_medium"
+            android:textStyle="bold"
+            android:id="@+id/score_hotel"/>
+        <RatingBar
+            android:id="@+id/rating_bar_hotel"
+            style="?android:attr/ratingBarStyleIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name_hotel"
+            android:layout_gravity="center"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:progressTint="#E88405"
+            android:layout_marginBottom="20dp"
+            android:rating="4.5"
+            android:stepSize="0.1" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rating_bar_hotel"
+            android:layout_marginTop="20dp"
+            android:text="Price for 1 night: "
+            android:id="@+id/price_hotel_title"
+            android:textColor="@color/black"
+            android:textAppearance="@style/text_medium"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/price_hotel_title"
+            android:id="@+id/price_hotel"
+            android:textColor="@color/black"
+            android:text="$ 20/ night"
+            android:textAppearance="@style/text_large_title"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/price_hotel"
+            android:layout_marginTop="20dp"
+            android:text="Description"
+            android:textAppearance="@style/text_large_title"
+            android:id="@+id/description_hotel"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/description_hotel"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget ultricies aliquam, nunc nisl aliquet nunc, vitae aliquam nisl nisl eu nisl. Sed euismod, nisl eget ultricies aliquam, nunc nisl aliquet nunc, vitae aliquam nisl nisl eu nisl."
+            android:textAppearance="@style/text_medium"
+            android:id="@+id/description_hotel_content"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/description_hotel_content"
+            android:layout_marginTop="20dp"
+            android:text="Location"
+            android:textAppearance="@style/text_large_title"
+            android:id="@+id/location_hotel"/>
+        <androidx.fragment.app.FragmentContainerView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@+id/location_hotel"
+            android:id="@+id/map_fragment"
+            android:layout_marginTop="10dp"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/map_fragment"
+            android:layout_marginTop="20dp"
+            android:text="Can't find what you are looking for?"
+            android:textAppearance="@style/text_large_title"
+            android:id="@+id/map_hotel"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/map_hotel"
+            android:layout_marginTop="10dp"
+            android:text="Ask a question"
+            android:textAppearance="@style/button_text_appearance"
+            android:layout_marginBottom="70dp"
+            android:backgroundTint="@color/black"
+            android:id="@+id/ask_question_hotel_button"/>
+    </RelativeLayout>
+    </ScrollView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Book now"
+        android:textAppearance="@style/button_text_appearance"
+        android:id="@+id/book_now_hotel_button"/>
+
+</RelativeLayout>

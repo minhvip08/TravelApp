@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_marginTop="20dp"
+    android:layout_height="200dp">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/image_view_hotel"
+        app:shapeAppearanceOverlay="@style/circular"
+        android:src="@drawable/switzerland"
+        android:scaleType="centerCrop"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="26dp"
+        android:text="from $199"
+        android:id="@+id/price_hotel"
+        android:textColor="@color/white"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:textAppearance="@style/text_large_title"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hanoi Metropolis"
+        android:layout_marginStart="16dp"
+        android:layout_above="@id/price_hotel"
+        android:id="@+id/name_hotel"
+        android:textAppearance="@style/text_large"
+        android:textSize="35sp"
+        android:textColor="@color/white"/>
+    <RatingBar
+        android:id="@+id/rating_bar_hotel"
+        style="?android:attr/ratingBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="center"
+        android:isIndicator="true"
+        android:numStars="5"
+        android:progressTint="#E88405"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="30dp"
+        android:rating="5.0"
+        android:stepSize="0.1" />
+
+
+
+</RelativeLayout>
