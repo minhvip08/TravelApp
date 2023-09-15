@@ -1,8 +1,9 @@
 package com.example.travelapp.ui.fragments
 
-import android.content.ContentValues.TAG
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.Html
 import android.text.InputType
@@ -14,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,9 +25,11 @@ import androidx.viewpager.widget.ViewPager
 import com.example.travelapp.R
 import com.example.travelapp.data.ImageViewModel
 import com.example.travelapp.data.LocationViewModel
+import com.example.travelapp.data.UserViewModel
 import com.example.travelapp.data.models.LocationItem
 import com.example.travelapp.data.repository.ImageRepository
 import com.example.travelapp.data.repository.LocationRepository
+import com.example.travelapp.data.repository.UserRepository
 import com.example.travelapp.databinding.FragmentHomeBinding
 import com.example.travelapp.ui.SearchLocationActivity
 import com.example.travelapp.ui.UserProfileActivity
@@ -37,7 +41,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -68,16 +71,17 @@ class HomeFragment : Fragment() {
     ))
 
     // Viewpager Top Images initializes
-    lateinit var mSliderViewPager: ViewPager
-    lateinit var mDotLayout: LinearLayout
-    lateinit var mDots: Array<TextView>
-    lateinit var mStartAdapter: ViewPagerTopImagesAdapter
-    lateinit var recyclerView: RecyclerView
-    var ImageViewModel = ImageViewModel(ImageRepository( FirebaseStorage.getInstance().reference))
-    var locationList = ArrayList<LocationItem>()
+    private lateinit var mSliderViewPager: ViewPager
+    private lateinit var mDotLayout: LinearLayout
+    private lateinit var mDots: Array<TextView>
+    private lateinit var mStartAdapter: ViewPagerTopImagesAdapter
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var avatar: ImageView
+    private val imageViewModel = ImageViewModel(ImageRepository( FirebaseStorage.getInstance().reference))
+    private var locationList = ArrayList<LocationItem>()
     val storage =   FirebaseStorage.getInstance().reference
 
-    var images: ArrayList<Bitmap> = ArrayList()
+    private var images: ArrayList<Bitmap> = ArrayList()
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -152,26 +156,9 @@ class HomeFragment : Fragment() {
                     Log.d("TAG", "Else")}
             }
         }
-
-        view.findViewById<ImageView>(R.id.image_view_user).setOnClickListener {
-            val intent = Intent(requireActivity(), UserProfileActivity::class.java)
-            startActivity(intent)
-        }
-
-
-
-
-
-        //Test for image storage
-
-
-
-
-
-
-
-
-
+        avatar = view.findViewById(R.id.home_avatar)
+        // Set avatar
+        getAvatar()
 
         userTextView.text = Firebase.auth.currentUser?.displayName ?: getString(R.string.guest)
         mDotLayout = view.findViewById(R.id.dots_layout_top_images)!!
@@ -242,12 +229,38 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private val handleAvatarUpdate = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            val result = it.data
+            if (result != null) {
+                getAvatar()
+            }
+        }
+    }
+
+    private fun getAvatar() {
+        userViewModel.getAvatar(Firebase.auth.currentUser!!.uid) { path ->
+            if (path.isNotEmpty()) {
+                lifecycleScope.launch(Dispatchers.IO) {
+                    val bitmap = BitmapFactory.decodeFile(path)
+                    withContext(Dispatchers.Main) {
+                        avatar.setImageBitmap(bitmap)
+                    }
+                }
+            }
+            avatar.setOnClickListener {
+                val intent = Intent(requireActivity(), UserProfileActivity::class.java)
+                handleAvatarUpdate.launch(intent, null)
+            }
+        }
+    }
+
     fun createTopImage(){
         locationList.forEach { location ->
-            ImageViewModel.getImage("top_image_${location.image}_1"){
+            imageViewModel.getImage("top_image_${location.image}_1"){
                 updateUI(it)
             }
-            ImageViewModel.getImage("top_image_${location.image}_2"){
+            imageViewModel.getImage("top_image_${location.image}_2"){
                 updateUI(it)
             }
         }
@@ -255,16 +268,12 @@ class HomeFragment : Fragment() {
     }
 
     fun updateImage(imageId: String, updateUi: (String) -> Unit) {
-        ImageViewModel.getImagePath(imageId, updateUi)
+        imageViewModel.getImagePath(imageId, updateUi)
     }
 
     private fun updateUI(bitmap: Bitmap){
         images.add(bitmap)
         mStartAdapter.notifyDataSetChanged()
-    }
-
-    private fun getitem(i: Int): Int {
-        return mSliderViewPager.getCurrentItem() + i
     }
 
     fun setUpIndicator(position: Int){
@@ -314,5 +323,12 @@ class HomeFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+
+        private val userViewModel = UserViewModel(
+            UserRepository(
+                FirebaseFirestore.getInstance(),
+                FirebaseStorage.getInstance().reference
+            )
+        )
     }
 }

@@ -1,16 +1,23 @@
 package com.example.travelapp.data.repository
 
+import android.net.Uri
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.StorageException
+import com.google.firebase.storage.StorageReference
+import java.io.File
 
-class UserRepository(private val firebaseFirestore: FirebaseFirestore) : IUserRepository {
-    override fun add(uid: String, avatar: String) {
+class UserRepository(
+    private val firebaseFirestore: FirebaseFirestore,
+    private val reference: StorageReference?
+) : IUserRepository {
+    override fun add(uid: String) {
         firebaseFirestore
             .collection("users")
             .document(uid)
             .set(
                 hashMapOf(
-                    "avatar" to avatar
+                    "uid" to uid
                 )
             ).addOnCompleteListener {
                 Log.d("UserRepository", "Successfully added user")
@@ -18,5 +25,33 @@ class UserRepository(private val firebaseFirestore: FirebaseFirestore) : IUserRe
                 Log.w("UserRepository", "Failed to add user")
             }
 
+    }
+
+    override fun getAvatar(uid: String, updateUi: (String) -> Unit) {
+        val avatarRef = reference!!.child("users/$uid/avatar.jpg")
+        val file = File.createTempFile("avatar_", ".jpg")
+        file.deleteOnExit()
+        avatarRef.getFile(file).addOnSuccessListener {
+            updateUi(file.absolutePath)
+            Log.d("UserRepository", "Successfully retrieved avatar")
+        }.addOnFailureListener {
+            if ((it as StorageException).errorCode == StorageException.ERROR_OBJECT_NOT_FOUND) {
+                updateUi("")
+                Log.w("UserRepository", "No avatar found", it)
+            }
+            else {
+                Log.w("UserRepository", "Failed to retrieve avatar", it)
+            }
+        }
+    }
+
+    override fun uploadAvatar(uid: String, uri: Uri, callback: () -> Unit) {
+        val avatarRef = reference!!.child("users/$uid/avatar.jpg")
+        avatarRef.putFile(uri).addOnSuccessListener {
+            callback()
+            Log.d("UserRepository", "Successfully uploaded avatar")
+        }.addOnFailureListener {
+            Log.w("UserRepository", "Failed to upload avatar", it)
+        }
     }
 }

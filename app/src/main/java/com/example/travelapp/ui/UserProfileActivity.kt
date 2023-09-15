@@ -5,15 +5,20 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.commit
 import com.example.travelapp.R
+import com.example.travelapp.data.UserViewModel
+import com.example.travelapp.data.repository.UserRepository
 import com.example.travelapp.ui.fragments.UserInfoFragment
 import com.example.travelapp.ui.util.SharedPrefConstants
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 
 class UserProfileActivity : AppCompatActivity() {
     private lateinit var userInfoFragment: UserInfoFragment
@@ -37,6 +42,22 @@ class UserProfileActivity : AppCompatActivity() {
         supportFragmentManager.commit {
             setReorderingAllowed(true)
             add(R.id.user_info_user_profile, userInfoFragment)
+        }
+        // Set sign out button
+        val signOutButton = findViewById<Button>(R.id.button_sign_out_user_profile)
+        signOutButton.setOnClickListener {
+            signOut()
+            val sharedPref = getSharedPreferences(SharedPrefConstants.FIRST_TIME_ACCESS, MODE_PRIVATE)
+            sharedPref.edit().putBoolean("first_time_access", true).apply()
+            finish()
+        }
+        // Set update avatar button
+        val changeAvatarButton = findViewById<Button>(R.id.button_change_avatar)
+        changeAvatarButton.setOnClickListener {
+            val intent = Intent()
+            intent.action = Intent.ACTION_GET_CONTENT
+            intent.type = "image/*"
+            handlePickImage.launch(intent)
         }
     }
 
@@ -86,14 +107,6 @@ class UserProfileActivity : AppCompatActivity() {
                 updateUserProfile(name)
             }
         }
-        // Set sign out button
-        val signOutButton = findViewById<Button>(R.id.button_sign_out_user_profile)
-        signOutButton.setOnClickListener {
-            signOut()
-            val sharedPref = getSharedPreferences(SharedPrefConstants.FIRST_TIME_ACCESS, MODE_PRIVATE)
-            sharedPref.edit().putBoolean("first_time_access", true).apply()
-            finish()
-        }
     }
 
     private fun signOut() {
@@ -115,5 +128,26 @@ class UserProfileActivity : AppCompatActivity() {
         }.addOnFailureListener {
             Log.d("UserProfileActivity", "User profile update failed.")
         }
+    }
+
+    private val handlePickImage = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == RESULT_OK) {
+            val result = it.data
+            if (result != null) {
+                val uri = result.data
+                if (uri != null) {
+                    userViewModel.uploadAvatar(Firebase.auth.currentUser!!.uid, uri) {
+                        val intent = Intent()
+                        intent.putExtra("uri", uri.toString())
+                        setResult(RESULT_OK, intent)
+                        finish()
+                    }
+                }
+            }
+        }
+    }
+
+    companion object {
+        private val userViewModel = UserViewModel(UserRepository(FirebaseFirestore.getInstance(), FirebaseStorage.getInstance().reference))
     }
 }

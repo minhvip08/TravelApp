@@ -3,19 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="8dp"
     tools:context=".ui.fragments.HomeFragment">
 
     <ImageView
-        android:id="@+id/image_view_user"
+        android:id="@+id/home_avatar"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_above="@id/search_box"
+        android:layout_above="@id/search_location"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:src="@drawable/baseline_person_22"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp"
+        android:scaleType="centerCrop"/>
 
     <ImageView
         android:layout_width="60dp"

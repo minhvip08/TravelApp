@@ -17,19 +17,19 @@ import com.example.travelapp.R
 import com.example.travelapp.data.UserViewModel
 import com.example.travelapp.data.repository.UserRepository
 import com.example.travelapp.ui.fragments.UserInfoFragment
+import com.example.travelapp.ui.util.FirebaseStorageConstants
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 
 class AuthenticationActivity : AppCompatActivity() {
 
     private val TAG = "AuthenticationActivity"
 
     private val viewModel = UserViewModel(
-        UserRepository(
-            FirebaseFirestore.getInstance()
-        )
+        UserRepository(FirebaseFirestore.getInstance(), null)
     )
 
     private lateinit var userInfoFragment: UserInfoFragment
@@ -182,7 +182,7 @@ class AuthenticationActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     Log.d(TAG, "createUserWithEmail:success")
                     val user = Firebase.auth.currentUser
-                    viewModel.addUserDocument(user!!.uid, "")
+                    viewModel.addUserDocument(user!!.uid)
                     user.updateProfile(userProfileChangeRequest {
                         displayName = name
                     }).addOnCompleteListener(this) {
