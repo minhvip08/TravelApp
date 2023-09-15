@@ -195,6 +195,35 @@ class HomeFragment : Fragment() {
             override fun onPageScrollStateChanged(state: Int) { }
 
         })
+
+        locationAdapter.submitList(locationList)
+        val c = Calendar.getInstance()
+        val hour = c.get(Calendar.HOUR_OF_DAY)
+        val weatherView: ImageView = view.findViewById(R.id.image_view_weather)!!
+
+        sessionTextView = view.findViewById(R.id.text_view_session)!!
+        when (hour) {
+            in 0..11 -> {
+                sessionTextView.text = "Good Morning"
+                weatherView.setImageResource(R.drawable.ic_day)
+            }
+            in 12..15 -> {
+                sessionTextView.text = "Good Afternoon"
+                weatherView.setImageResource(R.drawable.ic_day)
+
+            }
+            in 16..20 -> {
+                sessionTextView.text = "Good Evening"
+                weatherView.setImageResource(R.drawable.ic_night)
+
+            }
+            in 21..24 -> {
+                sessionTextView.text = "Good Night"
+                weatherView.setImageResource(R.drawable.ic_night)
+
+            }
+        }
+
         // Launch coroutine on a background thread
         lifecycleScope.launch(Dispatchers.IO) {
             while (coroutineContext.isActive) {
@@ -232,32 +261,6 @@ class HomeFragment : Fragment() {
     private fun updateUI(bitmap: Bitmap){
         images.add(bitmap)
         mStartAdapter.notifyDataSetChanged()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        locationAdapter.submitList(locationList)
-        val c = Calendar.getInstance()
-        val hour = c.get(Calendar.HOUR_OF_DAY)
-        var weatherView: ImageView = activity?.findViewById(R.id.image_view_weather)!!
-
-        sessionTextView = activity?.findViewById(R.id.text_view_session)!!
-        if (hour in 0..11) {
-            sessionTextView.text = "Good Morning"
-            weatherView.setImageResource(R.drawable.ic_day)
-        } else if (hour in 12..15) {
-            sessionTextView.text = "Good Afternoon"
-            weatherView.setImageResource(R.drawable.ic_day)
-
-        } else if (hour in 16..20) {
-            sessionTextView.text = "Good Evening"
-            weatherView.setImageResource(R.drawable.ic_night)
-
-        } else if (hour in 21..24) {
-            sessionTextView.text = "Good Night"
-            weatherView.setImageResource(R.drawable.ic_night)
-
-        }
     }
 
     private fun getitem(i: Int): Int {

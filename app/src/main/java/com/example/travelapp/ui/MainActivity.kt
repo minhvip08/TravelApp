@@ -1,17 +1,13 @@
 package com.example.travelapp.ui
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.travelapp.R
 import com.example.travelapp.databinding.ActivityMainBinding
 import com.example.travelapp.ui.adapters.MainViewPagerAdapter
-import com.example.travelapp.ui.fragments.ArticlesFragment
-import com.example.travelapp.ui.fragments.GuideFragment
-import com.example.travelapp.ui.fragments.HomeFragment
-import com.example.travelapp.ui.fragments.ScheduleFragment
 import com.example.travelapp.ui.util.SharedPrefConstants
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
