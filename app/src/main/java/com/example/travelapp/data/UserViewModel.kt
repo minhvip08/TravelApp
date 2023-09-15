@@ -14,7 +14,7 @@ class UserViewModel (
         repository.getAvatar(uid, updateUi)
     }
 
-    fun uploadAvatar(uid: String, uri: Uri, callback: () -> Unit) {
+    fun uploadAvatar(uid: String, uri: Uri, callback: (Boolean) -> Unit) {
         repository.uploadAvatar(uid, uri, callback)
     }
 }

@@ -141,6 +141,16 @@ class UserInfoFragment : Fragment() {
         authAttributeEmail.text.clear()
     }
 
+    fun hideEmail() {
+        authAttributeHeaderEmail.visibility = View.GONE
+        authAttributeEmail.visibility = View.GONE
+    }
+
+    fun showEmail() {
+        authAttributeHeaderEmail.visibility = View.VISIBLE
+        authAttributeEmail.visibility = View.VISIBLE
+    }
+
     companion object {
         /**
          * Use this factory method to create a new instance of

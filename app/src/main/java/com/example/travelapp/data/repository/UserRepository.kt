@@ -45,12 +45,13 @@ class UserRepository(
         }
     }
 
-    override fun uploadAvatar(uid: String, uri: Uri, callback: () -> Unit) {
+    override fun uploadAvatar(uid: String, uri: Uri, callback: (Boolean) -> Unit) {
         val avatarRef = reference!!.child("users/$uid/avatar.jpg")
         avatarRef.putFile(uri).addOnSuccessListener {
-            callback()
+            callback(true)
             Log.d("UserRepository", "Successfully uploaded avatar")
         }.addOnFailureListener {
+            callback(false)
             Log.w("UserRepository", "Failed to upload avatar", it)
         }
     }

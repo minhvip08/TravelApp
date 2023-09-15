@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.FrameLayout
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -21,8 +23,13 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 
 class UserProfileActivity : AppCompatActivity() {
+    private lateinit var userInfoContainer: FrameLayout
     private lateinit var userInfoFragment: UserInfoFragment
-
+    private lateinit var resetPasswordButton: Button
+    private lateinit var updateButton: Button
+    private lateinit var signOutButton: Button
+    private lateinit var changeAvatarButton: Button
+    private lateinit var progressBar: ProgressBar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_profile)
@@ -37,28 +44,25 @@ class UserProfileActivity : AppCompatActivity() {
         toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
-        // Set fragment
+        // Set
+        userInfoContainer = findViewById(R.id.user_info_user_profile)
         userInfoFragment = UserInfoFragment.newInstance(true)
         supportFragmentManager.commit {
             setReorderingAllowed(true)
             add(R.id.user_info_user_profile, userInfoFragment)
         }
         // Set sign out button
-        val signOutButton = findViewById<Button>(R.id.button_sign_out_user_profile)
+        signOutButton = findViewById<Button>(R.id.button_sign_out_user_profile)
         signOutButton.setOnClickListener {
             signOut()
             val sharedPref = getSharedPreferences(SharedPrefConstants.FIRST_TIME_ACCESS, MODE_PRIVATE)
             sharedPref.edit().putBoolean("first_time_access", true).apply()
             finish()
         }
-        // Set update avatar button
-        val changeAvatarButton = findViewById<Button>(R.id.button_change_avatar)
-        changeAvatarButton.setOnClickListener {
-            val intent = Intent()
-            intent.action = Intent.ACTION_GET_CONTENT
-            intent.type = "image/*"
-            handlePickImage.launch(intent)
-        }
+        changeAvatarButton = findViewById(R.id.button_change_avatar)
+        resetPasswordButton = findViewById(R.id.button_reset_password_user_profile)
+        updateButton = findViewById(R.id.button_update_user_profile)
+        progressBar = findViewById(R.id.progress_bar_user_profile)
     }
 
     override fun onStart() {
@@ -69,7 +73,6 @@ class UserProfileActivity : AppCompatActivity() {
         // Set email
         userInfoFragment.setEmail(Firebase.auth.currentUser!!.email.toString())
         // Set reset password button
-        val resetPasswordButton = findViewById<Button>(R.id.button_reset_password_user_profile)
         resetPasswordButton.setOnClickListener {
             if (userInfoFragment.isEmailInvalid()) {
                 Toast.makeText(
@@ -86,7 +89,6 @@ class UserProfileActivity : AppCompatActivity() {
             }
         }
         // Set update button
-        val updateButton = findViewById<Button>(R.id.button_update_user_profile)
         updateButton.setOnClickListener {
             val name = userInfoFragment.getName()
             if (userInfoFragment.isNameInvalid()) {
@@ -106,6 +108,13 @@ class UserProfileActivity : AppCompatActivity() {
             else {
                 updateUserProfile(name)
             }
+        }
+        // Set update avatar button
+        changeAvatarButton.setOnClickListener {
+            val intent = Intent()
+            intent.action = Intent.ACTION_GET_CONTENT
+            intent.type = "image/*"
+            handlePickImage.launch(intent)
         }
     }
 
@@ -130,17 +139,46 @@ class UserProfileActivity : AppCompatActivity() {
         }
     }
 
+    private fun hideEverything() {
+        userInfoContainer.visibility = FrameLayout.GONE
+        resetPasswordButton.visibility = Button.GONE
+        updateButton.visibility = Button.GONE
+        signOutButton.visibility = Button.GONE
+        changeAvatarButton.visibility = Button.GONE
+    }
+
+    private fun showEverything() {
+        userInfoContainer.visibility = FrameLayout.VISIBLE
+        resetPasswordButton.visibility = Button.VISIBLE
+        updateButton.visibility = Button.VISIBLE
+        signOutButton.visibility = Button.VISIBLE
+        changeAvatarButton.visibility = Button.VISIBLE
+    }
+
     private val handlePickImage = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if (it.resultCode == RESULT_OK) {
             val result = it.data
             if (result != null) {
                 val uri = result.data
                 if (uri != null) {
-                    userViewModel.uploadAvatar(Firebase.auth.currentUser!!.uid, uri) {
-                        val intent = Intent()
-                        intent.putExtra("uri", uri.toString())
-                        setResult(RESULT_OK, intent)
-                        finish()
+                    hideEverything()
+                    progressBar.visibility = ProgressBar.VISIBLE
+                    userViewModel.uploadAvatar(Firebase.auth.currentUser!!.uid, uri) { isSuccessful ->
+                        if (isSuccessful) {
+                            progressBar.visibility = ProgressBar.GONE
+                            val intent = Intent()
+                            setResult(RESULT_OK, intent)
+                            finish()
+                        }
+                        else {
+                            showEverything()
+                            progressBar.visibility = ProgressBar.GONE
+                            Toast.makeText(
+                                baseContext,
+                                "Failed to upload avatar.",
+                                Toast.LENGTH_SHORT,
+                            ).show()
+                        }
                     }
                 }
             }
