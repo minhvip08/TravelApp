@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.appcompat.widget.Toolbar
 import androidx.viewpager2.widget.ViewPager2
 import com.example.travelapp.R
@@ -51,7 +52,10 @@ class ItineraryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val toolbar = view.findViewById<Toolbar>(R.id.toolbar_itinerary)
         toolbar.setNavigationOnClickListener {
-            requireActivity().onBackPressed()
+            parentFragmentManager.popBackStack()
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            parentFragmentManager.popBackStack()
         }
         tabLayout = view.findViewById(R.id.tab_layout_itinerary)
         viewPager = view.findViewById(R.id.view_pager_itinerary)

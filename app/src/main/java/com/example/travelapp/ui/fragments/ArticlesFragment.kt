@@ -29,7 +29,6 @@ class ArticlesFragment : Fragment() {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var recyclerView: RecyclerView
     private var articleList = mutableListOf<ArticleItem>()
-    private var isLoading = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

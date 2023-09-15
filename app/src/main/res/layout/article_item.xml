@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
+    android:layout_height="184dp"
     android:background="@drawable/layout_article"
     android:padding="16dp"
-    android:layout_marginVertical="15dp">
+    android:layout_marginVertical="8dp">
 
     <TextView
         android:id="@+id/article_item_author"
@@ -34,7 +34,21 @@
         android:layout_width="96dp"
         android:layout_height="96dp"
         android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
         android:scaleType="centerCrop"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/article_item_share_button"
+        android:layout_width="96dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/share_button"
+        android:layout_below="@id/article_item_thumbnail"
+        android:drawableStart="@drawable/baseline_share_20"
+        android:padding="8dp"
+        android:text="@string/share"
+        android:textColor="@color/blue"
+        android:textSize="14sp"
+        android:layout_marginTop="16dp"/>
 
 </RelativeLayout>

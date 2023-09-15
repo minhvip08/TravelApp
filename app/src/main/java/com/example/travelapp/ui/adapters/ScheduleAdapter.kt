@@ -56,7 +56,7 @@ class ScheduleAdapter(
             holder.itemView.setOnClickListener {
                 supportFragmentManager.commit {
                     replace(
-                        R.id.view_pager_main_activity,
+                        R.id.schedule_wrapper,
                         ItineraryFragment.newInstance(currentItem.id)
                     )
                     addToBackStack(null)

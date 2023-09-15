@@ -7,7 +7,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
-private const val POST_PER_REQUEST: Long = 5
+private const val POST_PER_REQUEST: Long = 4
 
 class ArticleRepository(
     private val articleDatabase: FirebaseFirestore

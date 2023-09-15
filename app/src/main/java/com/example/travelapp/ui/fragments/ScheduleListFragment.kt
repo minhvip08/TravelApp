@@ -50,7 +50,7 @@ class ScheduleListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val scheduleRecyclerView = view as RecyclerView
-        val scheduleAdapter = ScheduleAdapter(requireActivity().supportFragmentManager, isHistory)
+        val scheduleAdapter = ScheduleAdapter(requireParentFragment().parentFragmentManager, isHistory)
         scheduleRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         scheduleRecyclerView.adapter = scheduleAdapter
         scheduleAdapter.submitList(scheduleList)

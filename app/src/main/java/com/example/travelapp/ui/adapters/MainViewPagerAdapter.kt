@@ -7,6 +7,7 @@ import com.example.travelapp.ui.fragments.ArticlesFragment
 import com.example.travelapp.ui.fragments.GuideFragment
 import com.example.travelapp.ui.fragments.HomeFragment
 import com.example.travelapp.ui.fragments.ScheduleFragment
+import com.example.travelapp.ui.fragments.ScheduleWrapperFragment
 
 class MainViewPagerAdapter(
     activity: MainActivity
@@ -18,7 +19,7 @@ class MainViewPagerAdapter(
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> HomeFragment()
-            1 -> ScheduleFragment()
+            1 -> ScheduleWrapperFragment()
             2 -> GuideFragment()
             else -> ArticlesFragment()
         }

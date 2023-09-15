@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
@@ -27,6 +28,7 @@ class ArticleAdapter
         val author: TextView = itemView.findViewById(R.id.article_item_author)
         val title: TextView = itemView.findViewById(R.id.article_item_title)
         val thumbnail: ImageView = itemView.findViewById(R.id.article_item_thumbnail)
+        val shareButton: Button = itemView.findViewById(R.id.article_item_share_button)
         companion object {
             fun create(parent: ViewGroup): ViewHolder {
                 val view: View = LayoutInflater.from(parent.context)
@@ -66,6 +68,14 @@ class ArticleAdapter
             val intent = Intent(holder.itemView.context, ReadArticleActivity::class.java)
             intent.putExtra("url", currentItem.url)
             holder.itemView.context.startActivity(intent)
+        }
+        holder.shareButton.setOnClickListener {
+            val intent = Intent(Intent.ACTION_SEND)
+            intent.type = "text/plain"
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT)
+            intent.putExtra(Intent.EXTRA_SUBJECT, currentItem.title)
+            intent.putExtra(Intent.EXTRA_TEXT, currentItem.url)
+            holder.itemView.context.startActivity(Intent.createChooser(intent, "Share article"))
         }
     }
 
