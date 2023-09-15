@@ -13,4 +13,8 @@ class ImageViewModel(
     fun getImagePath(imageId: String, updateUi: (String) -> Unit) {
         repository.getImagePath(imageId, updateUi)
     }
+
+    fun getArticleThumbnail(pid: String, updateUi: (String) -> Unit) {
+        repository.getArticleThumbnail(pid, updateUi)
+    }
 }

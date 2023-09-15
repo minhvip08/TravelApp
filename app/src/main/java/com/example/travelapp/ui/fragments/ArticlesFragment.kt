@@ -50,6 +50,7 @@ class ArticlesFragment : Fragment() {
         refreshLayout.setOnRefreshListener {
             refreshLayout.isRefreshing = false
             articleViewModel.clearArticlesQueue()
+            articleAdapter.notifyItemRangeRemoved(0, articleList.size)
             articleList.clear()
             recyclerView.clearOnScrollListeners()
             loadArticles()
@@ -71,10 +72,8 @@ class ArticlesFragment : Fragment() {
                                 recyclerView.removeOnScrollListener(this)
                             }
                             else {
-                                val positionStart = articleList.size
                                 articleList.addAll(loadMoreList)
                                 articleAdapter.submitList(articleList)
-                                articleAdapter.notifyItemRangeInserted(positionStart, loadMoreList.size)
                             }
                         }
                     }
