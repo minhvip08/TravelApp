@@ -6,14 +6,15 @@ import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.location.Geocoder
+import android.location.Location
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.RatingBar
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
@@ -31,6 +32,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Locale
+import kotlin.math.acos
+import kotlin.math.cos
+import kotlin.math.sin
 
 private const val DEFAULT_COUNTRY_CODE = "VN"
 
@@ -49,6 +53,7 @@ class TravelArrangementActivity : AppCompatActivity() {
     private lateinit var hotelName: TextView
     private lateinit var hotelRatingBar: RatingBar
     private lateinit var hotelPrice: TextView
+    private var numDay = 0
 
     private val locationPermissionRequest = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -102,8 +107,13 @@ class TravelArrangementActivity : AppCompatActivity() {
             getCountryCode(location.latitude, location.longitude) {code ->
                 fromCountryCode.text = code
                 fromCountryIcon.text = getFlagEmoji(code)
+                val priceAirline = findViewById<TextView>(R.id.travel_arrangement_airline_price)
+                priceAirline.text = "From \$ ${setPriceAirline(location).toInt()}"
+                setTotalPrice(location)
             }
         }
+
+
         // Set up toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar_travel_arrangement)
         setSupportActionBar(toolbar)
@@ -135,7 +145,6 @@ class TravelArrangementActivity : AppCompatActivity() {
             intent.putExtra("location", locationItem)
             startActivity(intent)
         }
-
 
 
 
@@ -184,10 +193,17 @@ class TravelArrangementActivity : AppCompatActivity() {
             intent.getParcelableExtra("schedule")
         }
 
+        // Calculate number of day
+        calNumDay()
+
         hotelItem = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra("hotel", HotelItem::class.java)
         } else {
             intent.getParcelableExtra("hotel")
+        }
+
+        if (hotelItem != null){
+
         }
     }
 
@@ -211,4 +227,41 @@ class TravelArrangementActivity : AppCompatActivity() {
         travelLayout.isEnabled = false
 
     }
+
+    fun setPriceAirline(locationTo : Location): Double{
+
+        val locationFrom = Location("locationFrom")
+        locationFrom.latitude = locationItem!!.attraction[0].latitude
+        locationFrom.longitude = locationItem!!.attraction[0].longitude
+        val distance = locationFrom.distanceTo(locationTo)/1000
+        var price = distance * 0.17
+
+        if (distance > 1000){
+            price *= 0.8
+        }
+
+        return price
+
+
+
+    }
+
+    fun calNumDay(){
+        val millionSeconds = scheduleItem!!.endDate.toDate().time - scheduleItem!!.startDate.toDate().time
+        numDay = (millionSeconds / (1000 * 60 * 60 * 24)).toInt() + 1
+    }
+
+    fun setTotalPrice(locationTo : Location){
+        val totalPriceTextView = findViewById<TextView>(R.id.travel_arrangement_total_price)
+        val priceAirLine = setPriceAirline(locationTo)*2
+        val totalPrice: Double = if (hotelItem != null){
+            val priceHotel = hotelItem!!.price * numDay
+            priceAirLine + priceHotel
+        } else {
+            priceAirLine
+        }
+
+        totalPriceTextView.text = "From \$ ${totalPrice.toInt()}"
+    }
+
 }

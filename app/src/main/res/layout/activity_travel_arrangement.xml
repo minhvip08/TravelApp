@@ -28,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/title_hotel"
-        android:text="@string/hotel_x_days"
+        android:text="Hotel: "
         android:textAppearance="@style/travel_arrangement_title"
         app:layout_constraintTop_toBottomOf="@id/toolbar_travel_arrangement"
         app:layout_constraintStart_toStartOf="parent"
@@ -100,28 +100,28 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@drawable/layout_country_info"
-            android:paddingVertical="18dp"
-            android:paddingHorizontal="35dp"
-            android:orientation="vertical"
             android:gravity="center"
-            android:layout_weight="1">
+            android:orientation="vertical"
+            android:paddingHorizontal="35dp"
+            android:paddingVertical="18dp">
 
             <TextView
                 android:id="@+id/from_country_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/country_wrapper"
-                android:textSize="20sp"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/from_country_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
                 android:text="@string/country_code"
-                android:textAppearance="@style/text_almost_large"
-                android:layout_marginTop="9dp"/>
+                android:textAppearance="@style/text_almost_large" />
 
         </LinearLayout>
 
@@ -181,7 +181,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textAppearance="@style/travel_arrangement_medium"
-            android:text="@string/airline_name"/>
+            android:text="Price (one way): "/>
 
         <TextView
             android:layout_centerVertical="true"
@@ -198,12 +198,24 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/title_total"
+        android:text="Total (Estimate): "
+        android:textAppearance="@style/travel_arrangement_title"
+        app:layout_constraintTop_toBottomOf="@id/travel_arrangement_airline_layout"
+        app:layout_constraintBottom_toTopOf="@id/determine_the_plan_button"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textColor="@color/blue"
         android:textAppearance="@style/pricing"
         android:text="$250"
         app:layout_constraintTop_toBottomOf="@id/travel_arrangement_airline_layout"
         app:layout_constraintBottom_toTopOf="@id/determine_the_plan_button"
         app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/travel_arrangement_total_price"
         android:layout_marginEnd="25dp"/>
 
     <androidx.appcompat.widget.AppCompatButton
