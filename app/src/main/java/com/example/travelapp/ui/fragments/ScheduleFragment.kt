@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.travelapp.R
+import com.example.travelapp.data.ImageViewModel
 import com.example.travelapp.data.ScheduleViewModel
 import com.example.travelapp.data.models.ScheduleItem
+import com.example.travelapp.data.repository.ImageRepository
 import com.example.travelapp.data.repository.ScheduleRepository
 import com.example.travelapp.ui.adapters.ScheduleViewPagerAdapter
 import com.google.android.material.tabs.TabLayout
@@ -16,6 +18,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -55,8 +58,10 @@ class ScheduleFragment : Fragment() {
         viewPager = view.findViewById(R.id.schedule_list)
         viewModel.getSchedules(Firebase.auth.currentUser!!.uid) {
             scheduleList = it
+
             adapter = ScheduleViewPagerAdapter(this, it)
             viewPager.adapter = adapter
+
             tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
                     viewPager.currentItem = tab!!.position
@@ -77,6 +82,8 @@ class ScheduleFragment : Fragment() {
             })
         }
     }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

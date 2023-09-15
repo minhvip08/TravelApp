@@ -2,16 +2,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginVertical="15dp">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/schedule_image"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:src="@color/black"
-        android:background="@drawable/schedule_item_outline">
+        android:src="@color/blue"
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/circular">
 
-    </ImageView>
+    </com.google.android.material.imageview.ShapeableImageView>
 
     <TextView
         android:id="@+id/schedule_name"

@@ -1,5 +1,6 @@
 package com.example.travelapp.ui.adapters
 
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.travelapp.R
 import com.example.travelapp.data.models.ScheduleItem
 import com.example.travelapp.ui.fragments.ItineraryFragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ScheduleAdapter(
     private val supportFragmentManager: FragmentManager,
@@ -60,6 +65,15 @@ class ScheduleAdapter(
                         ItineraryFragment.newInstance(currentItem.id)
                     )
                     addToBackStack(null)
+                }
+            }
+        }
+
+        if (currentItem.imagePath != "") {
+            CoroutineScope(Dispatchers.IO).launch {
+                BitmapFactory.decodeFile(currentItem.imagePath)
+                withContext(Dispatchers.Main) {
+                    holder.image.setImageBitmap(BitmapFactory.decodeFile(currentItem.imagePath))
                 }
             }
         }

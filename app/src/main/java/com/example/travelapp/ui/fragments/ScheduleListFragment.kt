@@ -10,10 +10,13 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.travelapp.R
+import com.example.travelapp.data.ImageViewModel
 import com.example.travelapp.data.models.ScheduleItem
+import com.example.travelapp.data.repository.ImageRepository
 import com.example.travelapp.ui.adapters.ScheduleAdapter
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 
 private const val ARG_IS_HISTORY = "isHistory"
 private const val ARG_SCHEDULE_LIST = "scheduleList"
@@ -26,6 +29,7 @@ private const val ARG_SCHEDULE_LIST = "scheduleList"
 class ScheduleListFragment : Fragment() {
     private var isHistory = false
     private var scheduleList: ArrayList<ScheduleItem>? = null
+    var ImageViewModel = ImageViewModel(ImageRepository( FirebaseStorage.getInstance().reference))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +58,14 @@ class ScheduleListFragment : Fragment() {
         scheduleRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         scheduleRecyclerView.adapter = scheduleAdapter
         scheduleAdapter.submitList(scheduleList)
+        scheduleList?.forEach { schedule ->
+            updateImage(schedule.name.toString().toLowerCase()) { imagePath ->
+                schedule.imagePath = imagePath
+                scheduleAdapter.notifyItemChanged(scheduleList!!.indexOf(schedule))
+
+            }
+
+        }
         if (!isHistory) {
             val itemTouchHelper = ItemTouchHelper(object: ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
                 override fun onMove(
@@ -74,6 +86,10 @@ class ScheduleListFragment : Fragment() {
             })
             itemTouchHelper.attachToRecyclerView(scheduleRecyclerView)
         }
+    }
+
+    fun updateImage(imageId: String, updateUi: (String) -> Unit) {
+        ImageViewModel.getImagePath(imageId, updateUi)
     }
 
     companion object {

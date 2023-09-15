@@ -10,7 +10,8 @@ data class ScheduleItem(
     var id: String,
     var name: String,
     var startDate: Timestamp,
-    var endDate: Timestamp
+    var endDate: Timestamp,
+    var imagePath : String = ""
 ) : Parcelable {
-    constructor() : this("", "", Timestamp(0, 0), Timestamp(0, 0))
+    constructor() : this("", "", Timestamp(0, 0), Timestamp(0, 0), "")
 }

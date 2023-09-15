@@ -110,27 +110,27 @@
         android:layout_alignParentBottom="true"
         android:id="@+id/next_button"/>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/next_button"
-        android:layout_marginBottom="24dp"
-        android:orientation="horizontal">
+<!--    <RelativeLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_above="@+id/next_button"-->
+<!--        android:layout_marginBottom="24dp"-->
+<!--        android:orientation="horizontal">-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Turn on notification: "
-            android:textAppearance="@style/text_medium" />
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Turn on notification: "-->
+<!--            android:textAppearance="@style/text_medium" />-->
 
-        <Switch
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/notification_switch"
-            android:layout_marginLeft="10dp"
-            android:layout_alignParentRight="true"
-            tools:ignore="UseSwitchCompatOrMaterialXml" />
+<!--        <Switch-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:id="@+id/notification_switch"-->
+<!--            android:layout_marginLeft="10dp"-->
+<!--            android:layout_alignParentRight="true"-->
+<!--            tools:ignore="UseSwitchCompatOrMaterialXml" />-->
 
-    </RelativeLayout>
+<!--    </RelativeLayout>-->
 
 </RelativeLayout>

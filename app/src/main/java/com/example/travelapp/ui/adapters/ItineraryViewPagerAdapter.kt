@@ -31,7 +31,7 @@ class ItineraryViewPagerAdapter(
         dayTabItem.findViewById<TextView>(R.id.tab_item_title).text =
             context.getString(R.string.day_tab_item_title, i + 1)
         dayTabItem.findViewById<TextView>(R.id.tab_item_date).text =
-            SimpleDateFormat("MMMM dd", Locale.getDefault()).format(
+            SimpleDateFormat("dd MMMM", Locale.getDefault()).format(
                 itineraryList[i].date.toDate()
             )
         return dayTabItem
