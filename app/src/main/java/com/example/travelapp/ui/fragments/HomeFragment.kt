@@ -73,7 +73,9 @@ class HomeFragment : Fragment() {
     lateinit var mDots: Array<TextView>
     lateinit var mStartAdapter: ViewPagerTopImagesAdapter
     lateinit var recyclerView: RecyclerView
+    var ImageViewModel = ImageViewModel(ImageRepository( FirebaseStorage.getInstance().reference))
     var locationList = ArrayList<LocationItem>()
+    val storage =   FirebaseStorage.getInstance().reference
 
     var images: ArrayList<Bitmap> = ArrayList()
 
@@ -133,6 +135,13 @@ class HomeFragment : Fragment() {
                     }
                     locationAdapter.submitList(it.data)
                     locationList = it.data as ArrayList<LocationItem>
+                    locationList.forEach { location ->
+                        updateImage(location.image) { imagePath ->
+                            location.imagePath = imagePath
+                            locationAdapter.notifyItemChanged(locationList.indexOf(location))
+                        }
+                    }
+                    createTopImage()
                 }
                 is UiState.Failure -> {
                     Log.d("TAG", it.error!!)
@@ -150,17 +159,12 @@ class HomeFragment : Fragment() {
 
 
 
-//        images.add(R.drawable.vietnam)
-//        images.add(R.drawable.switzerland)
+
 
         //Test for image storage
-        val storage =   FirebaseStorage.getInstance().reference
-        var ImageViewModel = ImageViewModel(ImageRepository( storage))
 
-        ImageViewModel.getImage("vietnam") {
-            updateUI(it)}
-        ImageViewModel.getImage("switzerland"){
-            updateUI(it)}
+
+
 
 
 
@@ -207,6 +211,22 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+    }
+
+    fun createTopImage(){
+        locationList.forEach { location ->
+            ImageViewModel.getImage("top_image_${location.image}_1"){
+                updateUI(it)
+            }
+            ImageViewModel.getImage("top_image_${location.image}_2"){
+                updateUI(it)
+            }
+        }
+
+    }
+
+    fun updateImage(imageId: String, updateUi: (String) -> Unit) {
+        ImageViewModel.getImagePath(imageId, updateUi)
     }
 
     fun updateUI(bitmap: Bitmap){

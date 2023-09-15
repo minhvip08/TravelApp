@@ -1,6 +1,7 @@
 package com.example.travelapp.ui
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.widget.Button
@@ -18,6 +19,10 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LocationDetailActivity : AppCompatActivity() {
     lateinit var enterPlanbtn: TextView
@@ -64,11 +69,17 @@ class LocationDetailActivity : AppCompatActivity() {
         descriptionTextView.setText(item?.description)
         bannerImg = findViewById(R.id.image_view_detail_activity)
 
-        var idImage = this.resources.getIdentifier(item?.image,
-            "drawable", this.packageName) // R.drawable.image_name
-
-
-        bannerImg.setImageResource(idImage)
+        CoroutineScope(Dispatchers.IO).launch {
+            BitmapFactory.decodeFile(item!!.imagePath)
+            withContext(Dispatchers.Main) {
+                bannerImg.setImageBitmap(BitmapFactory.decodeFile(item.imagePath))
+            }
+        }
+//
+//        var idImage = this.resources.getIdentifier(item?.image,
+//            "drawable", this.packageName) // R.drawable.image_name
+//
+//        bannerImg.setImageResource(idImage)
         // Set up action bar
         enterPlanbtn = findViewById(R.id.enter_plan_button)
         attractionName = findViewById(R.id.attraction_name)

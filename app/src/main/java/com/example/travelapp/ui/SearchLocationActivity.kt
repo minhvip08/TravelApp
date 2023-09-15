@@ -6,8 +6,10 @@ import android.util.Log
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.travelapp.R
+import com.example.travelapp.data.ImageViewModel
 import com.example.travelapp.data.LocationViewModel
 import com.example.travelapp.data.models.LocationItem
+import com.example.travelapp.data.repository.ImageRepository
 import com.example.travelapp.data.repository.LocationRepository
 import com.example.travelapp.databinding.ActivitySearchLocationBinding
 import com.example.travelapp.ui.adapters.LocationAdapter
@@ -28,6 +30,8 @@ class SearchLocationActivity : AppCompatActivity() {
             FirebaseStorage.getInstance().getReference(FirebaseStorageConstants.ROOT_DIRECTORY)
         )
     )
+    var ImageViewModel = ImageViewModel(ImageRepository( FirebaseStorage.getInstance().reference))
+
 
 
 
@@ -69,6 +73,12 @@ class SearchLocationActivity : AppCompatActivity() {
                     }
                     locationAdapter.submitList(it.data)
                     locationList = it.data as ArrayList<LocationItem>
+                    locationList.forEach { location ->
+                        updateImage(location.image) { imagePath ->
+                            location.imagePath = imagePath
+                            locationAdapter.notifyItemChanged(locationList.indexOf(location))
+                        }
+                    }
                 }
 
                 is UiState.Failure -> {
@@ -97,6 +107,10 @@ class SearchLocationActivity : AppCompatActivity() {
         })
 
 
+    }
+
+    fun updateImage(imageId: String, updateUi: (String) -> Unit) {
+        ImageViewModel.getImagePath(imageId, updateUi)
     }
 
     private fun filterList(searchText: String) {

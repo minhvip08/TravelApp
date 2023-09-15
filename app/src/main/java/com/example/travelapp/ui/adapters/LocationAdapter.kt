@@ -2,6 +2,7 @@ package com.example.travelapp.ui.adapters
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,10 @@ import com.example.travelapp.databinding.FragmentHomeBinding
 import com.example.travelapp.ui.LocationDetailActivity
 import com.example.travelapp.ui.fragments.HomeFragment
 import com.google.android.material.imageview.ShapeableImageView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LocationAdapter :
         ListAdapter<LocationItem, LocationAdapter.MyViewHolder>(LocationItemDiff()){
@@ -60,9 +65,9 @@ class LocationAdapter :
         val currentItem = getItem(position)
 
         // get image from drawable
-        var idImage = context.resources.getIdentifier(currentItem.image,
-            "drawable", context.packageName) // R.drawable.image_name
-        holder.imgLocation.setImageResource(idImage)
+//        var idImage = context.resources.getIdentifier(currentItem.image,
+//            "drawable", context.packageName) // R.drawable.image_name
+//        holder.imgLocation.setImageResource(idImage)
         holder.locationText.text = currentItem.title
         holder.locationAttraction.text = currentItem.attraction.size.toString() + " attractions"
 
@@ -70,6 +75,14 @@ class LocationAdapter :
             Intent(holder.itemView.context, LocationDetailActivity::class.java).also {
                 it.putExtra("location", currentItem)
                 holder.itemView.context.startActivity(it)
+            }
+        }
+        if (currentItem.imagePath != "") {
+            CoroutineScope(Dispatchers.IO).launch {
+                BitmapFactory.decodeFile(currentItem.imagePath)
+                withContext(Dispatchers.Main) {
+                    holder.imgLocation.setImageBitmap(BitmapFactory.decodeFile(currentItem.imagePath))
+                }
             }
         }
     }

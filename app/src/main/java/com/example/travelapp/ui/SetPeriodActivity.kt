@@ -5,6 +5,7 @@ package com.example.travelapp.ui
 import android.app.DatePickerDialog
 import android.content.ContentValues.TAG
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -22,6 +23,10 @@ import com.example.travelapp.data.models.ScheduleItem
 import com.example.travelapp.ui.fragments.DatePickerFragment
 import com.example.travelapp.ui.util.RandomString
 import com.google.firebase.Timestamp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.DateFormat
 import java.util.Calendar
 import java.util.Date
@@ -60,11 +65,17 @@ class SetPeriodActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
 
         bannerImg = findViewById(R.id.banner_image)
 
-        var idImage = this.resources.getIdentifier(locationItem?.image+"_banner",
-            "drawable", this.packageName) // R.drawable.image_name
+//        var idImage = this.resources.getIdentifier(locationItem?.image+"_banner",
+//            "drawable", this.packageName) // R.drawable.image_name
+//
+//        bannerImg.setImageResource(idImage)
 
-        bannerImg.setImageResource(idImage)
-
+        CoroutineScope(Dispatchers.IO).launch {
+            BitmapFactory.decodeFile(locationItem!!.imagePath)
+            withContext(Dispatchers.Main) {
+                bannerImg.setImageBitmap(BitmapFactory.decodeFile(locationItem!!.imagePath))
+            }
+        }
 
         var startTextView: TextView = findViewById(R.id.date_start)
         startTextView.setOnClickListener {
