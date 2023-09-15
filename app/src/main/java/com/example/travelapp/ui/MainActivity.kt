@@ -31,10 +31,10 @@ class MainActivity : AppCompatActivity() {
         binding.viewPagerMainActivity.isUserInputEnabled = false
         binding.bottomNavigation.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.home -> binding.viewPagerMainActivity.currentItem = 0
-                R.id.schedule -> binding.viewPagerMainActivity.currentItem = 1
-                R.id.guide -> binding.viewPagerMainActivity.currentItem = 2
-                R.id.feed -> binding.viewPagerMainActivity.currentItem = 3
+                R.id.home -> binding.viewPagerMainActivity.setCurrentItem(0, false)
+                R.id.schedule -> binding.viewPagerMainActivity.setCurrentItem(1, false)
+                R.id.guide -> binding.viewPagerMainActivity.setCurrentItem(2, false)
+                R.id.feed -> binding.viewPagerMainActivity.setCurrentItem(3, false)
             }
             true
         }
