@@ -5,4 +5,5 @@ import android.graphics.Bitmap
 interface IImageRepository {
     fun getImage(imageId: String, updateUi: (Bitmap) -> Unit)
     fun getImagePath(imageId: String, updateUi: (String) -> Unit)
+    fun getArticleThumbnail(pid: String, updateUi: (String) -> Unit)
 }

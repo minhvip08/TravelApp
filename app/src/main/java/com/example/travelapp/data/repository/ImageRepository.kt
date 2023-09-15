@@ -16,7 +16,8 @@ class ImageRepository(private val imageStorage: StorageReference): IImageReposit
 
     override fun getImage(imageId: String, updateUi: (Bitmap) -> Unit) {
         val storageReference = imageStorage.child("images/$imageId.jpg")
-        val localFile = File.createTempFile("images", "jpg")
+        val localFile = File.createTempFile("images", ".jpg")
+        localFile.deleteOnExit()
         storageReference.getFile(localFile).addOnSuccessListener {
 //            Toast.makeText(null, "Success + $localFile", Toast.LENGTH_SHORT).show()
             val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
@@ -29,13 +30,23 @@ class ImageRepository(private val imageStorage: StorageReference): IImageReposit
 
     override fun getImagePath(imageId: String, updateUi: (String) -> Unit) {
         val storageReference = imageStorage.child("images/$imageId.jpg")
-        val localFile = File.createTempFile("images", "jpg")
+        val localFile = File.createTempFile("images", ".jpg")
+        localFile.deleteOnExit()
         storageReference.getFile(localFile).addOnSuccessListener {
 //            Toast.makeText(null, "Success + $localFile", Toast.LENGTH_SHORT).show()
 //            val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
             updateUi(localFile.absolutePath)
         }.addOnFailureListener {
             Toast.makeText(null, "Failed to get image", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun getArticleThumbnail(pid: String, updateUi: (String) -> Unit) {
+        val storageReference = imageStorage.child("articles/${pid}_i0.jpg")
+        val localFile = File.createTempFile("articles", ".jpg")
+        localFile.deleteOnExit()
+        storageReference.getFile(localFile).addOnSuccessListener {
+            updateUi(localFile.absolutePath)
         }
     }
 }

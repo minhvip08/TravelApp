@@ -30,10 +30,11 @@
 
     <ImageView
         android:id="@+id/article_item_thumbnail"
-        android:src="@color/black"
+        android:src="@color/blue"
         android:layout_width="96dp"
         android:layout_height="96dp"
         android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true"
+        android:scaleType="centerCrop"/>
 
 </RelativeLayout>
