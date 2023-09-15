@@ -97,19 +97,19 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<TextView>(R.id.text_view_user).text =
-            Firebase.auth.currentUser?.displayName ?: getString(R.string.guest)
+        val userTextView = view.findViewById<TextView>(R.id.text_view_user)
+        userTextView.text = Firebase.auth.currentUser?.displayName ?: getString(R.string.guest)
 
         locationAdapter = LocationAdapter()
 
-        recyclerView = activity?.findViewById<RecyclerView>(R.id.popular_location_recyclerview)!!
+        recyclerView = view.findViewById(R.id.popular_location_recyclerview)!!
 
 
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = locationAdapter
 
-        searchLocation = activity?.findViewById(R.id.search_location)!!
+        searchLocation = view.findViewById(R.id.search_location)!!
         searchLocation.inputType = InputType.TYPE_NULL
         searchLocation.setOnClickListener {
             val intent = Intent(requireActivity(), SearchLocationActivity::class.java)
@@ -162,16 +162,9 @@ class HomeFragment : Fragment() {
         ImageViewModel.getImage("switzerland"){
             updateUI(it)}
 
-
-
-
-
-
-
-        userTextView = activity?.findViewById(R.id.text_view_user)!!
         userTextView.text = Firebase.auth.currentUser?.displayName ?: getString(R.string.guest)
-        mDotLayout = activity?.findViewById(R.id.dots_layout_top_images)!!
-        mSliderViewPager = activity?.findViewById(R.id.top_image_viewpager)!!
+        mDotLayout = view.findViewById(R.id.dots_layout_top_images)!!
+        mSliderViewPager = view.findViewById(R.id.top_image_viewpager)!!
         mStartAdapter = ViewPagerTopImagesAdapter(requireContext(), images)
         mSliderViewPager.adapter = mStartAdapter
         mSliderViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
@@ -209,7 +202,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    fun updateUI(bitmap: Bitmap){
+    private fun updateUI(bitmap: Bitmap){
         images.add(bitmap)
         mStartAdapter.notifyDataSetChanged()
     }

@@ -6,13 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity">
 
-    <FrameLayout
+    <androidx.viewpager2.widget.ViewPager2
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/frame_layout_main_activity"
-        android:layout_above="@+id/bottom_navigation"/>
-
-    
+        android:id="@+id/view_pager_main_activity"
+        android:layout_above="@+id/bottom_navigation"
+        android:background="@android:color/transparent"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"

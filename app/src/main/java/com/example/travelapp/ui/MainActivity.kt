@@ -4,8 +4,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.viewpager2.widget.ViewPager2
 import com.example.travelapp.R
 import com.example.travelapp.databinding.ActivityMainBinding
+import com.example.travelapp.ui.adapters.MainViewPagerAdapter
 import com.example.travelapp.ui.fragments.ArticlesFragment
 import com.example.travelapp.ui.fragments.GuideFragment
 import com.example.travelapp.ui.fragments.HomeFragment
@@ -16,34 +18,38 @@ import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-
+    private lateinit var adapter: MainViewPagerAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Uncomment the following line to check if the user is signed in
         checkFirstTimeAccess()
         checkCurrentUser()
-        binding= ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        replaceFragment(HomeFragment())
-
-
-
+        adapter = MainViewPagerAdapter(this)
+        binding.viewPagerMainActivity.adapter = adapter
+        binding.viewPagerMainActivity.isUserInputEnabled = false
         binding.bottomNavigation.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.home -> replaceFragment(HomeFragment())
-                R.id.feed -> replaceFragment(ArticlesFragment())
-                R.id.schedule -> replaceFragment(ScheduleFragment())
-                R.id.guide -> replaceFragment(GuideFragment())
+                R.id.home -> binding.viewPagerMainActivity.currentItem = 0
+                R.id.schedule -> binding.viewPagerMainActivity.currentItem = 1
+                R.id.guide -> binding.viewPagerMainActivity.currentItem = 2
+                R.id.feed -> binding.viewPagerMainActivity.currentItem = 3
             }
             true
         }
+        binding.viewPagerMainActivity.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                binding.bottomNavigation.menu.getItem(position).isChecked = true
+            }
+        })
     }
 
     private fun replaceFragment(fragment: Fragment){
 
         val fragmentManager = supportFragmentManager
         val transaction = fragmentManager.beginTransaction()
-        transaction.replace(R.id.frame_layout_main_activity,fragment)
+        transaction.replace(R.id.view_pager_main_activity,fragment)
         transaction.commit()
     }
 
