@@ -63,4 +63,7 @@
     <string name="good_evening">Good Evening</string>
     <string name="good_night">Good Night</string>
     <string name="swipe_to_cancel">Swipe left to cancel a schedule</string>
+    <string name="schedule_date">From %1$s to %2$s</string>
+    <string name="schedule_cost">$ %.1f</string>
+    <string name="schedule_hotel_name">Hotel: %1$s</string>
 </resources>

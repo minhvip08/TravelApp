@@ -81,6 +81,7 @@ class DetailHotelActivity : AppCompatActivity(), OnMapReadyCallback {
         nextButton = findViewById(R.id.book_now_hotel_button)
         nextButton.setOnClickListener {
             val intent = Intent(this, TravelArrangementActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             intent.putExtra("hotel", hotelItem)
             intent.putExtra("location", locationItem)
             intent.putExtra("schedule", scheduleItem)

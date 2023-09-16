@@ -21,7 +21,6 @@ import com.example.travelapp.data.repository.ItineraryRepository
 import com.example.travelapp.data.repository.ScheduleRepository
 import com.example.travelapp.ui.adapters.ViewPagerItineraryArrangementAdapter
 import com.example.travelapp.ui.fragments.DayFragment
-import com.example.travelapp.ui.util.FirestoreCollection
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.ktx.auth
@@ -42,7 +41,6 @@ class ItineraryArrangementActivity : AppCompatActivity() {
 
     val scheduleViewModel = ScheduleViewModel(ScheduleRepository(db))
     val itineraryViewModel = ItineraryViewModel(ItineraryRepository(db))
-    val activityViewModel = ActivityItemViewModel(ActivityItemRepository(db))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,8 +51,8 @@ class ItineraryArrangementActivity : AppCompatActivity() {
         val tabLayout: TabLayout = findViewById(R.id.tab_layout)
         val viewPager2: ViewPager2 = findViewById(R.id.view_pager_2)
 
-        var endDate: Date = scheduleItem!!.endDate.toDate()
-        val millionSeconds = scheduleItem!!.endDate.toDate().time - scheduleItem!!.startDate.toDate().time
+        val endDate: Date = scheduleItem!!.endDate.toDate()
+        val millionSeconds = endDate.time - scheduleItem!!.startDate.toDate().time
         numDay = (millionSeconds / (1000 * 60 * 60 * 24)).toInt() + 1
         Log.d(TAG, "onCreate: ${scheduleItem!!.startDate.toDate()}")
         val adapter = ViewPagerItineraryArrangementAdapter(supportFragmentManager, lifecycle, this, scheduleItem)
@@ -108,13 +106,10 @@ class ItineraryArrangementActivity : AppCompatActivity() {
         return true
     }
 
-    private fun setScheduleToDatabase(){
-        //add schedule to firebase
-
-        scheduleItem?.let {
-            scheduleViewModel.setSchedule(user!!.uid, scheduleItem!!) {
-                setItineraryToDatabase()
-            }
+    private fun setScheduleToDatabase() {
+        scheduleItem!!.image = locationItem!!.image
+        scheduleViewModel.setSchedule(user!!.uid, scheduleItem!!) {
+            setItineraryToDatabase()
         }
     }
 
@@ -131,10 +126,10 @@ class ItineraryArrangementActivity : AppCompatActivity() {
 
     }
 
-    private fun setActivityToDatabase(position: Int){
+    private fun setActivityToDatabase(position: Int) {
         //add activity to firebase
-        val activityViewModel: ActivityItemViewModel = ActivityItemViewModel(ActivityItemRepository(db))
-        for (activity in dayFragmentList[position].activityList){
+        val activityViewModel = ActivityItemViewModel(ActivityItemRepository(db))
+        for (activity in dayFragmentList[position].activityList) {
             activityViewModel.setActivity(user!!.uid,
                 scheduleItem!!.id,
                 dayFragmentList[position].itineraryItem.id,
@@ -142,7 +137,7 @@ class ItineraryArrangementActivity : AppCompatActivity() {
         }
     }
 
-    fun getItemFromPreviousActivity(){
+    private fun getItemFromPreviousActivity(){
         locationItem = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra("location", LocationItem::class.java)
         } else {

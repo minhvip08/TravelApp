@@ -84,6 +84,7 @@ class TravelArrangementActivity : AppCompatActivity() {
                 )
             )
         }
+        var price = 0
         // Get data from intent
         getItemFromIntent()
         // Set up geocoder
@@ -105,10 +106,11 @@ class TravelArrangementActivity : AppCompatActivity() {
             }
         }).addOnSuccessListener {location ->
             getCountryCode(location.latitude, location.longitude) {code ->
+                price = setPriceAirline(location).toInt()
                 fromCountryCode.text = code
                 fromCountryIcon.text = getFlagEmoji(code)
                 val priceAirline = findViewById<TextView>(R.id.travel_arrangement_airline_price)
-                priceAirline.text = "From \$ ${setPriceAirline(location).toInt()}"
+                priceAirline.text = "From \$ ${price}"
                 setTotalPrice(location)
             }
         }
@@ -126,6 +128,8 @@ class TravelArrangementActivity : AppCompatActivity() {
         // Set up determine the plan button
         val determineThePlanButton = findViewById<Button>(R.id.determine_the_plan_button)
         determineThePlanButton.setOnClickListener {
+            scheduleItem!!.hotelName = hotelItem!!.title
+            scheduleItem!!.cost = price.toDouble()
             val intent = Intent(this, ItineraryArrangementActivity::class.java)
             intent.putExtra("schedule", scheduleItem)
             intent.putExtra("location", locationItem)
@@ -207,23 +211,23 @@ class TravelArrangementActivity : AppCompatActivity() {
         }
     }
 
-    private fun addHotelToSchedule(){
-        val bitmap = BitmapFactory.decodeFile(hotelItem!!.imagePath)
-        val ob = BitmapDrawable(resources, bitmap)
-        ob.gravity = android.view.Gravity.CENTER
-
-
+    private fun addHotelToSchedule() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val bitmap = BitmapFactory.decodeFile(hotelItem!!.imagePath)
+            val ob = BitmapDrawable(resources, bitmap)
+            withContext(Dispatchers.Main) {
+                ob.gravity = android.view.Gravity.CENTER
+                hotelLayout.background = ob
+            }
+        }
         hotelLayout = findViewById(R.id.travel_arrangement_layout_hotel_card)
-
-        hotelLayout.background = ob
-
         hotelName = findViewById(R.id.travel_arrangement_hotel_name)
         hotelName.text = hotelItem!!.title
         hotelRatingBar = findViewById(R.id.travel_arrangement_hotel_rating)
         hotelRatingBar.rating = hotelItem!!.rating.toFloat()
 
         hotelPrice = findViewById(R.id.travel_arrangement_hotel_price)
-        hotelPrice.text = "From \$ ${hotelItem!!.price.toString()}"
+        hotelPrice.text = "From \$ ${hotelItem!!.price}"
         travelLayout.isEnabled = false
 
     }

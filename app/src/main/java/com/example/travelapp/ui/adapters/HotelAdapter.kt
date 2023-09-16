@@ -28,10 +28,10 @@ class HotelAdapter(
     RecyclerView.Adapter<HotelAdapter.MyViewHolder>() {
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imgHotel = itemView.findViewById<ShapeableImageView>(R.id.image_view_hotel)
-        val hotelName = itemView.findViewById<TextView>(R.id.name_hotel)
-        val hotelPrice = itemView.findViewById<TextView>(R.id.price_hotel)
-        val ratingBar = itemView.findViewById<RatingBar>(R.id.rating_bar_hotel)
+        val imgHotel: ShapeableImageView = itemView.findViewById(R.id.image_view_hotel)
+        val hotelName: TextView = itemView.findViewById(R.id.name_hotel)
+        val hotelPrice: TextView = itemView.findViewById(R.id.price_hotel)
+        val ratingBar: RatingBar = itemView.findViewById(R.id.rating_bar_hotel)
 
     }
 
@@ -46,21 +46,21 @@ class HotelAdapter(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = hotelList[position]
-        holder.hotelPrice.text = "From \$ ${currentItem.price.toString()}"
+        holder.hotelPrice.text = "From \$ ${currentItem.price}"
         holder.hotelName.text = currentItem.title
         holder.ratingBar.rating = currentItem.rating.toFloat()
-        holder.itemView.setOnClickListener {
-            val intent = Intent(holder.itemView.context, DetailHotelActivity::class.java)
-            intent.putExtra("hotel", currentItem)
-            intent.putExtra("location", locationItem)
-            intent.putExtra("schedule", scheduleItem)
-            holder.itemView.context.startActivity(intent)
-        }
         if (currentItem.imagePath != "") {
             CoroutineScope(Dispatchers.IO).launch {
                 BitmapFactory.decodeFile(currentItem.imagePath)
                 withContext(Dispatchers.Main) {
                     holder.imgHotel.setImageBitmap(BitmapFactory.decodeFile(currentItem.imagePath))
+                    holder.itemView.setOnClickListener {
+                        val intent = Intent(holder.itemView.context, DetailHotelActivity::class.java)
+                        intent.putExtra("hotel", currentItem)
+                        intent.putExtra("location", locationItem)
+                        intent.putExtra("schedule", scheduleItem)
+                        holder.itemView.context.startActivity(intent)
+                    }
                 }
             }
         }

@@ -30,7 +30,6 @@ private const val ARG_SCHEDULE_LIST = "scheduleList"
 class ScheduleListFragment : Fragment() {
     private var isHistory = false
     private var scheduleList: ArrayList<ScheduleItem>? = null
-    private val imageViewModel = ImageViewModel(ImageRepository( FirebaseStorage.getInstance().reference))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,13 +58,6 @@ class ScheduleListFragment : Fragment() {
         scheduleRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         scheduleRecyclerView.adapter = scheduleAdapter
         scheduleAdapter.submitList(scheduleList)
-        scheduleList?.forEach { schedule ->
-            updateImage(schedule.name.lowercase()) { imagePath ->
-                schedule.imagePath = imagePath
-                scheduleAdapter.notifyItemChanged(scheduleList!!.indexOf(schedule))
-
-            }
-        }
         if (!isHistory) {
             val swipeToCancelText = view.findViewById<TextView>(R.id.swipe_to_cancel)
             swipeToCancelText.visibility = TextView.VISIBLE
@@ -88,10 +80,6 @@ class ScheduleListFragment : Fragment() {
             })
             itemTouchHelper.attachToRecyclerView(scheduleRecyclerView)
         }
-    }
-
-    private fun updateImage(imageId: String, updateUi: (String) -> Unit) {
-        imageViewModel.getImagePath(imageId, updateUi)
     }
 
     companion object {

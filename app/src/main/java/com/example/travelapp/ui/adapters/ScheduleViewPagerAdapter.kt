@@ -12,8 +12,9 @@ class ScheduleViewPagerAdapter(
 ) : FragmentStateAdapter(fragment) {
 
     private val sortedLists = scheduleList.partition {
-        it.endDate > Timestamp.now()
+        it.endDate.seconds + 86400 > Timestamp.now().seconds
     }
+
     override fun getItemCount(): Int {
         return 2
     }
