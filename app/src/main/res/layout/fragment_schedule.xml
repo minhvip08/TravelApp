@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragments.ScheduleFragment"
-    android:paddingHorizontal="24dp">
+    android:paddingHorizontal="24dp"
+    android:paddingBottom="12dp">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_schedule"
@@ -46,7 +47,7 @@
         android:id="@+id/schedule_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tab_layout_schedule" />
+        android:layout_below="@id/tab_layout_schedule"/>
 
 
 </RelativeLayout>

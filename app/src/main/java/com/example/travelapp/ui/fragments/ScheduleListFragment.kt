@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,7 +30,7 @@ private const val ARG_SCHEDULE_LIST = "scheduleList"
 class ScheduleListFragment : Fragment() {
     private var isHistory = false
     private var scheduleList: ArrayList<ScheduleItem>? = null
-    var ImageViewModel = ImageViewModel(ImageRepository( FirebaseStorage.getInstance().reference))
+    private val imageViewModel = ImageViewModel(ImageRepository( FirebaseStorage.getInstance().reference))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,20 +54,21 @@ class ScheduleListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val scheduleRecyclerView = view as RecyclerView
+        val scheduleRecyclerView = view.findViewById<RecyclerView>(R.id.schedule_list_item)
         val scheduleAdapter = ScheduleAdapter(requireParentFragment().parentFragmentManager, isHistory)
         scheduleRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         scheduleRecyclerView.adapter = scheduleAdapter
         scheduleAdapter.submitList(scheduleList)
         scheduleList?.forEach { schedule ->
-            updateImage(schedule.name.toString().toLowerCase()) { imagePath ->
+            updateImage(schedule.name.lowercase()) { imagePath ->
                 schedule.imagePath = imagePath
                 scheduleAdapter.notifyItemChanged(scheduleList!!.indexOf(schedule))
 
             }
-
         }
         if (!isHistory) {
+            val swipeToCancelText = view.findViewById<TextView>(R.id.swipe_to_cancel)
+            swipeToCancelText.visibility = TextView.VISIBLE
             val itemTouchHelper = ItemTouchHelper(object: ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
                 override fun onMove(
                     recyclerView: RecyclerView,
@@ -88,8 +90,8 @@ class ScheduleListFragment : Fragment() {
         }
     }
 
-    fun updateImage(imageId: String, updateUi: (String) -> Unit) {
-        ImageViewModel.getImagePath(imageId, updateUi)
+    private fun updateImage(imageId: String, updateUi: (String) -> Unit) {
+        imageViewModel.getImagePath(imageId, updateUi)
     }
 
     companion object {
