@@ -16,6 +16,7 @@ Disclaimer: This project was intended to be a demonstration. The application doe
 
 ## Technical features
 
+* Authentication system provided by Firebase Authentication
 * Fast and reliable real-time document-oriented database powered by Google Firestore
 * Application of LLM in providing travel guide (ChatGPT)
 * Usage of Google Service for pinpointing locations
