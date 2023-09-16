@@ -16,6 +16,7 @@ import com.example.travelapp.data.UserViewModel
 import com.example.travelapp.data.repository.UserRepository
 import com.example.travelapp.ui.fragments.UserInfoFragment
 import com.example.travelapp.ui.util.SharedPrefConstants
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
@@ -29,7 +30,7 @@ class UserProfileActivity : AppCompatActivity() {
     private lateinit var updateButton: Button
     private lateinit var signOutButton: Button
     private lateinit var changeAvatarButton: Button
-    private lateinit var progressBar: ProgressBar
+    private lateinit var progressIndicator: CircularProgressIndicator
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_profile)
@@ -52,17 +53,14 @@ class UserProfileActivity : AppCompatActivity() {
             add(R.id.user_info_user_profile, userInfoFragment)
         }
         // Set sign out button
-        signOutButton = findViewById<Button>(R.id.button_sign_out_user_profile)
+        signOutButton = findViewById(R.id.button_sign_out_user_profile)
         signOutButton.setOnClickListener {
             signOut()
-            val sharedPref = getSharedPreferences(SharedPrefConstants.FIRST_TIME_ACCESS, MODE_PRIVATE)
-            sharedPref.edit().putBoolean("first_time_access", true).apply()
-            finish()
         }
         changeAvatarButton = findViewById(R.id.button_change_avatar)
         resetPasswordButton = findViewById(R.id.button_reset_password_user_profile)
         updateButton = findViewById(R.id.button_update_user_profile)
-        progressBar = findViewById(R.id.progress_bar_user_profile)
+        progressIndicator = findViewById(R.id.progress_bar_user_profile)
     }
 
     override fun onStart() {
@@ -123,6 +121,8 @@ class UserProfileActivity : AppCompatActivity() {
         val intent = Intent(this, AuthenticationActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
+        val sharedPref = getSharedPreferences(SharedPrefConstants.FIRST_TIME_ACCESS, MODE_PRIVATE)
+        sharedPref.edit().putBoolean("first_time_access", true).apply()
         finish()
     }
 
@@ -162,17 +162,17 @@ class UserProfileActivity : AppCompatActivity() {
                 val uri = result.data
                 if (uri != null) {
                     hideEverything()
-                    progressBar.visibility = ProgressBar.VISIBLE
+                    progressIndicator.visibility = ProgressBar.VISIBLE
                     userViewModel.uploadAvatar(Firebase.auth.currentUser!!.uid, uri) { isSuccessful ->
                         if (isSuccessful) {
-                            progressBar.visibility = ProgressBar.GONE
+                            progressIndicator.visibility = ProgressBar.GONE
                             val intent = Intent()
                             setResult(RESULT_OK, intent)
                             finish()
                         }
                         else {
                             showEverything()
-                            progressBar.visibility = ProgressBar.GONE
+                            progressIndicator.visibility = ProgressBar.GONE
                             Toast.makeText(
                                 baseContext,
                                 "Failed to upload avatar.",

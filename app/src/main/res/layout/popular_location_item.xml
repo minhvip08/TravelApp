@@ -11,7 +11,7 @@
     <com.google.android.material.imageview.ShapeableImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/vietnam"
+        android:src="@color/blue"
         android:id="@+id/image_location"
         android:scaleType="centerCrop"
         app:shapeAppearanceOverlay="@style/circular"/>

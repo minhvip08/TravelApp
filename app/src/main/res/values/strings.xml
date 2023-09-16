@@ -53,4 +53,9 @@
     <string name="tab_item_ongoing">Ongoing</string>
     <string name="tab_item_history">History</string>
     <string name="share">Share</string>
+    <string name="activity_description">Activity description</string>
+    <string name="time">Time</string>
+    <string name="add_new_activity">Add new activity</string>
+    <string name="itinerary_arrangement">Itinerary Arrangement</string>
+    <string name="type_a_message">Type a message</string>
 </resources>

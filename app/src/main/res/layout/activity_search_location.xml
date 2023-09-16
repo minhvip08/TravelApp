@@ -5,9 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.SearchLocationActivity"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
-    android:paddingTop="8dp"
+    android:paddingHorizontal="24dp"
+    android:paddingTop="24dp"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.SearchView

@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     tools:context=".ui.LocationDetailActivity">
 
     <ImageView
@@ -17,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#26000000"
-        android:padding="16dp">
+        android:padding="24dp">
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:id="@+id/toolbar_layout_detail_activity"

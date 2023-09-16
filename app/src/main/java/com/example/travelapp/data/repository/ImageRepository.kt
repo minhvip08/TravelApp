@@ -23,9 +23,8 @@ class ImageRepository(private val imageStorage: StorageReference): IImageReposit
             val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
             updateUi(bitmap)
         }.addOnFailureListener {
-            Toast.makeText(null, "Failed to get image", Toast.LENGTH_SHORT).show()
+            Log.d("ImageRepository.getImage()", "Failed to get image")
         }
-
     }
 
     override fun getImagePath(imageId: String, updateUi: (String) -> Unit) {
@@ -37,7 +36,7 @@ class ImageRepository(private val imageStorage: StorageReference): IImageReposit
 //            val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
             updateUi(localFile.absolutePath)
         }.addOnFailureListener {
-            Toast.makeText(null, "Failed to get image", Toast.LENGTH_SHORT).show()
+            Log.d("ImageRepository.getImagePath()", "Failed to get image")
         }
     }
 
