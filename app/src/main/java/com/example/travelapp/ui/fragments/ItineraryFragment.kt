@@ -105,6 +105,7 @@ class ItineraryFragment : Fragment() {
             ItineraryFragment().apply {
                 arguments = Bundle().apply {
                     putString(SCHEDULE_ID, scheduleId)
+
                 }
             }
     }

@@ -23,7 +23,7 @@ class ItineraryViewPagerAdapter(
     }
 
     override fun createFragment(position: Int): Fragment {
-        return DayReadOnlyFragment.newInstance(scheduleId, itineraryList[position].id)
+        return DayReadOnlyFragment.newInstance(scheduleId, itineraryList[position].id, itineraryList[position])
     }
 
     fun getTabView(i: Int) : LinearLayout {

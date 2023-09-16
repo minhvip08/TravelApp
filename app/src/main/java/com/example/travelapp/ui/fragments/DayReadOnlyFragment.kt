@@ -14,8 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.travelapp.R
 import com.example.travelapp.data.ActivityItemViewModel
+import com.example.travelapp.data.ItineraryViewModel
 import com.example.travelapp.data.models.ActivityItem
+import com.example.travelapp.data.models.ItineraryItem
 import com.example.travelapp.data.repository.ActivityItemRepository
+import com.example.travelapp.data.repository.ItineraryRepository
 import com.example.travelapp.ui.adapters.ActivityItemReadOnlyAdapter
 import com.example.travelapp.ui.util.RandomString
 import com.example.travelapp.ui.util.UiState
@@ -31,6 +34,7 @@ import java.util.Date
 class DayReadOnlyFragment : Fragment() {
     private lateinit var scheduleId: String
     private lateinit var itineraryId: String
+    private lateinit var itineraryItem: ItineraryItem
     private lateinit var addBtn: FloatingActionButton
     var timestampTemp = Timestamp(Date())
 
@@ -41,11 +45,14 @@ class DayReadOnlyFragment : Fragment() {
         )
     )
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             scheduleId = it.getString(SCHEDULE_ID).toString()
             itineraryId = it.getString(ITINERARY_ID).toString()
+            itineraryItem = it.getParcelable("itineraryItem")!!
+
         }
     }
 
@@ -67,6 +74,7 @@ class DayReadOnlyFragment : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
+        timestampTemp = Timestamp(Date(itineraryItem.date.toDate().time))
         viewModel.getActivities(Firebase.auth.currentUser!!.uid, scheduleId, itineraryId).observe(viewLifecycleOwner) {
             when (it) {
                 is UiState.Loading -> {
@@ -77,12 +85,16 @@ class DayReadOnlyFragment : Fragment() {
                     adapter!!.submitList(it.data)
 
 
+
+
                 }
                 is UiState.Failure -> {
                     Log.w("DayReadOnlyFragment", "Failure")
                 }
             }
         }
+
+
         // Set dialog to add activity
         addBtn.setOnClickListener {
             addActivity()
@@ -97,7 +109,6 @@ class DayReadOnlyFragment : Fragment() {
         // set view
         val timeEditText = view.findViewById<TextView>(R.id.time_edit_text)
         val activityEditText = view.findViewById<EditText>(R.id.activity_edit_text)
-        timestampTemp = activityList!![0].time
 
 
         // set time picker
@@ -136,7 +147,7 @@ class DayReadOnlyFragment : Fragment() {
                     RandomString.randomString(20), activityName,
                     timestampTemp
                 )
-                activityList.add(activityItem)
+                activityList!!.add(activityItem)
                 adapter!!.submitList(activityList)
                 dialog.dismiss()
             }
@@ -172,11 +183,12 @@ class DayReadOnlyFragment : Fragment() {
         private const val SCHEDULE_ID = "scheduleId"
         private const val ITINERARY_ID = "itineraryId"
         @JvmStatic
-        fun newInstance(scheduleId: String, itineraryId: String) =
+        fun newInstance(scheduleId: String, itineraryId: String, itineraryItem: ItineraryItem) =
             DayReadOnlyFragment().apply {
                 arguments = Bundle().apply {
                     putString(SCHEDULE_ID, scheduleId)
                     putString(ITINERARY_ID, itineraryId)
+                    putParcelable("itineraryItem", itineraryItem)
                 }
             }
     }

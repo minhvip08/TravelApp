@@ -15,6 +15,8 @@ class ItineraryViewModel(
         }
     }
 
+
+
     fun setItinerary(uid: String, scheduleId: String, itineraryItem: ItineraryItem, callback: () -> Unit) {
         repository.set(uid, scheduleId, itineraryItem, callback)
     }
