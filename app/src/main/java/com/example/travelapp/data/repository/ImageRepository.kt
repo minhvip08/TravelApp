@@ -8,7 +8,11 @@ import androidx.fragment.app.FragmentManager.TAG
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import java.io.File
 
 class ImageRepository(private val imageStorage: StorageReference): IImageRepository {
@@ -19,9 +23,13 @@ class ImageRepository(private val imageStorage: StorageReference): IImageReposit
         val localFile = File.createTempFile("images", ".jpg")
         localFile.deleteOnExit()
         storageReference.getFile(localFile).addOnSuccessListener {
-//            Toast.makeText(null, "Success + $localFile", Toast.LENGTH_SHORT).show()
-            val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
-            updateUi(bitmap)
+//            Toast.makeText(null, "Success + $localFile", Toast.LENGTH_SHORT).show
+            CoroutineScope(Dispatchers.IO).launch {
+                val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
+                withContext(Dispatchers.Main) {
+                    updateUi(bitmap)
+                }
+            }
         }.addOnFailureListener {
             Log.d("ImageRepository.getImage()", "Failed to get image")
         }

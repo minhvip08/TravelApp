@@ -2,34 +2,38 @@ package com.example.travelapp.ui.adapters
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.viewpager.widget.PagerAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.example.travelapp.R
 import com.google.android.material.imageview.ShapeableImageView
 
 class ViewPagerTopImagesAdapter(
     val context: Context,
-    val images: List<Bitmap>
-): PagerAdapter() {
-    override fun getCount(): Int {
+    private val images: List<Bitmap>
+): RecyclerView.Adapter<ViewPagerTopImagesAdapter.ViewHolder>() {
+
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val imageView: ShapeableImageView = itemView.findViewById(R.id.image_view_slider)
+        companion object {
+            fun create(parent: ViewGroup): ViewHolder {
+                val view: View = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.top_images_layout, parent, false)
+                return ViewHolder(view)
+            }
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        return ViewHolder.create(parent)
+    }
+
+    override fun getItemCount(): Int {
         return images.size
     }
 
-    override fun isViewFromObject(view: android.view.View, `object`: Any): Boolean {
-        return view == `object`
-    }
-
-    override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        var layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as android.view.LayoutInflater
-        var view = layoutInflater.inflate(com.example.travelapp.R.layout.top_images_layout, container, false)
-        var imageView = view.findViewById<ShapeableImageView>(R.id.image_view_slider)
-        imageView.setImageBitmap(images[position])
-        container.addView(view)
-        return view
-    }
-
-    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-        container.removeView(`object` as android.view.View)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.imageView.setImageBitmap(images[position])
     }
 }

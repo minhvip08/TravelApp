@@ -21,6 +21,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
+import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 
 import com.example.travelapp.R
 import com.example.travelapp.data.ImageViewModel
@@ -71,7 +73,7 @@ class HomeFragment : Fragment() {
     ))
 
     // Viewpager Top Images initializes
-    private lateinit var mSliderViewPager: ViewPager
+    private lateinit var mSliderViewPager: ViewPager2
     private lateinit var mDotLayout: LinearLayout
     private lateinit var mDots: Array<TextView>
     private lateinit var mStartAdapter: ViewPagerTopImagesAdapter
@@ -166,22 +168,11 @@ class HomeFragment : Fragment() {
         mSliderViewPager = view.findViewById(R.id.top_image_viewpager)!!
         mStartAdapter = ViewPagerTopImagesAdapter(requireContext(), images)
         mSliderViewPager.adapter = mStartAdapter
-        mSliderViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
-
-            }
-
+        mSliderViewPager.registerOnPageChangeCallback(object: OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
                 setUpIndicator(position)
-
             }
-
-            override fun onPageScrollStateChanged(state: Int) { }
-
         })
 
         locationAdapter.submitList(locationList)
@@ -267,10 +258,10 @@ class HomeFragment : Fragment() {
 
     private fun createTopImage(){
         locationList.forEach { location ->
-            imageViewModel.getImage("top_image_${location.image}_1"){
+            imageViewModel.getImage("top_image_${location.image}_1") {
                 updateUI(it)
             }
-            imageViewModel.getImage("top_image_${location.image}_2"){
+            imageViewModel.getImage("top_image_${location.image}_2") {
                 updateUI(it)
             }
         }
@@ -283,7 +274,7 @@ class HomeFragment : Fragment() {
 
     private fun updateUI(bitmap: Bitmap){
         images.add(bitmap)
-        mStartAdapter.notifyDataSetChanged()
+        mStartAdapter.notifyItemInserted(images.size - 1)
     }
 
     fun setUpIndicator(position: Int){
@@ -291,7 +282,7 @@ class HomeFragment : Fragment() {
         mDotLayout.removeAllViews()
         for (i in mDots.indices){
             mDots[i] = TextView(requireContext())
-            mDots[i].text = Html.fromHtml("&#8226")
+            mDots[i].text = Html.fromHtml("&#8226", Html.FROM_HTML_MODE_LEGACY)
             mDots[i].textSize = 35f
             mDots[i].setTextColor(resources.getColor(R.color.indicator_inactive_color, activity?.applicationContext?.theme))
             mDotLayout.addView(mDots[i])

@@ -84,9 +84,9 @@
         android:textAppearance="@style/text_large_title"
         android:layout_marginTop="16dp"/>
 
-    <androidx.viewpager.widget.ViewPager
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <androidx.viewpager2.widget.ViewPager2
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/top_image_viewpager"
         android:layout_below="@+id/top_image_title"
         android:layout_marginTop="10dp"/>
