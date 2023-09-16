@@ -93,10 +93,16 @@ class ActivityItemReadOnlyAdapter(val context: Context,
                         .setTitle("Delete Activity")
                         .setMessage("Are you sure you want to delete this activity?")
                         .setPositiveButton("Yes"){dialog, _ ->
-                            activityList.removeAt(adapterPosition)
-                            submitList(activityList)
-                            viewModel.deleteActivity(uid, scheduleId, itineraryId, positionItem)
-                            dialog.dismiss()
+                            if (activityList.size == 1){
+                                Toast.makeText(context, "Cannot delete the last activity", Toast.LENGTH_SHORT).show()
+
+                            }
+                            else {
+                                activityList.removeAt(adapterPosition)
+                                submitList(activityList)
+                                viewModel.deleteActivity(uid, scheduleId, itineraryId, positionItem)
+                                dialog.dismiss()
+                            }
                         }
                         .setNegativeButton("No"){dialog, _ -> dialog.dismiss()}
                         .create()
