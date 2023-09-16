@@ -62,7 +62,9 @@ class ActivityItemReadOnlyAdapter(val context: Context,
         holder.name.setTextColor(
             parent.context.resources.getColorStateList(R.color.edit_text_disabled, null)
         )
-        holder.menu
+        holder.menu.setOnClickListener(View.OnClickListener {
+            popupMenus(it, holder.adapterPosition)
+        })
         return holder
     }
 
@@ -73,9 +75,7 @@ class ActivityItemReadOnlyAdapter(val context: Context,
         holder.time.text =
             SimpleDateFormat("HH:mm").format(currentItem.time.toDate())
         holder.name.setText(currentItem.name)
-        holder.menu.setOnClickListener {
-            popupMenus(it, position)
-        }
+
 
 
 
@@ -100,6 +100,7 @@ class ActivityItemReadOnlyAdapter(val context: Context,
                             else {
                                 activityList.removeAt(adapterPosition)
                                 submitList(activityList)
+                                notifyItemRemoved(adapterPosition)
                                 viewModel.deleteActivity(uid, scheduleId, itineraryId, positionItem)
                                 dialog.dismiss()
                             }
