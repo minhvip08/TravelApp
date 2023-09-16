@@ -30,8 +30,8 @@ class MainActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.home -> binding.viewPagerMainActivity.setCurrentItem(0, false)
                 R.id.schedule -> binding.viewPagerMainActivity.setCurrentItem(1, false)
-                R.id.guide -> binding.viewPagerMainActivity.setCurrentItem(2, false)
-                R.id.feed -> binding.viewPagerMainActivity.setCurrentItem(3, false)
+//                R.id.guide -> binding.viewPagerMainActivity.setCurrentItem(2, false)
+                R.id.feed -> binding.viewPagerMainActivity.setCurrentItem(2, false)
             }
             true
         }

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.example.travelapp.R
@@ -82,13 +83,21 @@ class DayAdapter(
                         AlertDialog.Builder(context)
                             .setView(v)
                             .setPositiveButton("Save"){dialog, _ ->
-                                val activityName = editActivityName.text.toString()
-                                val time = editTime.text.toString()
-                                val activityItem = ActivityItem(activityList[adapterPosition].id,
-                                    activityName,
-                                    timestampTemp)
-                                activityList[adapterPosition] = activityItem
-                                notifyItemChanged(adapterPosition)
+                                if (editActivityName.text.toString() == ""){
+                                    Toast.makeText(context, "Activity name cannot be empty", Toast.LENGTH_SHORT).show()
+                                    return@setPositiveButton
+                                }
+                                else {
+                                    val activityName = editActivityName.text.toString()
+                                    val time = editTime.text.toString()
+                                    val activityItem = ActivityItem(
+                                        activityList[adapterPosition].id,
+                                        activityName,
+                                        timestampTemp
+                                    )
+                                    activityList[adapterPosition] = activityItem
+                                    notifyItemChanged(adapterPosition)
+                                }
                             }
                             .setNegativeButton("Cancel"){dialog, _ ->dialog.dismiss()}
                             .create()
@@ -121,6 +130,6 @@ class DayAdapter(
         val currentItem = activityList[position]
         holder.time.text = SimpleDateFormat("HH:mm").format(currentItem.time.toDate())
         holder.activityName.setText(activityList[position].name)
-        holder.activityName.isEnabled = false
+        holder.activityName.focusable = View.NOT_FOCUSABLE
     }
 }

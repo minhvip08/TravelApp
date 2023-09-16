@@ -20,7 +20,7 @@ class MainViewPagerAdapter(
         return when (position) {
             0 -> HomeFragment()
             1 -> ScheduleWrapperFragment()
-            2 -> GuideFragment()
+//            2 -> GuideFragment()
             else -> ArticlesFragment()
         }
     }

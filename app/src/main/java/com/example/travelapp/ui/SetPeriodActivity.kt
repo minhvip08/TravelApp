@@ -13,6 +13,7 @@ import android.widget.Button
 import android.widget.DatePicker
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -45,6 +46,8 @@ class SetPeriodActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
     private lateinit var titleToolBar: TextView
     private lateinit var titleLocationTextView: TextView
     private lateinit var bannerImg: ImageView
+    var clickEndate: Boolean = false
+    var clickStartdate: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_set_period)
@@ -90,18 +93,21 @@ class SetPeriodActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
         endTextView.setOnClickListener {
             dateTextView = R.id.date_end
             isEndDate = true
-
             val datePicker: DialogFragment = DatePickerFragment()
             datePicker.show(supportFragmentManager, "date picker")
         }
 
         nextButton = findViewById(R.id.next_button)
-        nextButton?.isEnabled = false
         nextButton?.setOnClickListener {
-            val intent = Intent(this, TravelArrangementActivity::class.java)
-            intent.putExtra("schedule", scheduleItem)
-            intent.putExtra("location", locationItem)
-            startActivity(intent)
+            if (clickStartdate && clickEndate &&checkDate()){
+                val intent = Intent(this, ChooseHotelActivity::class.java)
+                intent.putExtra("schedule", scheduleItem)
+                intent.putExtra("location", locationItem)
+                startActivity(intent)
+            }
+            else
+                Toast.makeText(this, "Please choose date correctly", Toast.LENGTH_SHORT).show()
+
         }
 
     }
@@ -133,25 +139,26 @@ class SetPeriodActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
         if (!isEndDate){
             scheduleItem.startDate = Timestamp(Date(p1-1900,p2,p3))
             Log.d(TAG, "onDateSet: ${scheduleItem.startDate.toDate()}")
-
+            clickStartdate = true
         }
         else{
             scheduleItem.endDate = Timestamp(Date(p1-1900, p2, p3))
             nextButton?.isEnabled = scheduleItem.endDate.toDate().time
                 .compareTo(scheduleItem.startDate.toDate().time) >= 0
             Log.d(TAG, "onDateSet: ${scheduleItem.endDate.toDate()}")
+            clickEndate = true
         }
 
-
-
         // get attribute start date from locationItem with string stateDate, not get directly
-
 
         currentDayString = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime())
 
         textView = findViewById(dateTextView)
         textView?.setText(currentDayString)
+    }
 
-
+    fun checkDate(): Boolean{
+        return scheduleItem.endDate.toDate().time
+                .compareTo(scheduleItem.startDate.toDate().time) >= 0
     }
 }

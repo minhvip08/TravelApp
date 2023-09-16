@@ -49,11 +49,13 @@ class HotelAdapter(
         holder.hotelPrice.text = "From \$ ${currentItem.price}"
         holder.hotelName.text = currentItem.title
         holder.ratingBar.rating = currentItem.rating.toFloat()
+        holder.itemView.isEnabled = false
         if (currentItem.imagePath != "") {
             CoroutineScope(Dispatchers.IO).launch {
                 BitmapFactory.decodeFile(currentItem.imagePath)
                 withContext(Dispatchers.Main) {
                     holder.imgHotel.setImageBitmap(BitmapFactory.decodeFile(currentItem.imagePath))
+                    holder.itemView.isEnabled = true
                     holder.itemView.setOnClickListener {
                         val intent = Intent(holder.itemView.context, DetailHotelActivity::class.java)
                         intent.putExtra("hotel", currentItem)

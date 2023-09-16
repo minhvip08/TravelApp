@@ -7,7 +7,8 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class ItineraryItem(
     var id: String,
-    var date: Timestamp
+    var date: Timestamp,
+    var isAddedActivity: Boolean
 ) : Parcelable {
-    constructor() : this("", Timestamp(0, 0))
+    constructor() : this("", Timestamp(0, 0), false)
 }

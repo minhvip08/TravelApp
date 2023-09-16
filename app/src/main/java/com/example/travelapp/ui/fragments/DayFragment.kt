@@ -120,13 +120,26 @@ class DayFragment : Fragment() {
         val addDialog = androidx.appcompat.app.AlertDialog.Builder(requireContext())
             .setView(view)
         addDialog.setPositiveButton("Add") { dialog, _ ->
-            val time = timeEditText.text.toString()
-            val activityName = activityEditText.text.toString()
-            val activityItem = ActivityItem(RandomString.randomString(20), activityName,
-                timestampTemp)
-            activityList.add(activityItem)
-            dayAdapter.notifyDataSetChanged()
-            dialog.dismiss()
+            if (activityEditText.text.toString() == "") {
+                Toast.makeText(context, "Please enter activity name", Toast.LENGTH_SHORT).show()
+                return@setPositiveButton
+            }
+            else if (timeEditText.text.toString() == "") {
+                Toast.makeText(context, "Please enter time", Toast.LENGTH_SHORT).show()
+                return@setPositiveButton
+            }
+            else {
+                val time = timeEditText.text.toString()
+                val activityName = activityEditText.text.toString()
+                val activityItem = ActivityItem(
+                    RandomString.randomString(20), activityName,
+                    timestampTemp
+                )
+                activityList.add(activityItem)
+                itineraryItem.isAddedActivity = true
+                dayAdapter.notifyDataSetChanged()
+                dialog.dismiss()
+            }
         }
         addDialog.setNegativeButton("Cancel"){
                 dialog,_->

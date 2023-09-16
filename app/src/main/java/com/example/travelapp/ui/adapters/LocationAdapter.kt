@@ -77,11 +77,14 @@ class LocationAdapter :
                 holder.itemView.context.startActivity(it)
             }
         }
+        holder.itemView.isEnabled = false
         if (currentItem.imagePath != "") {
             CoroutineScope(Dispatchers.IO).launch {
                 BitmapFactory.decodeFile(currentItem.imagePath)
                 withContext(Dispatchers.Main) {
                     holder.imgLocation.setImageBitmap(BitmapFactory.decodeFile(currentItem.imagePath))
+                    holder.itemView.isEnabled = true
+
                 }
             }
         }

@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.viewpager2.widget.ViewPager2
 import com.example.travelapp.R
@@ -75,18 +76,34 @@ class ItineraryArrangementActivity : AppCompatActivity() {
         }.attach()
 
         btnNext = findViewById(R.id.next_button)
+
         btnNext.setOnClickListener {
-            setScheduleToDatabase()
-            val intent = Intent(this, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
+            var isAllDayFragmentAdded = checkAllDayFragment()
+            if (!isAllDayFragmentAdded){
+                Toast.makeText(this, "Please add activity to all day", Toast.LENGTH_SHORT).show()
+            }
+            else {
+                setScheduleToDatabase()
+                val intent = Intent(this, AddScheduleCompletelyActivity::class.java)
+                startActivity(intent)
+            }
 
 
-        }
 
         setupToolBar()
 
+        }
 
+    }
+
+    private fun checkAllDayFragment(): Boolean{
+        dayFragmentList.forEach { fragment ->
+            if (!fragment.itineraryItem.isAddedActivity){
+                return false
+            }
+
+        }
+        return true
     }
 
     private fun setupToolBar(){

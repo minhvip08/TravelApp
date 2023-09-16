@@ -1,5 +1,6 @@
 package com.example.travelapp.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +13,9 @@ import com.example.travelapp.data.ScheduleViewModel
 import com.example.travelapp.data.models.ScheduleItem
 import com.example.travelapp.data.repository.ImageRepository
 import com.example.travelapp.data.repository.ScheduleRepository
+import com.example.travelapp.ui.ChatAiActivity
 import com.example.travelapp.ui.adapters.ScheduleViewPagerAdapter
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.ktx.auth
@@ -43,6 +46,7 @@ class ScheduleFragment : Fragment() {
     private lateinit var adapter: ScheduleViewPagerAdapter
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager: ViewPager2
+    private lateinit var chatButton: FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,6 +82,11 @@ class ScheduleFragment : Fragment() {
                     tabLayout.selectTab(tabLayout.getTabAt(position))
                 }
             })
+            chatButton = view.findViewById(R.id.chat_button)
+            chatButton.setOnClickListener {
+                val intent = Intent(context, ChatAiActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 

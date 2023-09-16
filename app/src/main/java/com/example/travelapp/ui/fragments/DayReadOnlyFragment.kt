@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.travelapp.R
 import com.example.travelapp.data.ActivityItemViewModel
+import com.example.travelapp.data.models.ActivityItem
 import com.example.travelapp.data.repository.ActivityItemRepository
 import com.example.travelapp.ui.adapters.ActivityItemReadOnlyAdapter
 import com.example.travelapp.ui.util.UiState
@@ -20,6 +21,7 @@ import com.google.firebase.ktx.Firebase
 class DayReadOnlyFragment : Fragment() {
     private lateinit var scheduleId: String
     private lateinit var itineraryId: String
+    var adapter: ActivityItemReadOnlyAdapter? = null
     private val viewModel = ActivityItemViewModel(
         ActivityItemRepository(
             FirebaseFirestore.getInstance()
@@ -45,7 +47,7 @@ class DayReadOnlyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view_day_read_only)
-        val adapter = ActivityItemReadOnlyAdapter()
+        adapter = ActivityItemReadOnlyAdapter(requireContext(), viewModel, Firebase.auth.currentUser!!.uid, scheduleId, itineraryId)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         viewModel.getActivities(Firebase.auth.currentUser!!.uid, scheduleId, itineraryId).observe(viewLifecycleOwner) {
@@ -55,7 +57,9 @@ class DayReadOnlyFragment : Fragment() {
                 }
                 is UiState.Success -> {
                     Log.d("DayReadOnlyFragment", "Success")
-                    adapter.submitList(it.data)
+                    adapter!!.submitList(it.data)
+
+
                 }
                 is UiState.Failure -> {
                     Log.w("DayReadOnlyFragment", "Failure")
@@ -63,6 +67,15 @@ class DayReadOnlyFragment : Fragment() {
             }
         }
     }
+
+    override fun onStop() {
+        super.onStop()
+        adapter?.currentList?.forEach {
+            viewModel.setActivity(Firebase.auth.currentUser!!.uid, scheduleId, itineraryId, it)
+        }
+    }
+
+
 
     companion object {
         /**

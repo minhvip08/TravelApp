@@ -16,4 +16,8 @@ class ActivityItemViewModel (
     fun setActivity(uid: String, scheduleId: String, itineraryId: String, activityItem: ActivityItem) {
         repository.set(uid, scheduleId, itineraryId, activityItem)
     }
+
+    fun deleteActivity(uid: String, scheduleId: String, itineraryId: String, activityItem: ActivityItem) {
+        repository.delete(uid, scheduleId, itineraryId, activityItem)
+    }
 }

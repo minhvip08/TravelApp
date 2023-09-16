@@ -45,4 +45,19 @@ class ActivityItemRepository(
             .document(activityItem.id)
             .set(activityItem)
     }
+
+    override fun delete(
+        uid: String,
+        scheduleId: String,
+        itineraryId: String,
+        activityItem: ActivityItem
+    ) {
+        activityItemDatabase
+            .collection(FirestoreCollection.USERS).document(uid)
+            .collection(FirestoreCollection.SCHEDULES).document(scheduleId)
+            .collection(FirestoreCollection.ITINERARIES).document(itineraryId)
+            .collection(FirestoreCollection.ACTIVITIES)
+            .document(activityItem.id)
+            .delete()
+    }
 }

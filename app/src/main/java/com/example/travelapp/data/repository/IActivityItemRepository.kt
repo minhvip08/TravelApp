@@ -9,4 +9,5 @@ interface IActivityItemRepository {
     fun get(uid: String, scheduleId: String, itineraryId: String): Flow<UiState<List<ActivityItem>>>
 
     fun set(uid: String, scheduleId: String, itineraryId: String, activityItem: ActivityItem)
+    fun delete(uid: String, scheduleId: String, itineraryId: String, activityItem: ActivityItem)
 }

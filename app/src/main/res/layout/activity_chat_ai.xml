@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingVertical="24dp"
     tools:context=".ui.ChatAiActivity">
 
@@ -52,4 +53,116 @@
         android:layout_width="match_parent"
         android:layout_above="@+id/chat_ai_bottom_bar"
         android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:id="@+id/introduce_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/chat_ai_bottom_bar"
+        android:layout_below="@+id/app_bar_layout"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_marginHorizontal="12dp"
+            android:src="@drawable/ic_explain"
+            app:tint="@color/black" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Explain"
+            android:gravity="center"
+            android:layout_marginBottom="12dp"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/explain_chat_ai_background"
+            android:gravity="center"
+            android:text="Explain location"
+            android:textColor="@color/black"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/explain_chat_ai_background"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="How to travel to Vietnam"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="12dp"
+            android:src="@drawable/ic_map"
+            app:tint="@color/black" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Map"
+            android:gravity="center"
+            android:layout_marginBottom="12dp"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/explain_chat_ai_background"
+            android:gravity="center"
+            android:text="Map location"
+            android:textColor="@color/black"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/explain_chat_ai_background"
+            android:gravity="center"
+            android:text="Travel from US to Spain"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/black"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="12dp"
+            android:src="@drawable/ic_translate"
+            app:tint="@color/black" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Translate"
+            android:gravity="center"
+            android:layout_marginBottom="12dp"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/explain_chat_ai_background"
+            android:gravity="center"
+            android:text="How do you say “how are you” in korean?"
+            android:textColor="@color/black"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/explain_chat_ai_background"
+            android:gravity="center"
+            android:text="Write a poem about flower and love"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/black"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/explain_chat_ai_background"
+            android:gravity="center"
+            android:text="Write a rap song lyrics in Vietnamese"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/black"/>
+
+    </LinearLayout>
+
+
+
 </RelativeLayout>

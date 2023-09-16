@@ -78,6 +78,11 @@ class ItineraryFragment : Fragment() {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+
+    }
+
     private fun updateUi(itineraries: List<ItineraryItem>) {
         adapter = ItineraryViewPagerAdapter(this, requireContext(), scheduleId, itineraries)
         viewPager.adapter = adapter

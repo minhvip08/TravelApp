@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -32,6 +34,7 @@ class ChatAiActivity : AppCompatActivity() {
     var messageList = mutableListOf<MessageItem>()
     lateinit var messageAdapter: MessageAdapter
     var client = OkHttpClient()
+    lateinit var introduceLayout: LinearLayout
 
     private lateinit var mActionBarToolbar: Toolbar
     private lateinit var titleToolBar: TextView
@@ -48,14 +51,23 @@ class ChatAiActivity : AppCompatActivity() {
         messageAdapter = MessageAdapter(messageList)
         recyclerView.adapter = messageAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)
+        introduceLayout = findViewById(R.id.introduce_layout)
+        introduceLayout.visibility = LinearLayout.VISIBLE
 
 
         sendButton.setOnClickListener {
-            val message = messageEditText.text.toString().trim()
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-            addToChat(message, SendBy.SEND_BY_USER)
-            messageEditText.text.clear()
-            callAPI(message)
+            if (messageEditText.text.toString().trim().isEmpty()){
+                Toast.makeText(this, "Please enter a message", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            else {
+                introduceLayout.visibility = LinearLayout.GONE
+                val message = messageEditText.text.toString().trim()
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                addToChat(message, SendBy.SEND_BY_USER)
+                messageEditText.text.clear()
+                callAPI(message)
+            }
 
         }
     }
