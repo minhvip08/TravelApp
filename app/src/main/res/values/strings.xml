@@ -58,4 +58,8 @@
     <string name="add_new_activity">Add new activity</string>
     <string name="itinerary_arrangement">Itinerary Arrangement</string>
     <string name="type_a_message">Type a message</string>
+    <string name="good_morning">Good Morning</string>
+    <string name="good_afternoon">Good Afternoon</string>
+    <string name="good_evening">Good Evening</string>
+    <string name="good_night">Good Night</string>
 </resources>

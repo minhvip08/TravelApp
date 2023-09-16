@@ -197,7 +197,7 @@ class AuthenticationActivity : AppCompatActivity() {
         authForgotYourPassword.visibility = TextView.GONE
         authShowPassword.visibility = CheckBox.GONE
         authAttributeHeaderPassword.visibility = TextView.GONE
-        authAttributePassword.visibility = EditText.GONE
+        authAttributeLayoutPassword.visibility = EditText.GONE
         toggleAuthMode.visibility = RadioGroup.GONE
         progressIndicator.visibility = CircularProgressIndicator.VISIBLE
     }
@@ -208,7 +208,7 @@ class AuthenticationActivity : AppCompatActivity() {
         authForgotYourPassword.visibility = TextView.VISIBLE
         authShowPassword.visibility = CheckBox.VISIBLE
         authAttributeHeaderPassword.visibility = TextView.VISIBLE
-        authAttributePassword.visibility = EditText.VISIBLE
+        authAttributeLayoutPassword.visibility = EditText.VISIBLE
         toggleAuthMode.visibility = RadioGroup.VISIBLE
         progressIndicator.visibility = CircularProgressIndicator.GONE
     }

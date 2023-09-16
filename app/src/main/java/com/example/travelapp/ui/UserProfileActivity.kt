@@ -127,14 +127,26 @@ class UserProfileActivity : AppCompatActivity() {
     }
 
     private fun updateUserProfile(name: String) {
+        hideEverything()
+        progressIndicator.visibility = ProgressBar.VISIBLE
         Firebase.auth.currentUser!!.updateProfile(
             userProfileChangeRequest {
                 displayName = name
             }
-        ).addOnCompleteListener {
+        ).addOnSuccessListener {
             Log.d("UserProfileActivity", "User profile updated.")
+            val intent = Intent()
+            intent.putExtra("nameChanged", true)
+            setResult(RESULT_OK, intent)
             finish()
         }.addOnFailureListener {
+            showEverything()
+            progressIndicator.visibility = ProgressBar.GONE
+            Toast.makeText(
+                baseContext,
+                "Failed to update display name.",
+                Toast.LENGTH_SHORT,
+            ).show()
             Log.d("UserProfileActivity", "User profile update failed.")
         }
     }
@@ -167,6 +179,7 @@ class UserProfileActivity : AppCompatActivity() {
                         if (isSuccessful) {
                             progressIndicator.visibility = ProgressBar.GONE
                             val intent = Intent()
+                            intent.putExtra("avatarChanged", true)
                             setResult(RESULT_OK, intent)
                             finish()
                         }

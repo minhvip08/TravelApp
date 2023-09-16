@@ -77,6 +77,7 @@ class HomeFragment : Fragment() {
     private lateinit var mStartAdapter: ViewPagerTopImagesAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var avatar: ImageView
+    private lateinit var weatherView: ImageView
     private val imageViewModel = ImageViewModel(ImageRepository( FirebaseStorage.getInstance().reference))
     private var locationList = ArrayList<LocationItem>()
     val storage =   FirebaseStorage.getInstance().reference
@@ -103,7 +104,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val userTextView = view.findViewById<TextView>(R.id.text_view_user)
+        userTextView = view.findViewById(R.id.text_view_user)
         userTextView.text = Firebase.auth.currentUser?.displayName ?: getString(R.string.guest)
 
         locationAdapter = LocationAdapter()
@@ -184,32 +185,9 @@ class HomeFragment : Fragment() {
         })
 
         locationAdapter.submitList(locationList)
-        val c = Calendar.getInstance()
-        val hour = c.get(Calendar.HOUR_OF_DAY)
-        val weatherView: ImageView = view.findViewById(R.id.image_view_weather)!!
+        weatherView = view.findViewById(R.id.image_view_weather)!!
 
         sessionTextView = view.findViewById(R.id.text_view_session)!!
-        when (hour) {
-            in 0..11 -> {
-                sessionTextView.text = "Good Morning"
-                weatherView.setImageResource(R.drawable.ic_day)
-            }
-            in 12..15 -> {
-                sessionTextView.text = "Good Afternoon"
-                weatherView.setImageResource(R.drawable.ic_day)
-
-            }
-            in 16..20 -> {
-                sessionTextView.text = "Good Evening"
-                weatherView.setImageResource(R.drawable.ic_night)
-
-            }
-            in 21..24 -> {
-                sessionTextView.text = "Good Night"
-                weatherView.setImageResource(R.drawable.ic_night)
-
-            }
-        }
 
         // Launch coroutine on a background thread
         lifecycleScope.launch(Dispatchers.IO) {
@@ -233,7 +211,14 @@ class HomeFragment : Fragment() {
         if (it.resultCode == Activity.RESULT_OK) {
             val result = it.data
             if (result != null) {
-                getAvatar()
+                val avatarChanged = result.getBooleanExtra("avatarChanged", false)
+                if (avatarChanged) {
+                    getAvatar()
+                }
+                val nameChanged = result.getBooleanExtra("nameChanged", false)
+                if (nameChanged) {
+                    userTextView.text = Firebase.auth.currentUser?.displayName ?: getString(R.string.guest)
+                }
             }
         }
     }
@@ -255,7 +240,32 @@ class HomeFragment : Fragment() {
         }
     }
 
-    fun createTopImage(){
+    override fun onStart() {
+        super.onStart()
+        val c = Calendar.getInstance()
+        when (c.get(Calendar.HOUR_OF_DAY)) {
+            in 0..11 -> {
+                sessionTextView.text = getString(R.string.good_morning)
+                weatherView.setImageResource(R.drawable.ic_day)
+            }
+            in 12..15 -> {
+                sessionTextView.text = getString(R.string.good_afternoon)
+                weatherView.setImageResource(R.drawable.ic_day)
+
+            }
+            in 16..20 -> {
+                sessionTextView.text = getString(R.string.good_evening)
+                weatherView.setImageResource(R.drawable.ic_night)
+
+            }
+            in 21..24 -> {
+                sessionTextView.text = getString(R.string.good_night)
+                weatherView.setImageResource(R.drawable.ic_night)
+            }
+        }
+    }
+
+    private fun createTopImage(){
         locationList.forEach { location ->
             imageViewModel.getImage("top_image_${location.image}_1"){
                 updateUI(it)
@@ -267,7 +277,7 @@ class HomeFragment : Fragment() {
 
     }
 
-    fun updateImage(imageId: String, updateUi: (String) -> Unit) {
+    private fun updateImage(imageId: String, updateUi: (String) -> Unit) {
         imageViewModel.getImagePath(imageId, updateUi)
     }
 
