@@ -7,6 +7,8 @@ import android.util.Log
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.FrameLayout
+import android.widget.LinearLayout
 import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
@@ -17,12 +19,11 @@ import com.example.travelapp.R
 import com.example.travelapp.data.UserViewModel
 import com.example.travelapp.data.repository.UserRepository
 import com.example.travelapp.ui.fragments.UserInfoFragment
-import com.example.travelapp.ui.util.FirebaseStorageConstants
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
 
 class AuthenticationActivity : AppCompatActivity() {
 
@@ -34,6 +35,15 @@ class AuthenticationActivity : AppCompatActivity() {
 
     private lateinit var userInfoFragment: UserInfoFragment
     private lateinit var toggleAuthMode: RadioGroup
+    private lateinit var authHeader: TextView
+    private lateinit var authButton: Button
+    private lateinit var authForgotYourPassword: TextView
+    private lateinit var authShowPassword: CheckBox
+    private lateinit var authAttributeHeaderPassword: TextView
+    private lateinit var authAttributePassword: EditText
+    private lateinit var authAttributeLayoutPassword: LinearLayout
+    private lateinit var userInfoFrameLayout: FrameLayout
+    private lateinit var progressIndicator: CircularProgressIndicator
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,17 +53,24 @@ class AuthenticationActivity : AppCompatActivity() {
             setReorderingAllowed(true)
             add(R.id.auth_user_info, userInfoFragment)
         }
+        // FrameLayout
+        userInfoFrameLayout = findViewById(R.id.auth_user_info)
+        // Get required views
+        authHeader = findViewById(R.id.auth_header)
+        authButton = findViewById(R.id.auth_button)
+        authForgotYourPassword = findViewById(R.id.auth_forgot_your_password)
+        authShowPassword = findViewById(R.id.auth_show_password)
+        authAttributeLayoutPassword = findViewById(R.id.auth_attribute_layout_password)
+        authAttributeHeaderPassword = findViewById(R.id.auth_attribute_header_password)
+        authAttributePassword = authAttributeLayoutPassword.findViewById(R.id.auth_attribute_password)
+        // Get RadioGroup object
+        toggleAuthMode = findViewById(R.id.toggle_authentication_mode)
+        // Get CircularProgressIndicator object
+        progressIndicator = findViewById(R.id.progress_indicator_authentication)
     }
 
     override fun onStart() {
         super.onStart()
-        // Get required views
-        val authHeader = findViewById<TextView>(R.id.auth_header)
-        val authButton = findViewById<Button>(R.id.auth_button)
-        val authForgotYourPassword = findViewById<TextView>(R.id.auth_forgot_your_password)
-        val authShowPassword = findViewById<CheckBox>(R.id.auth_show_password)
-        val authAttributePassword = findViewById<EditText>(R.id.auth_attribute_password)
-
         // Set show password checkbox listener
         authShowPassword.setOnCheckedChangeListener { _, isChecked ->
             val start = authAttributePassword.selectionStart
@@ -94,8 +111,6 @@ class AuthenticationActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
-        // Get RadioGroup object
-        toggleAuthMode = findViewById(R.id.toggle_authentication_mode)
         toggleAuthMode.setOnCheckedChangeListener { _, checkedId ->
             // Check which radio button was clicked
             when (checkedId) {
@@ -176,7 +191,30 @@ class AuthenticationActivity : AppCompatActivity() {
         }
     }
 
+    private fun startLoadingAnimation() {
+        authButton.visibility = Button.GONE
+        userInfoFrameLayout.visibility = FrameLayout.GONE
+        authForgotYourPassword.visibility = TextView.GONE
+        authShowPassword.visibility = CheckBox.GONE
+        authAttributeHeaderPassword.visibility = TextView.GONE
+        authAttributePassword.visibility = EditText.GONE
+        toggleAuthMode.visibility = RadioGroup.GONE
+        progressIndicator.visibility = CircularProgressIndicator.VISIBLE
+    }
+
+    private fun stopLoadingAnimation() {
+        authButton.visibility = Button.VISIBLE
+        userInfoFrameLayout.visibility = FrameLayout.VISIBLE
+        authForgotYourPassword.visibility = TextView.VISIBLE
+        authShowPassword.visibility = CheckBox.VISIBLE
+        authAttributeHeaderPassword.visibility = TextView.VISIBLE
+        authAttributePassword.visibility = EditText.VISIBLE
+        toggleAuthMode.visibility = RadioGroup.VISIBLE
+        progressIndicator.visibility = CircularProgressIndicator.GONE
+    }
+
     private fun createAccount(name: String, email: String, password: String) {
+        startLoadingAnimation()
         Firebase.auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) {task ->
                 if (task.isSuccessful) {
@@ -207,12 +245,14 @@ class AuthenticationActivity : AppCompatActivity() {
                                 ).show()
                             }
                         }
+                    stopLoadingAnimation()
                     val intent = Intent(this, EmailConfirmationActivity::class.java)
                     intent.putExtra("emailConfirmationType", 0)
                     startActivity(intent)
                     userInfoFragment.clearName()
                     toggleAuthMode.check(R.id.radio_button_sign_in)
                 } else {
+                    stopLoadingAnimation()
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
                     Toast.makeText(
                         baseContext,
@@ -224,6 +264,7 @@ class AuthenticationActivity : AppCompatActivity() {
     }
 
     private fun signIn(email: String, password: String) {
+        startLoadingAnimation()
         Firebase.auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
@@ -232,6 +273,7 @@ class AuthenticationActivity : AppCompatActivity() {
                     startActivity(intent)
                     finish()
                 } else {
+                    stopLoadingAnimation()
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithEmail:failure", task.exception)
                     Toast.makeText(

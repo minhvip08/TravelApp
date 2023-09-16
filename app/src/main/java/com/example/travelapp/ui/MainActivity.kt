@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         adapter = MainViewPagerAdapter(this)
+        binding.viewPagerMainActivity.offscreenPageLimit = 3
         binding.viewPagerMainActivity.adapter = adapter
         binding.viewPagerMainActivity.isUserInputEnabled = false
         binding.bottomNavigation.setOnItemSelectedListener {

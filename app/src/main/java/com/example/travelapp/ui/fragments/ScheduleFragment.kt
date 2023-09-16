@@ -58,10 +58,8 @@ class ScheduleFragment : Fragment() {
         viewPager = view.findViewById(R.id.schedule_list)
         viewModel.getSchedules(Firebase.auth.currentUser!!.uid) {
             scheduleList = it
-
             adapter = ScheduleViewPagerAdapter(this, it)
             viewPager.adapter = adapter
-
             tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
                     viewPager.currentItem = tab!!.position

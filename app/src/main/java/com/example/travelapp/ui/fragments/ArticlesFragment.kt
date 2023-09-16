@@ -1,11 +1,10 @@
 package com.example.travelapp.ui.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toolbar
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -14,8 +13,8 @@ import com.example.travelapp.data.ArticleViewModel
 import com.example.travelapp.data.models.ArticleItem
 import com.example.travelapp.data.repository.ArticleRepository
 import com.example.travelapp.ui.adapters.ArticleAdapter
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
 
 class ArticlesFragment : Fragment() {
 
@@ -28,6 +27,7 @@ class ArticlesFragment : Fragment() {
     private lateinit var articleAdapter: ArticleAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var recyclerView: RecyclerView
+    private lateinit var progressIndicator: CircularProgressIndicator
     private var articleList = mutableListOf<ArticleItem>()
 
     override fun onCreateView(
@@ -44,6 +44,7 @@ class ArticlesFragment : Fragment() {
         linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView = view.findViewById(R.id.articles_recycler_view)
         recyclerView.layoutManager = linearLayoutManager
+        progressIndicator = view.findViewById(R.id.progress_indicator_feed)
         loadArticles()
         val refreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.articles_refresh_layout)
         refreshLayout.setOnRefreshListener {
@@ -57,7 +58,9 @@ class ArticlesFragment : Fragment() {
     }
 
     private fun loadArticles() {
+        progressIndicator.visibility = View.VISIBLE
         articleViewModel.getArticles { initList ->
+            progressIndicator.visibility = View.GONE
             recyclerView.adapter = articleAdapter
             articleList.addAll(initList)
             articleAdapter.submitList(articleList)
