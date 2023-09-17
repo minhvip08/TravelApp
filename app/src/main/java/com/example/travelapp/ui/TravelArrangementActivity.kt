@@ -106,11 +106,10 @@ class TravelArrangementActivity : AppCompatActivity() {
             }
         }).addOnSuccessListener {location ->
             getCountryCode(location.latitude, location.longitude) {code ->
-                setPriceAirline(location)
                 fromCountryCode.text = code
                 fromCountryIcon.text = getFlagEmoji(code)
                 val priceAirline = findViewById<TextView>(R.id.travel_arrangement_airline_price)
-                priceAirline.text = "From \$ ${price}"
+                priceAirline.text = "From \$ ${setPriceAirline(location)}"
                 price = setTotalPrice(location).toInt()
             }
         }

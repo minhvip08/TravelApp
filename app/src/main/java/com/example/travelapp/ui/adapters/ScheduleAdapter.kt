@@ -72,14 +72,14 @@ class ScheduleAdapter(
                 }
             }
         }
-        holder.name.text = holder.itemView.context.getString(R.string.schedule_hotel_name, currentItem.name)
+        holder.hotelName.text = holder.itemView.context.getString(R.string.schedule_hotel_name, currentItem.hotelName)
         holder.id = currentItem.id
         holder.date.text = holder.itemView.context.getString(
             R.string.schedule_date,
             SimpleDateFormat("dd/MM/yyyy").format(currentItem.startDate.toDate()),
             SimpleDateFormat("dd/MM/yyyy").format(currentItem.endDate.toDate())
         )
-        holder.hotelName.text = currentItem.hotelName
+        holder.name.text = currentItem.name
         holder.cost.text = holder.itemView.context.getString(R.string.schedule_cost, currentItem.cost)
         if (!isHistory) {
             holder.itemView.setOnClickListener {
