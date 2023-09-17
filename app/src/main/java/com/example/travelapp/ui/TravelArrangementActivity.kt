@@ -106,12 +106,12 @@ class TravelArrangementActivity : AppCompatActivity() {
             }
         }).addOnSuccessListener {location ->
             getCountryCode(location.latitude, location.longitude) {code ->
-                price = setPriceAirline(location).toInt()
+                setPriceAirline(location)
                 fromCountryCode.text = code
                 fromCountryIcon.text = getFlagEmoji(code)
                 val priceAirline = findViewById<TextView>(R.id.travel_arrangement_airline_price)
                 priceAirline.text = "From \$ ${price}"
-                setTotalPrice(location)
+                price = setTotalPrice(location).toInt()
             }
         }
 
@@ -255,7 +255,7 @@ class TravelArrangementActivity : AppCompatActivity() {
         numDay = (millionSeconds / (1000 * 60 * 60 * 24)).toInt() + 1
     }
 
-    fun setTotalPrice(locationTo : Location){
+    fun setTotalPrice(locationTo : Location): Double {
         val totalPriceTextView = findViewById<TextView>(R.id.travel_arrangement_total_price)
         val priceAirLine = setPriceAirline(locationTo)*2
         val totalPrice: Double = if (hotelItem != null){
@@ -266,6 +266,8 @@ class TravelArrangementActivity : AppCompatActivity() {
         }
 
         totalPriceTextView.text = "From \$ ${totalPrice.toInt()}"
+
+        return totalPrice
     }
 
 }
