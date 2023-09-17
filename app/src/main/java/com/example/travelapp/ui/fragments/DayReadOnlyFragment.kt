@@ -70,7 +70,7 @@ class DayReadOnlyFragment : Fragment() {
         addBtn = view.findViewById<FloatingActionButton>(R.id.add_task_button)
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view_day_read_only)
 
-        adapter = ActivityItemReadOnlyAdapter(requireContext(), viewModel, Firebase.auth.currentUser!!.uid, scheduleId, itineraryId)
+        adapter = ActivityItemReadOnlyAdapter(requireContext(), viewModel, Firebase.auth.currentUser!!.uid, scheduleId, itineraryId, itineraryItem)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
@@ -119,7 +119,7 @@ class DayReadOnlyFragment : Fragment() {
             val timePickerDialog = TimePickerDialog(
                 context,
                 { _, hourOfDay, minute ->
-                    timestampTemp = Timestamp(Date(timestampTemp.toDate().time + hourOfDay * 60 * 60 * 1000 + minute * 60 * 1000))
+                    timestampTemp = Timestamp(Date(itineraryItem.date.toDate().time + hourOfDay * 60 * 60 * 1000 + minute * 60 * 1000))
                     timeEditText.text = SimpleDateFormat("HH:mm").format(timestampTemp.toDate())
                 },
                 hour,

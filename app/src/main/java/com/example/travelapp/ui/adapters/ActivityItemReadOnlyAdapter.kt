@@ -27,7 +27,8 @@ class ActivityItemReadOnlyAdapter(val context: Context,
     val viewModel: ActivityItemViewModel,
     val uid: String,
     val scheduleId: String,
-    val itineraryId: String
+    val itineraryId: String,
+    val itineraryItem: ItineraryItem
 )
     : ListAdapter<ActivityItem, ActivityItemReadOnlyAdapter.ViewHolder>(ActivityItemDiff()) {
 
@@ -124,7 +125,7 @@ class ActivityItemReadOnlyAdapter(val context: Context,
                         var timePickerDialog = TimePickerDialog(context,
                             TimePickerDialog.OnTimeSetListener {
                                     view, hourOfDay, minute ->
-                                timestampTemp = Timestamp(Date(activityList[0].time.toDate().time +
+                                timestampTemp = Timestamp(Date(itineraryItem.date.toDate().time +
                                         hourOfDay * 60 * 60 * 1000 + minute * 60 * 1000))
                                 editTime.text = SimpleDateFormat("HH:mm").format(timestampTemp.toDate())
 

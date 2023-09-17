@@ -5,6 +5,7 @@ import com.example.travelapp.data.models.ScheduleItem
 import com.example.travelapp.ui.util.FirestoreCollection
 import com.example.travelapp.ui.util.UiState
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -22,6 +23,7 @@ class ItineraryRepository(
                     .collection(FirestoreCollection.SCHEDULES)
                     .document(itineraryId)
                     .collection(FirestoreCollection.ITINERARIES)
+                    .orderBy("date", Query.Direction.ASCENDING)
                     .get()
                     .await()
                     .documents
