@@ -5,7 +5,6 @@ import android.util.Log
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -19,22 +18,21 @@ import com.example.travelapp.ui.adapters.MessageAdapter
 import com.example.travelapp.ui.util.SendBy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
 import org.json.JSONObject
 
 class ChatAiActivity : AppCompatActivity() {
-    lateinit var recyclerView: RecyclerView
-    lateinit var messageEditText: EditText
-    lateinit var sendButton: ImageButton
-    var messageList = mutableListOf<MessageItem>()
-    lateinit var messageAdapter: MessageAdapter
-    var client = OkHttpClient()
-    lateinit var introduceLayout: LinearLayout
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var messageEditText: EditText
+    private lateinit var sendButton: ImageButton
+    private var messageList = mutableListOf<MessageItem>()
+    private lateinit var messageAdapter: MessageAdapter
+    private var client = OkHttpClient()
+    private lateinit var introduceLayout: LinearLayout
 
     private lateinit var mActionBarToolbar: Toolbar
     private lateinit var titleToolBar: TextView
@@ -63,8 +61,8 @@ class ChatAiActivity : AppCompatActivity() {
             else {
                 introduceLayout.visibility = LinearLayout.GONE
                 val message = messageEditText.text.toString().trim()
-                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-                addToChat(message, SendBy.SEND_BY_USER)
+                // Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                addToChat(message)
                 messageEditText.text.clear()
                 callAPI(message)
             }
@@ -72,9 +70,9 @@ class ChatAiActivity : AppCompatActivity() {
         }
     }
 
-    private fun addToChat(message: String, sender: String){
+    private fun addToChat(message: String){
         lifecycleScope.launch(Dispatchers.Main){
-            messageList.add(MessageItem(message, sender))
+            messageList.add(MessageItem(message, SendBy.SEND_BY_USER))
             messageAdapter.notifyItemInserted(messageList.size - 1)
             recyclerView.scrollToPosition(messageList.size - 1)
         }
@@ -89,18 +87,18 @@ class ChatAiActivity : AppCompatActivity() {
         }
     }
 
-    fun callAPI(message: String){
+    private fun callAPI(message: String){
 
 
-        var jsonBody = JSONObject()
+        val jsonBody = JSONObject()
         try {
-            jsonBody.put("model", "gpt-3.5-turbo")
+            jsonBody.put("model", "gpt-4o-mini")
 
-            var messages = JSONArray()
-            var systemMessage = JSONObject()
+                val messages = JSONArray()
+            val systemMessage = JSONObject()
             systemMessage.put("role", "system")
-            systemMessage.put("content", "You will be asked for travel recommendations by a tourist. You are tour guide. Answer as you were a travel guide and give no more than 3 recommendation options per answer. Just answer with the options and don't give any introduction. ")
-            var userMessage = JSONObject()
+            systemMessage.put("content", "You will be asked for travel recommendations by a tourist. You are tour guide. Answer as you were a travel guide and give no more than 3 recommendation options per answer. Just answer with the options and don't give any introduction.")
+            val userMessage = JSONObject()
             userMessage.put("role", "user")
             userMessage.put("content", message)
             messages.put(systemMessage)
@@ -114,14 +112,15 @@ class ChatAiActivity : AppCompatActivity() {
             Toast.makeText(this, "Error connect to server", Toast.LENGTH_SHORT).show()
         }
 
-        var body = RequestBody.create("application/json; charset=utf-8".toMediaType(), jsonBody.toString())
-        var request = Request.Builder()
+        val body =
+            jsonBody.toString().toRequestBody("application/json; charset=utf-8".toMediaType())
+        val request = Request.Builder()
             .url("https://api.openai.com/v1/chat/completions")
-            .header("Authorization", "Bearer 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")
+            .header("Authorization", "Bearer " + getString(R.string.api_key_openai))
             .post(body)
             .build()
 
-        Log.d("ChatAiActivity", "callAPI: " + request.toString())
+        Log.d("ChatAiActivity", "callAPI: $request")
 
         client.newCall(request).enqueue(object : okhttp3.Callback {
             override fun onFailure(call: okhttp3.Call, e: java.io.IOException) {
@@ -131,13 +130,15 @@ class ChatAiActivity : AppCompatActivity() {
 
             override fun onResponse(call: okhttp3.Call, response: okhttp3.Response){
                 if (response.isSuccessful) {
-                    var responseString = response.body?.string()
-                    var responseObject = JSONObject(responseString)
+                    val responseString = response.body?.string()
+                    val responseObject = responseString?.let { JSONObject(it) }
 
-                var result = responseObject.getJSONArray("choices")
-                    .getJSONObject(0).getJSONObject("message")
-                    var resultString = result.getString("content")
-                    addResponseToChat(resultString)
+                val result = responseObject?.getJSONArray("choices")
+                    ?.getJSONObject(0)?.getJSONObject("message")
+                    val resultString = result?.getString("content")
+                    if (resultString != null) {
+                        addResponseToChat(resultString)
+                    }
 
                 }
                 else{
@@ -156,7 +157,7 @@ class ChatAiActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         titleToolBar = findViewById(R.id.toolbar_title)
-        titleToolBar.text = "Chat AI"
+        titleToolBar.text = getString(R.string.chat_ai)
 
     }
 
